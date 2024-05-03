@@ -1,0 +1,15 @@
+# Virtual Environment
+.env/
+venv/
+myenv/
+ENV/
+
+# IDE/Editor specific files
+.vscode/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore pipenv or pipfile.lock
+Pipfile.lock
+
