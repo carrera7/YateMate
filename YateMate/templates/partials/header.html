@@ -5,25 +5,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Header</title>
-<style>
-
-</style>
+<link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-<header>
-  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-  <div class="header1"> <!--header1-->
-    <div class="navegacion">
-      
-      <div id="box-img">
-        <img src="{% static 'img/iconY.jpg' %}">
-      </div>
+<header class="header1">
+  <div class="navegacion">
     
-      <div class="titulo-cli">
-      <h1 >YateMate</h1>
+    <div id="box-img">
+      <img src="{% static 'img/iconY.jpg' %}">
+    </div>
+  
+    <div class="titulo-cli">
+      <h1>YateMate</h1>
     </div>  
-    <nav id="div_nav">
 
+    <nav id="menu">
       <div id="div-nav">
         <ul>
           <li><a href="#">Secciones</a>
@@ -34,15 +30,12 @@
             </ul>
             <!-- end menu desplegable -->
           </li>
-
           <li><a href="#">Ingresar</a></li>
           <li><a href="#">Registrarse</a></li>
-
         </ul>
         <!-- end menu -->
       </div>  
     </nav>
-
   </div>
 </header>
 </body>

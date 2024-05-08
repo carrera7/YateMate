@@ -1,0 +1,115 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+.header1 {
+    background-color: #b8dee0;
+    width: 100%;
+    height: 70px;
+}
+
+.navegacion {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+/* Estilos para el buscador */
+#container-1 {
+    width: 100%;
+    white-space: nowrap;
+    margin-top: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    margin-left: 30px;
+    position: relative;
+}
+
+/* Estilos para el título */
+.titulo-cli {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-left: 140px;
+}
+
+.titulo-cli h1 {
+    font-family: 'Alumni Sans Pinstripe', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 0;
+    color: #1f2f38;
+}
+
+/* Estilos para el menú */
+#menu {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 20px;
+    width: 100%;
+    height: 100%;
+    margin-left: 50px;
+    justify-content: center;
+}
+
+#menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para los ítems del menú */
+#menu ul li {
+    background-color: #b8dee0;
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+/* Efecto al pasar el ratón por los ítems del menú */
+#menu ul li:hover {
+    background: #3c667d;
+    border-radius: 5px;
+}
+
+/* Estilos para los menús desplegables */
+#menu ul ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #eee;
+    padding: 0;
+}
+
+/* Estilos para los ítems del menú desplegable */
+#menu ul ul li {
+    float: none;
+    width: 150px;
+}
+
+/* Estilos para los enlaces del menú desplegable */
+#menu ul ul a {
+    line-height: 120%;
+    padding: 10px 15px;
+}
+
+/* Mostrar menú desplegable al pasar el ratón */
+#menu ul li:hover > ul {
+    display: block;
+}
+
+/* Otros estilos */
+ul {
+    list-style: none;
+}
+
+li {
+    list-style: none;
+}
+
+/* Estilos específicos para diferentes partes del HTML */
