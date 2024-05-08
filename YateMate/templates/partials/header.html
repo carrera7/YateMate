@@ -22,13 +22,17 @@
     <nav id="menu">
       <div id="div-nav">
         <ul>
-          <li><a href="#">Secciones</a>
+          <li>
+            <a href="#">Secciones</a>
             <!-- start menu desplegable -->
             <ul>
               <li><a href="http://127.0.0.1:8000/list_publication/">Trueque</a></li>
               <li><a href="#">Amarras</a></li>
             </ul>
             <!-- end menu desplegable -->
+            {% if request.path == '/list_publication/' %}
+              <li><a href="#" class="btn btn-primary">Hacer Publicación</a></li>
+            {% endif %}
           </li>
           <li><a href="#">Iniciar sesión</a></li>
           <li><a href="#">Registrarse</a></li>
