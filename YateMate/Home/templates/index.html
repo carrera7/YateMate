@@ -1,12 +1,17 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 Mi Página de Inicio
 {% endblock %}
 
 {% block content %}
-<div class="contenido">
-    <h1>Bienvenido a mi sitio web</h1>
-    <p>Este es el contenido de la página de inicio.</p>
-</div>
+<section class="contenido" style="margin-top: 20px; margin-bottom: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); grid-gap: 20px;">
+    <div class="contenedor-imagen" style="border: 2px solid #333; padding: 10px; margin: 10px;">
+        <img src="{% static 'img/fort-1.jpg' %}" alt="Imagen" style="max-width: 100%; height: auto;">
+    </div>
+    <div class="contenedor-texto">
+        <p>Este es el contenido de la página de inicio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non euismod velit. Proin dapibus nisi non tellus interdum, nec tristique lectus volutpat. Integer dignissim bibendum.</p>
+    </div>
+</section>
 {% endblock %}

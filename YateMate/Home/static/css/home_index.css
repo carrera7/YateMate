@@ -1,0 +1,11 @@
+.contenido {
+    display: flex;
+}
+
+.contenedor-imagen {
+    flex: 1;
+}
+
+.contenedor-texto {
+    flex: 1;
+}

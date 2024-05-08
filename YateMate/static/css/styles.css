@@ -1,7 +1,8 @@
-body{
-    margin: 0px;
-    padding: 0px;
+body {
+    margin: 0; /* Elimina el margen del body */
+    padding: 0; /* Elimina el padding del body */
 }
+
 
 
 
@@ -622,3 +623,4 @@ body{
     background-color: white;
     color: #3c667d;
 }
+
