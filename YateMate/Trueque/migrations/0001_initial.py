@@ -2,6 +2,103 @@
 
 from django.db import migrations, models
 
+def inicializar_datos_ObjetosValiosos(apps, schema_editor):
+    Publicacion_ObjetoValioso = apps.get_model('Trueque', 'Publicacion_ObjetoValioso')
+    Publicacion_ObjetoValioso.objects.create(
+        tipo='Tipo1',
+        marca='Marca1',
+        descripcion='Descripción 1',
+        estado='Vigente',
+        dueño=1,
+        foto='productos_fotos/foto1.jpg'
+    )
+    Publicacion_ObjetoValioso.objects.create(
+        tipo='Tipo2',
+        marca='Marca2',
+        descripcion='Descripción 2',
+        estado='Proceso',
+        dueño=2,
+        foto='productos_fotos/foto2.jpg'
+    )
+    Publicacion_ObjetoValioso.objects.create(
+        tipo='Tipo3',
+        marca='Marca3',
+        descripcion='Descripción 3',
+        estado='Vigente',
+        dueño=3,
+        foto='productos_fotos/foto3.jpg'
+    )
+    Publicacion_ObjetoValioso.objects.create(
+        tipo='Tipo4',
+        marca='Marca4',
+        descripcion='Descripción 4',
+        estado='Finalizado',
+        dueño=4,
+        foto='productos_fotos/foto4.jpg'
+    )
+    Publicacion_ObjetoValioso.objects.create(
+        tipo='Tipo5',
+        marca='Marca5',
+        descripcion='Descripción 5',
+        estado='Proceso',
+        dueño=5,
+        foto='productos_fotos/foto5.jpg'
+    )
+
+def inicializar_datos_Embarcaciones(apps, schema_editor):
+    Publicacion_Embarcacion = apps.get_model('Trueque', 'Publicacion_Embarcacion')
+    Publicacion_Embarcacion.objects.create(
+        tipo='Tipo1',
+        eslora=10.5,
+        manga=3.2,
+        calado=1.5,
+        matricula='EMB001',
+        nombre_fantasia='Embarcación Fantástica 1',
+        foto='barcos_fotos/foto_emb1.jpg',
+        dueño=1
+    )
+    Publicacion_Embarcacion.objects.create(
+        tipo='Tipo2',
+        eslora=12.0,
+        manga=4.0,
+        calado=1.8,
+        matricula='EMB002',
+        nombre_fantasia='Embarcación Fantástica 2',
+        foto='barcos_fotos/foto_emb2.jpg',
+        dueño=2
+    )
+    Publicacion_Embarcacion.objects.create(
+        tipo='Tipo3',
+        eslora=8.5,
+        manga=2.5,
+        calado=1.2,
+        matricula='EMB003',
+        nombre_fantasia='Embarcación Fantástica 3',
+        foto='barcos_fotos/foto_emb3.jpg',
+        dueño=3
+    )
+    Publicacion_Embarcacion.objects.create(
+        tipo='Tipo4',
+        eslora=15.0,
+        manga=5.0,
+        calado=2.0,
+        matricula='EMB004',
+        nombre_fantasia='Embarcación Fantástica 4',
+        foto='barcos_fotos/foto_emb4.jpg',
+        dueño=4
+    )
+    Publicacion_Embarcacion.objects.create(
+        tipo='Tipo5',
+        eslora=9.0,
+        manga=3.0,
+        calado=1.0,
+        matricula='EMB005',
+        nombre_fantasia='Embarcación Fantástica 5',
+        foto='barcos_fotos/foto_emb5.jpg',
+        dueño=5
+    )
+
+
 
 class Migration(migrations.Migration):
 
@@ -37,4 +134,8 @@ class Migration(migrations.Migration):
                 ('foto', models.ImageField(upload_to='productos_fotos/')),
             ],
         ),
+        
+        migrations.RunPython(inicializar_datos_ObjetosValiosos),
+        migrations.RunPython(inicializar_datos_Embarcaciones),
+        
     ]
