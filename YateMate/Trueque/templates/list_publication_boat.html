@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mi Página de Inicio
+{% endblock %}
+
+{% block content %}
+<style>
+    /* Estilo para cada tarjeta */
+    .card {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+
+    /* Estilo para el título de la tarjeta */
+    .card-title {
+        color: #007bff;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    /* Estilo para el botón de la tarjeta */
+    .btn-card {
+        background-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+</style>
+
+{% if embarcaciones_vigentes %}
+    <h2>Publicaciones</h2>
+    {% for embarcacion in  embarcaciones_vigentes %}
+        <div class="card">
+            <h3 class="card-title">{{ embarcacion.tipo }} - {{ embarcacion.nombre_fantasia }}</h3>
+            <p>{{ embarcacion.descripcion|truncatechars:70 }}</p>
+            <a href="#" class="btn btn-card">Saber más</a>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>No se cuenta con Publicaciones.</p>
+{% endif %}
+{% endblock %}
+

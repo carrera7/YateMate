@@ -61,8 +61,11 @@ class Publicacion_Embarcacion(models.Model):
     calado = models.DecimalField(max_digits=5, decimal_places=2)
     matricula = models.CharField(max_length=20)
     nombre_fantasia = models.CharField(max_length=100)
+    # datos que permanecen 
     foto = models.ImageField(upload_to='barcos_fotos/')
     dueño = models.IntegerField()
+    descripcion = models.TextField()
+    estado = models.CharField(max_length=50)
 
     def __str__(self):
         return self.nombre_fantasia

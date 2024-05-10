@@ -55,7 +55,9 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
         matricula='EMB001',
         nombre_fantasia='Embarcación Fantástica 1',
         foto='barcos_fotos/foto_emb1.jpg',
-        dueño=1
+        dueño=1,
+        descripcion='Descripción de la Embarcación Fantástica 1',
+        estado='Vigente'
     )
     Publicacion_Embarcacion.objects.create(
         tipo='Tipo2',
@@ -65,7 +67,9 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
         matricula='EMB002',
         nombre_fantasia='Embarcación Fantástica 2',
         foto='barcos_fotos/foto_emb2.jpg',
-        dueño=2
+        dueño=2,
+        descripcion='Descripción de la Embarcación Fantástica 2',
+        estado='Proceso'
     )
     Publicacion_Embarcacion.objects.create(
         tipo='Tipo3',
@@ -75,7 +79,9 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
         matricula='EMB003',
         nombre_fantasia='Embarcación Fantástica 3',
         foto='barcos_fotos/foto_emb3.jpg',
-        dueño=3
+        dueño=3,
+        descripcion='Descripción de la Embarcación Fantástica 3',
+        estado='Finalizado'
     )
     Publicacion_Embarcacion.objects.create(
         tipo='Tipo4',
@@ -85,7 +91,9 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
         matricula='EMB004',
         nombre_fantasia='Embarcación Fantástica 4',
         foto='barcos_fotos/foto_emb4.jpg',
-        dueño=4
+        dueño=4,
+        descripcion='Descripción de la Embarcación Fantástica 4',
+        estado='Vigente'
     )
     Publicacion_Embarcacion.objects.create(
         tipo='Tipo5',
@@ -95,10 +103,10 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
         matricula='EMB005',
         nombre_fantasia='Embarcación Fantástica 5',
         foto='barcos_fotos/foto_emb5.jpg',
-        dueño=5
+        dueño=5,
+        descripcion='Descripción de la Embarcación Fantástica 5',
+        estado='Proceso'
     )
-
-
 
 class Migration(migrations.Migration):
 
@@ -120,6 +128,8 @@ class Migration(migrations.Migration):
                 ('nombre_fantasia', models.CharField(max_length=100)),
                 ('foto', models.ImageField(upload_to='barcos_fotos/')),
                 ('dueño', models.IntegerField()),
+                ('descripcion', models.TextField()),
+                ('estado', models.CharField(max_length=50)),
             ],
         ),
         migrations.CreateModel(
