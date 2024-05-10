@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block title %}
-Lista publicaciones
+Mis solicitudes
 {% endblock %}
 
 {% block content %}
@@ -32,17 +32,4 @@ Lista publicaciones
     }
 </style>
 
-{% if objetos_vigentes %}
-    <h2>Publicaciones</h2>
-    {% for objeto in objetos_vigentes %}
-        <div class="card">
-            <h3 class="card-title">{{ objeto.tipo }} - {{ objeto.marca }}</h3>
-            <p>{{ objeto.descripcion|truncatechars:70 }}</p>
-            <a href="#" class="btn btn-card">Saber más</a>
-        </div>
-    {% endfor %}
-{% else %}
-    <p>No se cuenta con Publicaciones.</p>
-{% endif %}
 {% endblock %}
-

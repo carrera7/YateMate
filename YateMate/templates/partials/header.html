@@ -23,23 +23,32 @@
       <div id="div-nav">
         <ul>
           <li>
+              {% if request.path == '/list_publication/' %}
+                <a href="#">Publicaciones</a>
+                <ul>
+                    <li><a href="#">Hacer Publicacion</a></li>
+                    <li><a href="http://127.0.0.1:8000/mis_publicaciones/">Ver mis publicaciones</a></li>
+                    <li><a href="http://127.0.0.1:8000/mis_solicitudes/">Ver mis solicitudes de trueque</a></li>
+                </ul>
+            {% endif %}
+          </li>
+          <li>
             <a href="#">Secciones</a>
             <!-- start menu desplegable -->
             <ul>
-              <li><a href="http://127.0.0.1:8000/list_publication/">Trueque</a></li>
+              {% if request.path != '/list_publication/' %}
+                <li><a href="http://127.0.0.1:8000/list_publication/">Trueque</a></li>
+              {% endif %}
               <li><a href="#">Amarras</a></li>
               {% if request.path != '/' %}
               <li><a href="http://127.0.0.1:8000/">Inicio</a></li>
               {% endif %}
-
             </ul>
             <!-- end menu desplegable -->
-            {% if request.path == '/list_publication/' %}
-              <li><a href="#">Hacer Publicación</a></li>
-            {% endif %}
           </li>
           <li><a href="#">Iniciar sesión</a></li>
           <li><a href="http://127.0.0.1:8000/register/">Registrarse</a></li>
+
         </ul>
         <!-- end menu -->
       </div>  
