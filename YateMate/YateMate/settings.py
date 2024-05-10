@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'Register.apps.RegisterConfig',
     'Trueque.apps.TruequeConfig',
     'django.contrib.admin',
     'django.contrib.auth',
