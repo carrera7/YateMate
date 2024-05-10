@@ -28,6 +28,10 @@
             <ul>
               <li><a href="http://127.0.0.1:8000/list_publication/">Trueque</a></li>
               <li><a href="#">Amarras</a></li>
+              {% if request.path != '/' %}
+              <li><a href="http://127.0.0.1:8000/">Inicio</a></li>
+              {% endif %}
+
             </ul>
             <!-- end menu desplegable -->
             {% if request.path == '/list_publication/' %}
@@ -35,7 +39,7 @@
             {% endif %}
           </li>
           <li><a href="#">Iniciar sesión</a></li>
-          <li><a href="#">Registrarse</a></li>
+          <li><a href="http://127.0.0.1:8000/register/">Registrarse</a></li>
         </ul>
         <!-- end menu -->
       </div>  

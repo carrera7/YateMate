@@ -1,63 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body style="background-color: #3c667d;">
+{% extends "base.html" %}
+{% load static %}
 
+{% block title %}
+Registrarse
+{% endblock %}
 
+{% block content %}
+<div style="margin-top: 20px;"></div> <!-- Espacio entre head y body -->
 
+<div class="container">
+    <div class="recuadroLogin">
+        <div class="container-form" id="container-form">
+            <form class="form" id="formu">
+                <ul class="nombre">
+                    <label for="name">Usuario</label>
+                    <input type="text" id="name" placeholder="Ingrese su usuario">
+                </ul>
 
-
-
-
-    <div class="container">
-        <div class="recuadroLogin">
-            <div class="container-form" id="container-form">
-                <form class = "form" id="formu" >
-                    <ul class="nombre">
-                    
-                        <label for="name"> Usuario </label>
-                        <input   type="text"  id="name" placeholder="Ingrese su usuario">
-                    
-                    </ul>
-    
-                    <ul class="contraseña">
-                    
-                        <label for="Contraseña">Contraseña </label>
-                        <input   type="password"  id="Contraseña" placeholder="Ingrese su contraseña">
-                    
-                    </ul>
-                    <div>
-                        <button class="boton" id="boton">INGRESAR</button>
-                    </div>
-    
-    
-    
-    
-                </form>
-              
-            
-            </div>
-       
-            
-            <div class="container-image">
-                <img src="img/xd.jpg" alt="logo.jpg">
-            </div>     
-    
-          
-        </div> 
+                <ul class="contraseña">
+                    <label for="Contraseña">Contraseña</label>
+                    <input type="password" id="Contraseña" placeholder="Ingrese su contraseña">
+                </ul>
+                <div>
+                    <button class="boton" id="boton">INGRESAR</button>
+                </div>
+            </form>
+        </div>
+        <div class="container-image">
+            <img src="{% static 'img/xd.jpg' %}" alt="logo.jpg">
+        </div>
     </div>
-    
-
-
-
-
-    
-</body>
-<script src="./login.js"></script>
-</html>
+</div>
+{% endblock %}
