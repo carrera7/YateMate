@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
+# Modelo de iformacion asosicada al usuario
 class Usuario(models.Model):
     TIPOS = (
         ('Administrador', 'Administrador'),
@@ -40,3 +42,9 @@ class Embarcacion(models.Model):
 
     def __str__(self):
         return f'{self.nombre_fantasia} - {self.matricula}'
+    
+class User(models.Model):
+    # Definimos el modelo Usuario que tendrá tres campos: username, datos (clave foránea) y password.
+    username = models.CharField(max_length=150, unique=True)  # Nombre de usuario (email).
+    datos = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True)  # Clave foránea a UsuarioDatos.
+    password = models.CharField(max_length=128)  # Contraseña.

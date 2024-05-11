@@ -143,6 +143,47 @@ def inicializar_datos_Usuarios(apps, schema_editor):
     for data in user_data:
         Usuario.objects.create(**data)
         
+def inicializar_datos_User(apps, schema_editor):
+    User = apps.get_model('Register', 'User')  # Reemplaza 'tu_app' con el nombre real de tu aplicación Django
+    Usuario = apps.get_model('Register', 'Usuario')  # Reemplaza 'tu_app' con el nombre real de tu aplicación Django
+    
+    usuario_instance_1 = Usuario.objects.get(id=1)  # Obtiene una instancia existente de Usuario
+    usuario_instance_2 = Usuario.objects.get(id=2)  # Obtiene una instancia existente de Usuario
+    usuario_instance_3 = Usuario.objects.get(id=3)  # Obtiene una instancia existente de Usuario
+    usuario_instance_4 = Usuario.objects.get(id=4)  # Obtiene una instancia existente de Usuario
+    usuario_instance_5 = Usuario.objects.get(id=5)  # Obtiene una instancia existente de Usuario
+    
+    user_data = [
+        {
+            'username': 'usuario1@mail.com',
+            'datos': usuario_instance_1,  # Aquí debes poner la clave foránea a otro Usuario si es relevante para tu aplicación
+            'password': 'password1',
+        },
+        {
+            'username': 'usuario2@mail.com',
+            'datos': usuario_instance_2,
+            'password': 'password2',
+        },
+        {
+            'username': 'usuario3@mail.com',
+            'datos': usuario_instance_3,
+            'password': 'password3',
+        },
+        {
+            'username': 'usuario4@mail.com',
+            'datos': usuario_instance_4,
+            'password': 'password4',
+        },
+        {
+            'username': 'usuario5@mail.com',
+            'datos': usuario_instance_5,
+            'password': 'password5',
+        },
+    ]
+    
+    for data in user_data:
+        User.objects.create(**data)
+        
 def inicializar_datos_Embarcaciones(apps, schema_editor):
     Embarcacion = apps.get_model('Register', 'Embarcacion')  # Reemplaza 'tu_app' por el nombre real de tu aplicación Django
     Usuario = apps.get_model('Register', 'Usuario')
@@ -241,6 +282,16 @@ class Migration(migrations.Migration):
                 ('tipo', models.CharField(choices=[('Velero', 'Velero'), ('Yate', 'Yate'), ('Lancha', 'Lancha'), ('Barco', 'Barco')], max_length=20)),
             ],
         ),
+        migrations.CreateModel(
+            name='User',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('username', models.CharField(max_length=150, unique=True)),
+                ('datos', models.ForeignKey(null=True, on_delete=models.SET_NULL, to='Register.Usuario')),
+                ('password', models.CharField(max_length=128)),
+            ],
+        ),
         migrations.RunPython(inicializar_datos_Usuarios),
         migrations.RunPython(inicializar_datos_Embarcaciones),
+        migrations.RunPython(inicializar_datos_User),
     ]
