@@ -30,6 +30,7 @@ def login_view(request):
     
 def logout_view(request):
     if 'user_id' in request.session:
-        del request.session['user_id']  # Elimina la información de la sesión
+        del request.session['user_id']
+        del request.session['user_type']
     return redirect('index')
     
