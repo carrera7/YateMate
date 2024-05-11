@@ -33,3 +33,9 @@ def list(request):
     return render(request, 'list.html', {
         'objetos': objetos
     })
+    
+def mis_publicaciones(request):
+     return render(request, "ver_mis_publicaciones.html")
+ 
+def solicitudes_trueque(request):
+     return render(request, "ver_solicitudes_trueque.html")

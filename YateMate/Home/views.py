@@ -33,4 +33,3 @@ def logout_view(request):
         del request.session['user_id']
         del request.session['user_type']
     return redirect('index')
-    
