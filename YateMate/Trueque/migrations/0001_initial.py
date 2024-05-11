@@ -48,62 +48,27 @@ def inicializar_datos_ObjetosValiosos(apps, schema_editor):
 def inicializar_datos_Embarcaciones(apps, schema_editor):
     Publicacion_Embarcacion = apps.get_model('Trueque', 'Publicacion_Embarcacion')
     Publicacion_Embarcacion.objects.create(
-        tipo='Tipo1',
-        eslora=10.5,
-        manga=3.2,
-        calado=1.5,
-        matricula='EMB001',
-        nombre_fantasia='Embarcación Fantástica 1',
-        foto='barcos_fotos/foto_emb1.jpg',
-        dueño=1,
+        embarcacion=1,
         descripcion='Descripción de la Embarcación Fantástica 1',
         estado='Vigente'
     )
     Publicacion_Embarcacion.objects.create(
-        tipo='Tipo2',
-        eslora=12.0,
-        manga=4.0,
-        calado=1.8,
-        matricula='EMB002',
-        nombre_fantasia='Embarcación Fantástica 2',
-        foto='barcos_fotos/foto_emb2.jpg',
-        dueño=2,
+        embarcacion=2,
         descripcion='Descripción de la Embarcación Fantástica 2',
         estado='Proceso'
     )
     Publicacion_Embarcacion.objects.create(
-        tipo='Tipo3',
-        eslora=8.5,
-        manga=2.5,
-        calado=1.2,
-        matricula='EMB003',
-        nombre_fantasia='Embarcación Fantástica 3',
-        foto='barcos_fotos/foto_emb3.jpg',
-        dueño=3,
+        embarcacion=3,
         descripcion='Descripción de la Embarcación Fantástica 3',
         estado='Finalizado'
     )
     Publicacion_Embarcacion.objects.create(
-        tipo='Tipo4',
-        eslora=15.0,
-        manga=5.0,
-        calado=2.0,
-        matricula='EMB004',
-        nombre_fantasia='Embarcación Fantástica 4',
-        foto='barcos_fotos/foto_emb4.jpg',
-        dueño=4,
+        embarcacion=4,
         descripcion='Descripción de la Embarcación Fantástica 4',
         estado='Vigente'
     )
     Publicacion_Embarcacion.objects.create(
-        tipo='Tipo5',
-        eslora=9.0,
-        manga=3.0,
-        calado=1.0,
-        matricula='EMB005',
-        nombre_fantasia='Embarcación Fantástica 5',
-        foto='barcos_fotos/foto_emb5.jpg',
-        dueño=5,
+        embarcacion=5,
         descripcion='Descripción de la Embarcación Fantástica 5',
         estado='Proceso'
     )
@@ -120,16 +85,9 @@ class Migration(migrations.Migration):
             name='Publicacion_Embarcacion',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('tipo', models.CharField(max_length=100)),
-                ('eslora', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('manga', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('calado', models.DecimalField(decimal_places=2, max_digits=5)),
-                ('matricula', models.CharField(max_length=20)),
-                ('nombre_fantasia', models.CharField(max_length=100)),
-                ('foto', models.ImageField(upload_to='barcos_fotos/')),
-                ('dueño', models.IntegerField()),
                 ('descripcion', models.TextField()),
-                ('estado', models.CharField(max_length=50)),
+                ('estado', models.CharField(max_length=50, choices=[('Vigente', 'Vigente'), ('Proceso', 'Proceso'), ('Finalizado', 'Finalizado')])),
+                ('embarcacion', models.IntegerField()),
             ],
         ),
         migrations.CreateModel(

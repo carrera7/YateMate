@@ -17,6 +17,7 @@ def login_view(request):
             if password == user.password:
                 # Iniciar sesión en la sesión actual
                 request.session['user_id'] = user.id
+                request.session['user_type']= user.datos.tipo
                 return redirect('index')  # Redirige a la página principal después del inicio de sesión exitoso
             else:
                 # Mostrar un mensaje de error
