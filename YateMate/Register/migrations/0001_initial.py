@@ -1,6 +1,9 @@
 from django.db import migrations, models
 from datetime import date
+from django.core.validators import MinValueValidator, MaxValueValidator
 
+
+"""
 def inicializar_datos_Usuarios(apps, schema_editor):
     Usuario = apps.get_model('Register', 'Usuario')  # Replace 'your_app_name' with your actual Django app name
     
@@ -142,43 +145,67 @@ def inicializar_datos_Usuarios(apps, schema_editor):
     
     for data in user_data:
         Usuario.objects.create(**data)
+"""
         
 def inicializar_datos_User(apps, schema_editor):
     User = apps.get_model('Register', 'User')  # Reemplaza 'tu_app' con el nombre real de tu aplicación Django
-    Usuario = apps.get_model('Register', 'Usuario')  # Reemplaza 'tu_app' con el nombre real de tu aplicación Django
-    
-    usuario_instance_1 = Usuario.objects.get(id=1)  # Obtiene una instancia existente de Usuario
-    usuario_instance_2 = Usuario.objects.get(id=2)  # Obtiene una instancia existente de Usuario
-    usuario_instance_3 = Usuario.objects.get(id=3)  # Obtiene una instancia existente de Usuario
-    usuario_instance_4 = Usuario.objects.get(id=4)  # Obtiene una instancia existente de Usuario
-    usuario_instance_5 = Usuario.objects.get(id=5)  # Obtiene una instancia existente de Usuario
-    
     user_data = [
         {
             'username': 'usuario1@mail.com',
-            'datos': usuario_instance_1,  # Aquí debes poner la clave foránea a otro Usuario si es relevante para tu aplicación
+            'tipo': 'Usuario',  # Aquí debes poner la clave foránea a otro Usuario si es relevante para tu aplicación
             'password': 'password1',
+            'edad': 18,
+            'estado_cuenta':'Habilitado',
         },
         {
             'username': 'usuario2@mail.com',
-            'datos': usuario_instance_2,
+            'tipo': 'Usuario',
             'password': 'password2',
+            'edad': 28,
+            'estado_cuenta':'Habilitado',
         },
         {
             'username': 'usuario3@mail.com',
-            'datos': usuario_instance_3,
+            'tipo': 'Usuario',
             'password': 'password3',
+            'edad': 50,
+            'estado_cuenta':'Habilitado',
         },
         {
             'username': 'usuario4@mail.com',
-            'datos': usuario_instance_4,
+            'tipo': 'Usuario',
             'password': 'password4',
+            'edad': 38,
+            'estado_cuenta':'Habilitado',
         },
         {
             'username': 'usuario5@mail.com',
-            'datos': usuario_instance_5,
+            'tipo': 'Usuario',
             'password': 'password5',
+            'edad': 24,
+            'estado_cuenta':'Habilitado',
         },
+        {
+            'username': 'usuario6@mail.com',
+            'tipo': 'Administrador',
+            'password': 'password6',
+            'edad': 24,
+            'estado_cuenta':'Habilitado',
+        },
+        {
+            'username': 'usuario7@mail.com',
+            'tipo': 'Administrador',
+            'password': 'password7',
+            'edad': 24,
+            'estado_cuenta':'Habilitado',
+        },
+        {
+            'username': 'usuario8@mail.com',
+            'tipo': 'Administrador',
+            'password': 'password8',
+            'edad': 24,
+            'estado_cuenta':'Habilitado',
+        }, 
     ]
     
     for data in user_data:
@@ -186,7 +213,6 @@ def inicializar_datos_User(apps, schema_editor):
         
 def inicializar_datos_Embarcaciones(apps, schema_editor):
     Embarcacion = apps.get_model('Register', 'Embarcacion')  # Reemplaza 'tu_app' por el nombre real de tu aplicación Django
-    Usuario = apps.get_model('Register', 'Usuario')
     embarcacion_data = [
         {
             'eslora': 10.5,
@@ -253,19 +279,14 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Usuario',
+            name='User',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nombre', models.CharField(max_length=255)),
-                ('apellido', models.CharField(max_length=255)),
-                ('dni', models.CharField(max_length=20)),
-                ('fecha_expiracion_dni', models.DateField()),
-                ('nacionalidad', models.CharField(max_length=100)),
-                ('genero', models.CharField(max_length=10)),
-                ('domicilio', models.CharField(max_length=255)),
-                ('fecha_nacimiento', models.DateField()),
-                ('cuil_cuit', models.CharField(max_length=20)),
+                ('username', models.CharField(max_length=150, unique=True)),
                 ('tipo', models.CharField(choices=[('Administrador', 'Administrador'), ('Usuario', 'Usuario')], max_length=20)),
+                ('password', models.CharField(max_length=128)),
+                ('edad',models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])),
+                ('estado_cuenta',models.CharField(max_length=20, choices=('Habilitado', 'Deshabilitado'), default='Deshabilitado')),
             ],
         ),
         migrations.CreateModel(
@@ -278,20 +299,32 @@ class Migration(migrations.Migration):
                 ('matricula', models.CharField(max_length=20, unique=True)),
                 ('nombre_fantasia', models.CharField(max_length=255)),
                 ('foto', models.ImageField(blank=True, null=True, upload_to='embarcaciones/')),
-                ('dueno', models.ForeignKey(null=True, on_delete=models.SET_NULL, to='Register.Usuario')),
+                ('dueno', models.ForeignKey(null=True, on_delete=models.SET_NULL, to='Register.User')),
                 ('tipo', models.CharField(choices=[('Velero', 'Velero'), ('Yate', 'Yate'), ('Lancha', 'Lancha'), ('Barco', 'Barco')], max_length=20)),
             ],
         ),
-        migrations.CreateModel(
-            name='User',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('username', models.CharField(max_length=150, unique=True)),
-                ('datos', models.ForeignKey(null=True, on_delete=models.SET_NULL, to='Register.Usuario')),
-                ('password', models.CharField(max_length=128)),
-            ],
-        ),
-        migrations.RunPython(inicializar_datos_Usuarios),
-        migrations.RunPython(inicializar_datos_Embarcaciones),
         migrations.RunPython(inicializar_datos_User),
+        migrations.RunPython(inicializar_datos_Embarcaciones),
+        
     ]
+    
+
+"""
+migrations.CreateModel(
+    name='Usuario',
+    fields=[
+        ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        ('nombre', models.CharField(max_length=255)),
+        ('apellido', models.CharField(max_length=255)),
+        ('dni', models.CharField(max_length=20)),
+        ('fecha_expiracion_dni', models.DateField()),
+        ('nacionalidad', models.CharField(max_length=100)),
+        ('genero', models.CharField(max_length=10)),
+        ('domicilio', models.CharField(max_length=255)),
+        ('fecha_nacimiento', models.DateField()),
+        ('cuil_cuit', models.CharField(max_length=20)),
+        ('tipo', models.CharField(choices=[('Administrador', 'Administrador'), ('Usuario', 'Usuario')], max_length=20)),
+    ],
+),
+migrations.RunPython(inicializar_datos_Usuarios),
+"""
