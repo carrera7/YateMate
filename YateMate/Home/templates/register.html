@@ -153,20 +153,9 @@ Registrarse
         <div class="container-form-r" id="container-form">
             <form method="post" class="form-r" id="formu-r" action="{% url 'register' %}">
                 {% csrf_token %}
-                <ul class="correo">
-                    <label for="username">Correo Electrónico</label>
-                    <input type="email" id="username" placeholder="Ingrese su correo">
-                </ul>
-                <ul class="nombre-r">
-                    <label for="age">Edad</label>
-                    <input type="number" id="age" min="1" max="100" placeholder="Ingrese su edad (1-100)">
-                </ul>
-                <ul class="password">
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" placeholder="Ingrese su contraseña">
-                </ul>
+                {{ form.as_p }}  <!-- Muestra el formulario utilizando el formato predeterminado de Django -->
                 <div>
-                    <button class="boton-r" id="boton-r">INGRESAR</button>
+                    <button type="submit" class="boton-r" id="boton-r">INGRESAR</button>
                 </div>
             </form>
         </div>
@@ -182,7 +171,4 @@ Registrarse
         {% endfor %}
     </div>
 {% endif %}
-
-</body>
-</html>
 {% endblock %}

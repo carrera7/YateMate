@@ -1,10 +1,13 @@
 from django import forms
-from  Register.models import User
+from django.core.exceptions import ValidationError
+from Register.models import User
 
-class CustomUserRegistrationForm(forms.Form):
-    username = forms.EmailField()
-    age = forms.IntegerField()
+class CustomUserRegistrationForm(forms.ModelForm):
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username', 'edad', 'password', 'estado_cuenta']
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -12,18 +15,14 @@ class CustomUserRegistrationForm(forms.Form):
             raise forms.ValidationError("Este nombre de usuario ya está en uso.")
         return username
 
-    def clean_age(self):
-        age = self.cleaned_data['age']
-        if age < 18:
+    def clean_edad(self):
+        edad = self.cleaned_data['edad']
+        if edad < 18:
             raise forms.ValidationError("Debes ser mayor de edad para registrarte.")
-        return age      
+        return edad      
 
     def save(self, commit=True):
-            user = User.objects.create_user(
-                username=self.cleaned_data['username'],
-                password=self.cleaned_data['password'],
-            )
-            user.age = self.cleaned_data['age']
-            if commit:
-                user.save()
-            return user
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+        return user

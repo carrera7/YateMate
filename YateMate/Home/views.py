@@ -1,3 +1,4 @@
+from pyexpat.errors import messages
 from django.shortcuts import render, redirect
 from Register.models import User
 from .froms import CustomUserRegistrationForm
@@ -38,11 +39,10 @@ def logout_view(request):
 def register(request):
     if request.method == 'POST':
         form = CustomUserRegistrationForm(request.POST)
-        print("antes de la validacion")
         if form.is_valid():
-            print("despues de la validacion")
-            form.save()
-            return redirect('login')  # Redirige a la página de inicio de sesión
+            user = form.save()
+            messages.success(request, "Usuario registrado correctamente. Se le enviara un mail cuando su usuario este activo.")
+            return redirect('login')  # Redirige a la página de inicio de sesión después del registro
     else:
         form = CustomUserRegistrationForm()
     return render(request, 'register.html', {'form': form})
