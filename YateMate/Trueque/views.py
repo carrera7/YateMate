@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from .models import Publicacion_ObjetoValioso , Publicacion_Embarcacion
+from Register.models import User
+from .models import Publicacion_ObjetoValioso, Publicacion_Embarcacion
+
 
 def list_publication(request):
     objetos_vigentes = Publicacion_ObjetoValioso.objects.filter(estado='Vigente')
@@ -35,7 +37,9 @@ def list(request):
     })
     
 def mis_publicaciones(request):
-     return render(request, "ver_mis_publicaciones.html")
+     user = request.user
+     objetos_del_usuario = Publicacion_ObjetoValioso.objects.filter(dueño=user.id)
+     return render(request, "ver_mis_publicaciones.html",{'objetos': objetos_del_usuario})
  
 def solicitudes_trueque(request):
      return render(request, "ver_solicitudes_trueque.html")
