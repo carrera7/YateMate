@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from Register.models import User
+from .froms import CustomUserRegistrationForm
 
 def index(request):
      return render(request, "index.html")
@@ -33,3 +34,15 @@ def logout_view(request):
         del request.session['user_id']
         del request.session['user_type']
     return redirect('index')
+
+def register(request):
+    if request.method == 'POST':
+        form = CustomUserRegistrationForm(request.POST)
+        print("antes de la validacion")
+        if form.is_valid():
+            print("despues de la validacion")
+            form.save()
+            return redirect('login')  # Redirige a la página de inicio de sesión
+    else:
+        form = CustomUserRegistrationForm()
+    return render(request, 'register.html', {'form': form})

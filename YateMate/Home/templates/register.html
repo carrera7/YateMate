@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Registrarse
+{% endblock %}
+
+{% block content %}
+<style>
+    .container-r {
+        display: flex;
+        width: 50%;
+        height: 100%;
+        margin-top: 10px;
+        align-items: center;
+        justify-self: center;
+        margin-left: 250px;
+    }
+
+    .recuadroLogin-r {
+        background-color: #b8dee0;
+        height: 100%;
+        width: 100%;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+        border-left: 3px solid #3c667d;
+    }
+
+    .container-form-r {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-self: center;
+        margin-bottom: 20px;
+    }
+
+    .form-r {
+        width: 60%;
+        height: 100%;
+    }
+
+    .form-r h1 {
+        font-family: 'Alumni Sans Pinstripe', sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        margin-left: 42px;
+        color: #1f2f38;
+    }
+
+    .nombre-r {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .correo {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .password {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .correo input {
+        border-radius: 15px;
+        width: 100%;
+        border: 2px solid #3c667d;
+        font-family: 'Roboto Condensed', sans-serif;
+        padding: 6px;
+        height: 25px;
+        font-size: 1rem;
+        margin-top: 6px;
+    }
+
+    .correo label {
+        font-family: 'Roboto Condensed', sans-serif;
+        color: #3c667d;
+        font-size: 1rem;
+        margin-left: 5px;
+    }
+
+    .nombre-r input {
+        border-radius: 15px;
+        width: 100%;
+        border: 2px solid #3c667d;
+        font-family: 'Roboto Condensed', sans-serif;
+        padding: 6px;
+        height: 25px;
+        font-size: 1rem;
+        margin-top: 6px;
+    }
+
+    .nombre-r label {
+        font-family: 'Roboto Condensed', sans-serif;
+        color: #3c667d;
+        font-size: 1rem;
+        margin-left: 5px;
+    }
+
+    .password input {
+        border-radius: 15px;
+        width: 100%;
+        font-size: 1rem;
+        border: 2px solid #3c667d;
+        font-family: 'Roboto Condensed', sans-serif;
+        padding: 6px;
+        height: 25px;
+        margin-top: 6px;
+    }
+
+    .password label {
+        font-family: 'Roboto Condensed', sans-serif;
+        color: #3c667d;
+        font-size: 1rem;
+        margin-left: 5px;
+    }
+
+    .Edad {
+        margin-left: 200px;
+        font-family: 'Roboto Condensed', sans-serif;
+    }
+
+    .boton-r {
+        border-radius: 15px;
+        width: 156px;
+        border: 2px solid #3c667d;
+        font-family: 'Roboto Condensed', sans-serif;
+        margin-left: 120px;
+        height: 40px;
+        margin-top: 10px;
+        transition: background-color 0.8s;
+        background-color: #3c667d;
+        color: white;
+        padding: 2px;
+    }
+
+    .boton-r:hover {
+        background-color: white;
+        color: #3c667d;
+    }
+</style>
+
+<div class="container-r">
+    <div class="recuadroLogin-r">
+        <div class="container-form-r" id="container-form">
+            <form method="post" class="form-r" id="formu-r" action="{% url 'register' %}">
+                {% csrf_token %}
+                <ul class="correo">
+                    <label for="username">Correo Electrónico</label>
+                    <input type="email" id="username" placeholder="Ingrese su correo">
+                </ul>
+                <ul class="nombre-r">
+                    <label for="age">Edad</label>
+                    <input type="number" id="age" min="1" max="100" placeholder="Ingrese su edad (1-100)">
+                </ul>
+                <ul class="password">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingrese su contraseña">
+                </ul>
+                <div>
+                    <button class="boton-r" id="boton-r">INGRESAR</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% if form.errors %}
+    <div style="color: red;">
+        {% for field in form %}
+            {% for error in field.errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+</body>
+</html>
+{% endblock %}
