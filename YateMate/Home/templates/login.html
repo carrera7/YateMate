@@ -36,4 +36,11 @@ Inicio de Sesión
 {% if error_message %}
     <p>{{ error_message }}</p>
 {% endif %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 {% endblock %}

@@ -161,7 +161,6 @@ Registrarse
         </div>
     </div>
 </div>
-
 {% if form.errors %}
     <div style="color: red;">
         {% for field in form %}
@@ -170,5 +169,12 @@ Registrarse
             {% endfor %}
         {% endfor %}
     </div>
+{% endif %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
 {% endif %}
 {% endblock %}
