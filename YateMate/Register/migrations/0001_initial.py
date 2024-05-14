@@ -132,7 +132,7 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
             'calado': 1.8,
             'matricula': 'AB12345',
             'nombre_fantasia': 'Embarcacion1',
-            'foto': 'embarcaciones/foto1.jpg',
+            'foto': 'img/b_1.jpeg',
             'dueno_id': 1,  # Assuming the ID of the related user is 1
             'tipo': 'Velero',
         },
@@ -142,7 +142,7 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
             'calado': 2.0,
             'matricula': 'CD67890',
             'nombre_fantasia': 'Embarcacion2',
-            'foto': 'embarcaciones/foto2.jpg',
+            'foto': 'img/b_2.jpeg',
             'dueno_id': 2,  # Assuming the ID of the related user is 2
             'tipo': 'Yate',
         },
@@ -152,7 +152,7 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
             'calado': 1.5,
             'matricula': 'EF54321',
             'nombre_fantasia': 'Embarcacion3',
-            'foto': 'embarcaciones/foto3.jpg',
+            'foto': 'img/b_3.jpeg',
             'dueno_id': 3,  # Assuming the ID of the related user is 3
             'tipo': 'Lancha',
         },
@@ -162,7 +162,7 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
             'calado': 2.5,
             'matricula': 'GH09876',
             'nombre_fantasia': 'Embarcacion4',
-            'foto': 'embarcaciones/foto4.jpg',
+            'foto': 'img/b_4.jpeg',
             'dueno_id': 4,  # Assuming the ID of the related user is 4
             'tipo': 'Barco',
         },
@@ -172,7 +172,7 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
             'calado': 2.0,
             'matricula': 'IJ65432',
             'nombre_fantasia': 'Embarcacion5',
-            'foto': 'embarcaciones/foto5.jpg',
+            'foto': 'img/b_5.jpeg',
             'dueno_id': 5,  # Assuming the ID of the related user is 5
             'tipo': 'Velero',
         }

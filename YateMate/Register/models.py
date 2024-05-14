@@ -39,7 +39,7 @@ class Embarcacion(models.Model):
     calado = models.FloatField()
     matricula = models.CharField(max_length=20, unique=True)
     nombre_fantasia = models.CharField(max_length=255)
-    foto = models.ImageField(upload_to='embarcaciones/', null=True, blank=True)
+    foto = models.ImageField(upload_to='img/', null=True, blank=True)
     dueno = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     tipo = models.CharField(max_length=20, choices=TIPOS)

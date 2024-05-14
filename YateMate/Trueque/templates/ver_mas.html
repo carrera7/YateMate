@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Saber más
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <!-- Verifica si el objeto tiene los campos Tipo, Marca, Descripción y Foto -->
+  {% if objeto %}
+    <div class="row">
+      <div class="col-md-6">
+        <img src="{{ objeto.foto }}" alt="Foto del objeto" class="img-fluid">
+      </div>
+      <div class="col-md-6">
+        {% if objeto.tipo %}
+          <h1 class="mt-4">Tipo: {{ objeto.tipo }}</h1>
+        {% else %}
+          <h1 class="mt-4">Tipo: {{ objeto.embarcacion.tipo }}</h1>
+        {% endif %}
+        <!-- Verifica si el objeto tiene el campo Marca -->
+        {% if objeto.marca %}
+          <p>Marca: {{ objeto.marca }}</p>
+        {% else %}
+          <p>Nombre de fantasía: {{ objeto.embarcacion.nombre_fantasia }}</p>
+        {% endif %}
+        <p>Descripción: {{ objeto.descripcion }}</p>
+        
+        <!-- Verifica si hay una sesión de usuario activa -->
+        {% if request.session.user_id %}
+          <button type="button" class="btn btn-primary mt-3">Solicitar un Trueque</button>
+        {% endif %}
+      </div>
+    </div>
+  {% else %}
+    <p>El objeto no tiene la información completa.</p>
+  {% endif %}
+</div>
+{% endblock %}
+

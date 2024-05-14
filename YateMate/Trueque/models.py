@@ -14,7 +14,7 @@ class Publicacion_ObjetoValioso(models.Model):
     descripcion = models.TextField()
     estado = models.CharField(max_length=50)
     dueño = models.IntegerField()
-    foto = models.ImageField(upload_to='productos_fotos/')
+    foto = models.ImageField(upload_to='img/')
 
     def __str__(self):
         return f"{self.tipo} - {self.marca}"

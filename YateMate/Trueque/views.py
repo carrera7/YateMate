@@ -13,13 +13,15 @@ def list_publication(request):
         objetos = objetos_vigentes
     elif tipo_filtro == 'embarcaciones':
         objetos = embarcaciones_vigentes
+        
+    tipo_objetos = 'Objetos Valiosos' if tipo_filtro == 'objetos valiosos' else 'Embarcaciones'
     
-    return render(request, "list_publication.html", {'objetos': objetos})
+    return render(request, "list_publication.html", {'objetos': objetos , 'tipo_objetos': tipo_objetos,})
 
 # se necesita autenticarse
 def list_publication_boat(request):
     embarcaciones_vigentes = Publicacion_Embarcacion.objects.filter(estado='Vigente')
-    return render(request, "list_publication_boat.html", {'embarcaciones_vigentes': embarcaciones_vigentes})
+    return render(request, "list_publication_boat.html", {'embarcaciones_vigentes': embarcaciones_vigentes,'tipo_objetos': 'Embarcaciones',})
 
 def list(request):
     objetos_valiosos = Publicacion_ObjetoValioso.objects.all()
@@ -40,9 +42,13 @@ def list(request):
     elif tipo_filtro == 'embarcaciones':
         objetos = embarcaciones.filter(estado=estado_filtro)
 
+    # Agregar el tipo al contexto para pasarlo al HTML
+    tipo_objetos = 'Objetos Valiosos' if tipo_filtro == 'objetos valiosos' else 'Embarcaciones'
+
     # Renderizar el HTML con los datos filtrados o no
     return render(request, 'list.html', {
-        'objetos': objetos
+        'objetos': objetos,
+        'tipo_objetos': tipo_objetos,
     })
     
 def mis_publicaciones(request):
@@ -52,3 +58,15 @@ def mis_publicaciones(request):
  
 def solicitudes_trueque(request):
      return render(request, "ver_solicitudes_trueque.html")
+ 
+def saber_mas(request, id, tipo_objetos):
+    # Dependiendo del tipo de objeto, obtén la publicación correspondiente
+    if tipo_objetos == 'Objetos Valiosos':
+        objeto = Publicacion_ObjetoValioso.objects.get(id=id)
+    elif tipo_objetos == 'Embarcaciones':
+        objeto = Publicacion_Embarcacion.objects.get(id=id)
+    else:
+        # Manejar el caso en el que el tipo de objeto no sea válido
+        return render(request, 'error.html', {'mensaje': 'Tipo de objeto no válido'})
+
+    return render(request, 'ver_mas.html', {'objeto': objeto, 'tipo_objetos': tipo_objetos})

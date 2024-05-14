@@ -38,7 +38,7 @@ Mi Página de Inicio
         <div class="card">
             <h3 class="card-title">{{ embarcacion.embarcacion.tipo }} - {{ embarcacion.embarcacion.nombre_fantasia }}</h3>
             <p>{{ embarcacion.descripcion|truncatechars:70 }}</p>
-            <a href="#" class="btn btn-card">Saber más</a>
+            <a href="{% url 'saber_mas' id=embarcacion.id tipo_objetos=tipo_objetos %}" class="btn btn-card">Saber más</a>
         </div>
     {% endfor %}
 {% else %}
