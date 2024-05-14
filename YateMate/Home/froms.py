@@ -3,6 +3,8 @@ from datetime import date
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator, MinLengthValidator
+from dns.resolver import NoAnswer
+import dns
 from Register.models import User
 
 class CustomUserRegistrationForm(forms.ModelForm):
@@ -46,21 +48,17 @@ class CustomUserRegistrationForm(forms.ModelForm):
     def clean_mail(self):
         mail = self.cleaned_data['mail']
         
-        # Validar el correo electrónico usando dnspython
         try:
             domain = mail.split('@')[1]
             mx_records = dns.resolver.resolve(domain, 'MX')
+        except NoAnswer:
+            raise ValidationError("La dirección de correo electrónico no tiene registros MX válidos.")
         except Exception as e:
             raise ValidationError("No se pudo validar el correo electrónico.")
 
-        # Verificar si el correo tiene registros MX
-        if not mx_records:
-            raise ValidationError("La dirección de correo electrónico no tiene registros MX válidos.")
-        
-        # Verificar si el correo ya está en uso
         if User.objects.filter(mail=mail).exists():
             raise ValidationError("Este correo electrónico ya está en uso.")
-        
+
         return mail
 
     def clean_dni(self):
