@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="db" uuid="fd6229a1-b937-402b-8514-35a4a67cb59f">
+    <data-source source="LOCAL" name="Django default" uuid="de7b76ef-f283-4fce-a5ca-5d9852c86aec">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/YateMate/YateMate/settings.py</remarks>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\carit\Documents\NUEVO\YateMate\YateMate\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>

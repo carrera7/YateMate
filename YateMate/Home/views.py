@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect,get_object_or_404
 from Register.models import User
 from django.core.mail import send_mail
 
+
 from .froms import CustomUserRegistrationForm
 
 def index(request):
