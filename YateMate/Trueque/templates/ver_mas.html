@@ -11,7 +11,11 @@ Saber más
   {% if objeto %}
     <div class="row">
       <div class="col-md-6">
-        <img src="{{ objeto.foto }}" alt="Foto del objeto" class="img-fluid">
+        {% if objeto.foto %}
+        <img src="{% static 'img_o/' %}{{ objeto.foto.url }}" alt="Foto del objeto" class="img-fluid"  style="max-width: 100%; max-height: 400px;">
+        {% else %}
+        <img src="{% static 'img_b/' %}{{ objeto.embarcacion.foto.url}}" alt="Foto del objeto" class="img-fluid" style="max-width: 100%; max-height: 400px;">
+        {% endif %}      
       </div>
       <div class="col-md-6">
         {% if objeto.tipo %}
