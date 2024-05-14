@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect,get_object_or_404
 from Register.models import User
 from django.core.mail import send_mail
+from django.core.exceptions import PermissionDenied
+
 
 
 from .froms import CustomUserRegistrationForm
@@ -61,18 +63,24 @@ def usuarios_inhabilitados(request):
     return render(request, 'enable_accounts.html', context)
 
 def habilitar_usuario(request, usuario_id):
+    # Obtener el usuario o devolver un error 404 si no existe
     usuario = get_object_or_404(User, pk=usuario_id)
+    
+    # Cambiar el tipo de usuario a 'Cliente' y guardar los cambios
     usuario.tipo = 'Cliente'
     usuario.save()
 
-    # Envío de correo electrónico al usuario
+    # Enviar correo electrónico al usuario
     subject = '¡Tu cuenta ha sido habilitada!'
-    message = 'Hola {},\n\nTu cuenta en nuestra plataforma ha sido habilitada como Cliente. ¡Bienvenido de nuevo!\n\nAtentamente,\nEl equipo de YateMate'.format(usuario.mail)
-    from_email = 'digitalinnovation09@gmail.com'  # Cambia esto por tu dirección de correo
+    message = f'Hola {usuario.mail},\n\nTu cuenta en nuestra plataforma ha sido habilitada como Cliente. ¡Bienvenido de nuevo!\n\nAtentamente,\nEl equipo de YateMate'
+    from_email = 'yatemate835@gmail.com'  # Cambiar por tu dirección de correo
     to_email = usuario.mail
     send_mail(subject, message, from_email, [to_email])
 
+    # Obtener la lista de usuarios inhabilitados para mostrar en la plantilla
     usuarios_inhabilitados = User.objects.filter(tipo='Usuario')
+
+    # Renderizar la plantilla con la lista actualizada de usuarios inhabilitados
     context = {
         'usuarios_inhabilitados': usuarios_inhabilitados
     }

@@ -144,24 +144,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'  # Servidor SMTP de Gmail
 EMAIL_PORT = 587  # Puerto estándar para TLS/STARTTLS
 EMAIL_USE_TLS = True  # Usar TLS para conexiones seguras
-EMAIL_USE_SSL = False  # No usar SSL, ya que estamos usando TLS
-
-# Credenciales de autenticación para el servidor SMTP de Gmail
-EMAIL_HOST_USER = 'digitalinnovation09@gmail.com'  # Tu correo electrónico Gmail
-EMAIL_HOST_PASSWORD = 'yatemate56'  # Contraseña de tu correo Gmail
-
-# Configuración adicional
-EMAIL_SUBJECT_PREFIX = '[YateMate]'  # Prefijo para el asunto de los correos
-DEFAULT_FROM_EMAIL = 'digitalinnovation09@gmail.com'  # Correo del remitente por defecto
-
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
-}
+EMAIL_HOST_USER = 'josuecarrera788@gmail.com'  # Tu correo electrónico Gmail
+EMAIL_HOST_PASSWORD = 'ofrvgpeyvybuyruy'  # Contraseña de tu correo Gmail
