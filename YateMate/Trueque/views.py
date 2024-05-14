@@ -58,12 +58,9 @@ def mis_publicaciones(request):
      objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
      embarcaciones_del_usuario = Embarcacion.objects.filter(dueno_id=request.session['user_id'])
      ids_embarcaciones = embarcaciones_del_usuario.values_list('id', flat=True)
-     embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__in=ids_embarcaciones)
+     embarcaciones = Embarcacion.objects.filter(id__in=ids_embarcaciones)
 
-     # Suma las listas objetos y embarcaciones
-     objetos_del_usuario = chain(objetos, embarcaciones)
-
-     return render(request, "ver_mis_publicaciones.html",{'objetos': objetos_del_usuario})
+     return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
  
 def solicitudes_trueque(request):
      return render(request, "ver_solicitudes_trueque.html")
