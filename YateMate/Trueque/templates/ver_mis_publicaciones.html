@@ -53,18 +53,30 @@ Mis publicaciones
     }
 </style>
 
-    {% if objetos %}
-    <h2>Mis publicaciones</h2>
-    {% for objeto in objetos %}
-        <div class="card">
-            <p>{{ objeto.descripcion|truncatechars:70 }}</p>
-            <a href="#" class="btn btn-card">Eliminar</a>
-            <a href="#" class="btn btn-card">Modificar</a>
-            <a href="#" class="btn btn-cardRojo">Solicitudes</a>
-        </div>
-    {% endfor %}
-{% else %}
-    <p>No se cuenta con Publicaciones.</p>
-{% endif %}
+    {% if objetos or embarcaciones %}
+        {% if objetos %}
+        <h2>Mis publicaciones</h2>
+        {% for objeto in objetos %}
+            <div class="card">
+                <p>{{ objeto.descripcion|truncatechars:70 }}</p>
+                <a href={% url 'eliminar_objeto' objeto.id %} class="btn btn-card">Eliminar</a>
+                <a href="#" class="btn btn-card">Modificar</a>
+                <a href="#" class="btn btn-cardRojo">Solicitudes</a>
+            </div>
+        {% endfor %}
+        {% endif %}
+        {% if embarcaciones %}
+        {% for embarcacion in embarcaciones %}
+            <div class="card">
+                <p>{{ embarcacion.descripcion|truncatechars:70 }}</p>
+                <a href={% url 'eliminar_embarcacion' embarcacion.id %} class="btn btn-card">Eliminar</a>
+                <a href="#" class="btn btn-card">Modificar</a>
+                <a href="#" class="btn btn-cardRojo">Solicitudes</a>
+            </div>
+        {% endfor %}
+        {% endif %}
+    {% else %}
+        <p>No se cuenta con Publicaciones.</p>
+    {% endif %}
 
 {% endblock %}

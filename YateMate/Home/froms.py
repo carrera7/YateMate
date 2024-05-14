@@ -3,8 +3,6 @@ from datetime import date
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator, MinLengthValidator
-from dns.resolver import NoAnswer
-import dns
 from Register.models import User
 
 class CustomUserRegistrationForm(forms.ModelForm):

@@ -9,4 +9,6 @@ urlpatterns = [
     path("mis_publicaciones/", views.mis_publicaciones, name="ver_mis_publicaciones"),
     path("mis_solicitudes/", views.solicitudes_trueque, name="ver_mis_solicitudes"),
     path('saber_mas/<int:id>/<str:tipo_objetos>/', views.saber_mas, name='saber_mas'),
+    path("eliminarObjeto/<int:id>/", views.eliminarObjeto, name='eliminar_objeto'),
+    path("eliminarEmbarcacion/<int:id>/", views.eliminarEmbarcacion, name='eliminar_embarcacion'),
 ]

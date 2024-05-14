@@ -79,3 +79,13 @@ def saber_mas(request, id, tipo_objetos):
         return render(request, 'error.html', {'mensaje': 'Tipo de objeto no válido'})
 
     return render(request, 'ver_mas.html', {'objeto': objeto, 'tipo_objetos': tipo_objetos})
+
+def eliminarObjeto(request, id):
+    objeto = Publicacion_ObjetoValioso.objects.get(id=id)
+    objeto.delete()
+    return render(request, "ver_mis_publicaciones.html")
+
+def eliminarEmbarcacion(request, id):
+    objeto = Publicacion_Embarcacion.objects.get(id=id)
+    objeto.delete()
+    return render(request, "ver_mis_publicaciones.html")
