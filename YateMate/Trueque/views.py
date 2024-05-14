@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from Register.models import User
 from .models import Publicacion_ObjetoValioso, Publicacion_Embarcacion
+from Register.models import Embarcacion
+from itertools import chain
+
 
 
 def list_publication(request):
@@ -52,8 +55,14 @@ def list(request):
     })
     
 def mis_publicaciones(request):
-     user = request.user
-     objetos_del_usuario = Publicacion_ObjetoValioso.objects.filter(dueño=user.id)
+     objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
+     embarcaciones_del_usuario = Embarcacion.objects.filter(dueno_id=request.session['user_id'])
+     ids_embarcaciones = embarcaciones_del_usuario.values_list('id', flat=True)
+     embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__in=ids_embarcaciones)
+
+     # Suma las listas objetos y embarcaciones
+     objetos_del_usuario = chain(objetos, embarcaciones)
+
      return render(request, "ver_mis_publicaciones.html",{'objetos': objetos_del_usuario})
  
 def solicitudes_trueque(request):

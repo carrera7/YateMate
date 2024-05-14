@@ -1,5 +1,5 @@
 from datetime import date
-import dns.resolver
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator, MinLengthValidator
