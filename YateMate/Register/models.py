@@ -5,13 +5,17 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 # Modelo de iformacion asosicada al usuario
-"""
-class Usuario(models.Model):
+class User(models.Model):
+    
     TIPOS = (
         ('Administrador', 'Administrador'),
         ('Usuario', 'Usuario'),
+        ('Cliente', 'Cliente'),
     )
-
+    # Definimos el modelo Usuario que tendrá tres campos: username, datos (clave foránea) y password.
+    mail = models.CharField(max_length=150, unique=True)  # Nombre de usuario (email).
+    tipo = models.CharField(max_length=20, choices=TIPOS)
+    password = models.CharField(max_length=128)  # Contraseña.
     nombre = models.CharField(max_length=255)
     apellido = models.CharField(max_length=255)
     dni = models.CharField(max_length=20)
@@ -21,28 +25,6 @@ class Usuario(models.Model):
     domicilio = models.CharField(max_length=255)
     fecha_nacimiento = models.DateField()
     cuil_cuit = models.CharField(max_length=20)
-    tipo = models.CharField(max_length=20, choices=TIPOS)
-
-    def __str__(self):
-        return f'{self.nombre} {self.apellido}'
-"""
-
-class User(models.Model):
-    
-    TIPOS = (
-        ('Administrador', 'Administrador'),
-        ('Usuario', 'Usuario'),
-    )
-    ESTADO_CUENTA_CHOICES = (
-        ('Habilitado', 'Habilitado'),
-        ('Deshabilitado', 'Deshabilitado'),
-    )
-    # Definimos el modelo Usuario que tendrá tres campos: username, datos (clave foránea) y password.
-    username = models.CharField(max_length=150, unique=True)  # Nombre de usuario (email).
-    tipo = models.CharField(max_length=20, choices=TIPOS)
-    password = models.CharField(max_length=128)  # Contraseña.
-    edad = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])  # Edad del usuario (rango de 1 a 100).
-    estado_cuenta = models.CharField(max_length=20, choices=ESTADO_CUENTA_CHOICES, default='Deshabilitado')
     
 class Embarcacion(models.Model):
     TIPOS = (

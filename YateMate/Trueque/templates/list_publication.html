@@ -30,13 +30,61 @@ Lista publicaciones
         text-decoration: none;
         border-radius: 3px;
     }
-</style>
+    /* Estilo para el formulario de filtro */
+    .filter-form {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-{% if objetos_vigentes %}
+    .filter-form label {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+
+    .filter-form select {
+        padding: 5px;
+        border-radius: 3px;
+        border: 1px solid #ced4da;
+    }
+
+    .filter-form button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+</style>
+<form class="filter-form" method="GET" action="">
+    <div>
+        <label for="tipo">Filtrar por Tipo de Publicación:</label>
+        <select name="tipo" id="tipo">
+            <option value="objetos valiosos">Objetos Valiosos</option>
+            <option value="embarcaciones">Embarcaciones</option>
+        </select>
+    </div>
+    <button type="submit">Filtrar</button>
+</form>
+
+{% if objetos %}
     <h2>Publicaciones</h2>
-    {% for objeto in objetos_vigentes %}
+    {% for objeto in objetos %}
         <div class="card">
-            <h3 class="card-title">{{ objeto.tipo }} - {{ objeto.marca }}</h3>
+            <h3 class="card-title">
+                {% if objeto.embarcacion.nombre_fantasia %}
+                    {{ objeto.embarcacion.nombre_fantasia }}
+                {% else %}
+                    {{ objeto.marca }}
+                {% endif %}
+                {% if objeto.embarcacion.tipo%}
+                    - {{ objeto.embarcacion.tipo }}
+                {% else %}
+                    - {{ objeto.tipo }}
+                {% endif %}    
+            </h3>
             <p>{{ objeto.descripcion|truncatechars:70 }}</p>
             <a href="#" class="btn btn-card">Saber más</a>
         </div>
@@ -45,4 +93,3 @@ Lista publicaciones
     <p>No se cuenta con Publicaciones.</p>
 {% endif %}
 {% endblock %}
-

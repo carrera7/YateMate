@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Habilitar Usuarios para ser Clientes
+{% endblock %}
+
+{% block content %}
+<style>
+  .usuarios-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .usuario-bloque {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-habilitar {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  /* Estilos para el filtro */
+  .filtro-container {
+    margin-top: 20px;
+  }
+
+  .filtro-input {
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+  }
+
+  .resultado-filtro {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
+
+<h1>Habilitar Usuarios para ser Clientes</h1>
+
+<!-- Filtro para buscar usuarios por correo -->
+<div class="filtro-container">
+  <label for="filtro-mail">Filtrar por correo:</label>
+  <input type="text" id="filtro-mail" class="filtro-input">
+  <p class="resultado-filtro" id="resultado-filtro"></p>
+</div>
+
+{% if usuarios_inhabilitados %}
+  <div class="usuarios-container">
+    {% for usuario in usuarios_inhabilitados %}
+      <div class="usuario-bloque">
+        <p>{{ usuario.mail }}</p>
+        <form action="{% url 'habilitar_usuario' usuario.id %}" method="POST" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-habilitar">Habilitar</button>
+        </form>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p>No hay usuarios Registrados.</p>
+{% endif %}
+
+<script>
+  // Script para filtrar usuarios por correo
+  const filtroInput = document.getElementById('filtro-mail');
+  const resultadoFiltro = document.getElementById('resultado-filtro');
+
+  filtroInput.addEventListener('input', () => {
+    const filtro = filtroInput.value.trim().toLowerCase();
+    const usuarios = document.querySelectorAll('.usuario-bloque');
+
+    usuarios.forEach(usuario => {
+      const correo = usuario.querySelector('p').textContent.trim().toLowerCase();
+      if (correo.includes(filtro)) {
+        usuario.style.display = 'block';
+      } else {
+        usuario.style.display = 'none';
+      }
+    });
+
+    resultadoFiltro.textContent = `Mostrando usuario con correo "${filtro}"`;
+  });
+</script>
+{% endblock %}

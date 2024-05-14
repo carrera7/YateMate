@@ -4,8 +4,17 @@ from .models import Publicacion_ObjetoValioso, Publicacion_Embarcacion
 
 
 def list_publication(request):
+    embarcaciones_vigentes = Publicacion_Embarcacion.objects.filter(estado='Vigente')
     objetos_vigentes = Publicacion_ObjetoValioso.objects.filter(estado='Vigente')
-    return render(request, "list_publication.html", {'objetos_vigentes': objetos_vigentes})
+    
+    tipo_filtro = request.GET.get('tipo', 'objetos valiosos')  # Valor por defecto 'objetos valiosos'
+    
+    if tipo_filtro == 'objetos valiosos':
+        objetos = objetos_vigentes
+    elif tipo_filtro == 'embarcaciones':
+        objetos = embarcaciones_vigentes
+    
+    return render(request, "list_publication.html", {'objetos': objetos})
 
 # se necesita autenticarse
 def list_publication_boat(request):
