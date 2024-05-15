@@ -55,12 +55,13 @@ def list(request):
     })
     
 def mis_publicaciones(request):
-     objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
-     embarcaciones_del_usuario = Embarcacion.objects.filter(dueno_id=request.session['user_id'])
-     ids_embarcaciones = embarcaciones_del_usuario.values_list('id', flat=True)
-     embarcaciones = Embarcacion.objects.filter(id__in=ids_embarcaciones)
+    
+    objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
+    embarcaciones_del_usuario = Embarcacion.objects.filter(dueno_id=request.session['user_id'])
+    ids_embarcaciones = embarcaciones_del_usuario.values_list('id', flat=True)
+    embarcaciones = Embarcacion.objects.filter(id__in=ids_embarcaciones)
 
-     return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
+    return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
  
 def solicitudes_trueque(request):
      return render(request, "ver_solicitudes_trueque.html")
@@ -80,6 +81,7 @@ def saber_mas(request, id, tipo_objetos):
 def eliminarObjeto(request, id):
     objeto = Publicacion_ObjetoValioso.objects.get(id=id)
     objeto.delete()
+    
     return render(request, "ver_mis_publicaciones.html")
 
 def eliminarEmbarcacion(request, id):
