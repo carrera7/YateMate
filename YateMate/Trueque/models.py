@@ -41,3 +41,11 @@ class Solicitud_Embarcaciones(models.Model):
 class Solicitud_ObjetosValiosos(models.Model):
     publicacion = models.ForeignKey('Publicacion_ObjetoValioso', on_delete=models.CASCADE)
     usuarios_interesados = models.ManyToManyField(User, related_name='solicitudes_objetos_valiosos')
+
+class MensajeSolicitudObjetosValiosos(models.Model):
+    mensaje = models.TextField()
+    solicitud_objeto_valioso = models.ForeignKey('Solicitud_ObjetosValiosos', on_delete=models.CASCADE)
+
+class MensajeSolicitudEmbarcaciones(models.Model):
+    mensaje = models.TextField()
+    solicitud_embarcacion = models.ForeignKey('Solicitud_Embarcaciones', on_delete=models.CASCADE)

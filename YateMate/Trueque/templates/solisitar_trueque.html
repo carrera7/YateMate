@@ -2,9 +2,36 @@
 {% load static %}
 
 {% block title %}
-Solisitar Trueque
+Solicitar Trueque
 {% endblock %}
 
 {% block content %}
+<form method="post" action="">
+  {% csrf_token %}
+  <div>
+    <p>En el cuerpo del mensaje indique por qué objeto valioso quiere hacer el trueque.</p>
+    <label for="id_mensaje">Mensaje:</label>
+    <textarea id="id_mensaje" name="mensaje" rows="4" cols="50"></textarea>
+  </div>
+  <input type="hidden" id="tipo_objeto" name="tipo_objeto" value="{{ tipo_objetos }}">
+  <input type="hidden" id="publicacion_id" name="publicacion_id" value="{{ objeto.id }}">
+  <button type="button" class="btn btn-primary mt-3" onclick="enviarSolicitud()">Solicitar</button>
+</form>
 
+<script>
+  function enviarSolicitud() {
+    var tipo = document.getElementById("tipo_objeto").value;
+    var publicacionId = document.getElementById("publicacion_id").value;
+    var mensaje = document.getElementById("id_mensaje").value; // Obtener el mensaje
+    
+    if (tipo === "Embarcaciones") {
+      window.location.href = `/solicitud_embarcacion/${publicacionId}/?mensaje_solicitud=${mensaje}`; // Enviar el mensaje como parámetro en la URL
+    } else if (tipo === "Objetos Valiosos") {
+      window.location.href = `/solicitud_objeto_valioso/${publicacionId}/?mensaje_solicitud=${mensaje}`; // Enviar el mensaje como parámetro en la URL
+    } else {
+      alert("Tipo de objeto no válido.");
+    }
+  }
+</script>
 {% endblock %}
+

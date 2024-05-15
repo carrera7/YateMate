@@ -34,20 +34,20 @@ Saber más
         <!-- Verifica si hay una sesión de usuario activa -->
         {% if request.session.user_id %}
           {% if objeto.embarcacion %}
-            <button type="button" class="btn btn-primary mt-3" onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'embarcacion')">Solicitar un Trueque</button>
+            <button type="button" class="btn btn-primary mt-3" onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'Embarcaciones')">Solicitar un Trueque</button>
             <script>
               function solicitarTrueque(publicacionId, tipo) {
                   // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
-                  window.location.href = `/solicitud_embarcacion/{{ objeto.embarcacion.id }}/`;
+                  window.location.href = `/solisitar_trueque/{{ objeto.embarcacion.id }}/${tipo}`;
               }
               </script>
           {% else %}
-          <button type="button" class="btn btn-primary mt-3" onclick="solicitarTrueque({{ objeto.id }}, 'objeto_valioso')">Solicitar un Trueque</button>
+          <button type="button" class="btn btn-primary mt-3" onclick="solicitarTrueque({{ objeto.id }}, 'Objetos Valiosos')">Solicitar un Trueque</button>
 
           <script>
           function solicitarTrueque(publicacionId, tipo) {
               // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
-              window.location.href = `/solicitud_objeto_valioso/{{ objeto.id }}/`;
+              window.location.href = `/solisitar_trueque/{{ objeto.id }}/${tipo}`;
           }
           </script>
           {% endif %} 
