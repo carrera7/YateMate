@@ -63,7 +63,11 @@ Mis publicaciones
                     {% endif %}
                     <a href={% url 'eliminar_objeto' objeto.id %} class="btn btn-card">Eliminar</a>
                     <a href="#" class="btn btn-card">Modificar</a>
-                    <a href="#" class="btn btn-cardRojo">Solicitudes</a>
+                    {% if solicitudObj %}
+                        <a href="#" class="btn btn-cardVerde">Solicitudes</a>
+                    {% else %}
+                        <a href="#" class="btn btn-cardRojo">Solicitudes</a>
+                    {% endif %}
                 </div>
             {% endfor %}
         {% endif %}

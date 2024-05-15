@@ -61,9 +61,16 @@ def mis_publicaciones(request):
 
     return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
  
-def solicitudes_trueque(request):
-    return render(request, "ver_solicitudes_trueque.html") 
- 
+def solicitudes_trueque_objeto(request, publicacionid):
+    publicacion = Publicacion_ObjetoValioso.objects.get(id=publicacion_id)
+    solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion)
+
+    return render(request, "ver_mis_publicaciones.html", {solicitudObj: solicitudes})
+
+
+def solicitudes_trueque_embarcacion(request, publicacion_id):
+    return render(request, "ver_mis_publicaciones.html", {solicitudEmb: solicitudes})
+
 def solicitud_embarcacion(request, publicacion_id):
     user_id = request.session['user_id']
     user = User.objects.get(id=user_id)
