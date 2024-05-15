@@ -36,8 +36,8 @@
             <!-- start menu desplegable -->
             <ul>
               {% if request.path != '/list_publication/' %}
-                {% if request.session.user_type == 'Usuario' %}
-                  <li><a href="http://127.0.0.1:8000/list_publication/">Trueque</a></li>
+              {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
+                <li><a href="http://127.0.0.1:8000/list_publication/">Trueque</a></li>
                 {% elif request.session.user_type == 'Administrador'%} 
                   <li><a href="http://127.0.0.1:8000/list/">Trueque</a></li>
                   <li><a href="http://127.0.0.1:8000/enable_accounts/">Habilitar Cuentas</a></li>
