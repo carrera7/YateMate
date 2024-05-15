@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from Register.models import User
-from .models import Publicacion_ObjetoValioso, Publicacion_Embarcacion
+from .models import Publicacion_ObjetoValioso, Publicacion_Embarcacion , Solicitud_Embarcaciones , Solicitud_ObjetosValiosos
 from Register.models import Embarcacion
 from itertools import chain
 
@@ -62,7 +62,23 @@ def mis_publicaciones(request):
     return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
  
 def solicitudes_trueque(request):
-     return render(request, "ver_solicitudes_trueque.html")
+    return render(request, "ver_solicitudes_trueque.html") 
+ 
+def solicitud_embarcacion(request, publicacion_id):
+    user_id = request.session['user_id']
+    user = User.objects.get(id=user_id)
+    publicacion = Publicacion_Embarcacion.objects.get(id=publicacion_id)
+    solicitud = Solicitud_Embarcaciones.objects.create(publicacion=publicacion)
+    solicitud.usuarios_interesados.add(user)
+    solicitud.save()
+    
+def solicitud_objeto_valioso(request, publicacion_id):
+    user_id = request.session['user_id']
+    user = User.objects.get(id=user_id)
+    publicacion = Publicacion_ObjetoValioso.objects.get(id=publicacion_id)
+    solicitud = Solicitud_ObjetosValiosos.objects.create(publicacion=publicacion)
+    solicitud.usuarios_interesados.add(user)
+    solicitud.save()
  
 def saber_mas(request, id, tipo_objetos):
     # Dependiendo del tipo de objeto, obtén la publicación correspondiente
@@ -99,3 +115,5 @@ def eliminarEmbarcacion(request, id):
     embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=request.session['user_id'])
     
     return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
+
+
