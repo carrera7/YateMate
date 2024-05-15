@@ -57,9 +57,7 @@ def list(request):
 def mis_publicaciones(request):
     
     objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
-    embarcaciones_del_usuario = Embarcacion.objects.filter(dueno_id=request.session['user_id'])
-    ids_embarcaciones = embarcaciones_del_usuario.values_list('id', flat=True)
-    embarcaciones = Embarcacion.objects.filter(id__in=ids_embarcaciones)
+    embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=request.session['user_id'])
 
     return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
  
@@ -79,12 +77,25 @@ def saber_mas(request, id, tipo_objetos):
     return render(request, 'ver_mas.html', {'objeto': objeto, 'tipo_objetos': tipo_objetos})
 
 def eliminarObjeto(request, id):
+    # logica para eliminar las solicitudes
+    
+    # Elimino el Objeto
     objeto = Publicacion_ObjetoValioso.objects.get(id=id)
     objeto.delete()
     
-    return render(request, "ver_mis_publicaciones.html")
+    objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
+    embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=request.session['user_id'])
+    
+    return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
 
 def eliminarEmbarcacion(request, id):
+    # logica para eliminar las solicitdes
+    
+    # Elimino embarcacion
     objeto = Publicacion_Embarcacion.objects.get(id=id)
     objeto.delete()
-    return render(request, "ver_mis_publicaciones.html")
+    
+    objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
+    embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=request.session['user_id'])
+    
+    return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
