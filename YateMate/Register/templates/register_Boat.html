@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Registrar embarcacion
+{% endblock %}
+
+{% block content %}
+<h1>Crear Embarcación</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Guardar Embarcación</button>
+    </form>
+{% endblock %}
