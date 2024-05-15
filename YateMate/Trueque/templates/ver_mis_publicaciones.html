@@ -70,9 +70,9 @@ Mis publicaciones
         {% if embarcaciones %}
             {% for embarcacion in embarcaciones %}
                 <div class="card">
-                    <p>{{embarcacion.nombre_fantasia|truncatechars:70 }}</p>
-                    {% if embarcacion.foto %}
-                    <img src="{% static 'img_b/' %}{{ embarcacion.foto.url }}" alt="Foto de la embarcación" class="img-fluid"style="max-width: 80%; max-height: 200px;">
+                    <p>{{embarcacion.embarcacion.nombre_fantasia|truncatechars:70 }}</p>
+                    {% if embarcacion.embarcacion.foto %}
+                    <img src="{% static 'img_b/' %}{{ embarcacion.embarcacion.foto.url }}" alt="Foto de la embarcación" class="img-fluid"style="max-width: 80%; max-height: 200px;">
                     {% endif %}
                     <a href={% url 'eliminar_embarcacion' embarcacion.id %} class="btn btn-card">Eliminar</a>
                     <a href="#" class="btn btn-card">Modificar</a>

@@ -68,17 +68,32 @@ def solicitud_embarcacion(request, publicacion_id):
     user_id = request.session['user_id']
     user = User.objects.get(id=user_id)
     publicacion = Publicacion_Embarcacion.objects.get(id=publicacion_id)
-    solicitud = Solicitud_Embarcaciones.objects.create(publicacion=publicacion)
-    solicitud.usuarios_interesados.add(user)
-    solicitud.save()
+    
+    if Solicitud_Embarcaciones.objects.filter(publicacion=publicacion, usuarios_interesados=user).exists():
+            mensaje = 'Ya tienes una solicitud previa de esta publicación.'
+    else:
+        solicitud = Solicitud_Embarcaciones.objects.create(publicacion=publicacion)
+        solicitud.usuarios_interesados.add(user)
+        solicitud.save()
+        mensaje = 'La solicitud fue exitosa.'
+    
+    return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos':'Embarcaciones', 'mensaje':mensaje })
     
 def solicitud_objeto_valioso(request, publicacion_id):
     user_id = request.session['user_id']
     user = User.objects.get(id=user_id)
     publicacion = Publicacion_ObjetoValioso.objects.get(id=publicacion_id)
-    solicitud = Solicitud_ObjetosValiosos.objects.create(publicacion=publicacion)
-    solicitud.usuarios_interesados.add(user)
-    solicitud.save()
+    # Verificar si el usuario ya tiene una solicitud previa de esta publicación
+    if Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion, usuarios_interesados=user).exists():
+        mensaje = 'Ya tienes una solicitud previa de esta publicación.'
+    else:
+        solicitud = Solicitud_ObjetosValiosos.objects.create(publicacion=publicacion)
+        solicitud.usuarios_interesados.add(user)
+        solicitud.save()
+        mensaje = 'La solicitud fue exitosa.'
+
+
+    return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos': 'Objetos Valiosos' , 'mensaje': mensaje})
  
 def saber_mas(request, id, tipo_objetos):
     # Dependiendo del tipo de objeto, obtén la publicación correspondiente

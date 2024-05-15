@@ -14,7 +14,7 @@ Saber más
         {% if objeto.foto %}
         <img src="{% static 'img_o/' %}{{ objeto.foto.url }}" alt="Foto del objeto" class="img-fluid"  style="max-width: 100%; max-height: 400px;">
         {% else %}
-        <img src="{% static 'img_b/' %}{{ objeto.embarcacion.foto.url}}" alt="Foto del objeto" class="img-fluid" style="max-width: 100%; max-height: 400px;">
+        <img src="{% static 'img_b/' %}{{ objeto.embarcacion.foto.url }}" alt="Foto del objeto" class="img-fluid" style="max-width: 100%; max-height: 400px;">
         {% endif %}      
       </div>
       <div class="col-md-6">
@@ -34,43 +34,35 @@ Saber más
         <!-- Verifica si hay una sesión de usuario activa -->
         {% if request.session.user_id %}
           {% if objeto.embarcacion %}
-           <button type="button" class="btn btn-primary mt-3" onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'embarcacion')">Solicitar un Trueque</button>
+            <button type="button" class="btn btn-primary mt-3" onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'embarcacion')">Solicitar un Trueque</button>
+            <script>
+              function solicitarTrueque(publicacionId, tipo) {
+                  // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
+                  window.location.href = `/solicitud_embarcacion/{{ objeto.embarcacion.id }}/`;
+              }
+              </script>
           {% else %}
-            <button type="button" class="btn btn-primary mt-3" onclick="solicitarTrueque({{ objeto.id }}, 'objeto_valioso')">Solicitar un Trueque</button>
+          <button type="button" class="btn btn-primary mt-3" onclick="solicitarTrueque({{ objeto.id }}, 'objeto_valioso')">Solicitar un Trueque</button>
+
+          <script>
+          function solicitarTrueque(publicacionId, tipo) {
+              // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
+              window.location.href = `/solicitud_objeto_valioso/{{ objeto.id }}/`;
+          }
+          </script>
           {% endif %} 
+        {% endif %}
+        
+        <!-- Mostrar mensaje de éxito -->
+        {% if mensaje %}
+          <div class="alert alert-success mt-3">{{ mensaje}}</div>
+        {% else %}
+          <div class="alert alert-danger mt-3">{{ mensaje }}</div>
         {% endif %}
       </div>
     </div>
-    <script>
-      function solicitarTrueque(publicacionId, tipoPublicacion) {
-        fetch(`/solicitud_${tipoPublicacion}/${publicacionId}/`, {
-          method: 'POST',
-          headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ publicacion_id: publicacionId }),
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error al enviar la solicitud');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Solicitud de trueque enviada correctamente:', data);
-          // Aquí puedes realizar alguna acción después de enviar la solicitud, como mostrar un mensaje al usuario
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          // Aquí puedes manejar el error, como mostrar un mensaje de error al usuario
-        });
-      }
-      </script>
-      
   {% else %}
     <p>El objeto no tiene la información completa.</p>
   {% endif %}
 </div>
 {% endblock %}
-
