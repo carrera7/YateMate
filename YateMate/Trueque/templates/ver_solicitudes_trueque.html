@@ -31,5 +31,28 @@ Mis solicitudes
         border-radius: 3px;
     }
 </style>
-<p>Usted no cuenta con ninguna solicitud.</p>
+
+<head>
+    <title>Solicitudes de Trueque</title>
+</head>
+<body>
+    <h1>Solicitudes de Trueque para</h1>
+    {% if solicitudes.exists %}
+        <ul>
+            {% for solicitud in solicitudes %}
+                <li>Solicitud ID: {{ solicitud.id }} - Usuarios interesados:
+                    <ul>
+                        {% for user in solicitud.usuarios_interesados.all %}
+                            <li>{{ user.nombre }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay solicitudes para esta publicación.</p>
+    {% endif %}
+</body>
+</html>
+
 {% endblock %}

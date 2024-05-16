@@ -6,6 +6,7 @@ from itertools import chain
 from django.core.mail import send_mail
 from YateMate.settings import EMAIL_HOST_USER
 from django.db.models import Count
+from django.shortcuts import get_object_or_404
 
 
 def list_publication(request):
@@ -62,28 +63,48 @@ def mis_publicaciones(request):
     
     objetos = Publicacion_ObjetoValioso.objects.filter(dueño=user_id)
     embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=user_id)
-    
-    # Verificar si hay solicitudes asociadas a las publicaciones de objetos valiosos
-    tiene_solicitudes_objetos = Solicitud_ObjetosValiosos.objects.filter(publicacion__dueño=user_id).exists()
-    # Verificar si hay solicitudes asociadas a las publicaciones de embarcaciones
-    tiene_solicitudes_embarcaciones = Solicitud_Embarcaciones.objects.filter(publicacion__embarcacion__dueno_id=user_id).exists()
+
+    objetos_con_solicitudes = []
+    embarcaciones_con_solicitudes = []
+
+    for objeto in objetos:
+        tiene_solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=objeto).exists()
+        if tiene_solicitudes:
+            objetos_con_solicitudes.append(objeto.id)
+
+    for embarcacion in embarcaciones:
+        tiene_solicitudes = Solicitud_Embarcaciones.objects.filter(publicacion=embarcacion).exists()
+        if tiene_solicitudes:
+            embarcaciones_con_solicitudes.append(embarcacion.id)
 
     return render(request, "ver_mis_publicaciones.html", {
         'objetos': objetos,
         'embarcaciones': embarcaciones,
-        'tiene_solicitudes_objetos': tiene_solicitudes_objetos,
-        'tiene_solicitudes_embarcaciones': tiene_solicitudes_embarcaciones,
+        'objetos_con_solicitudes': objetos_con_solicitudes,
+        'embarcaciones_con_solicitudes': embarcaciones_con_solicitudes,
     })
  
 def solicitudes_trueque_objeto(request, publicacion_id):
+    # Obtener la publicación de objeto valioso
     publicacion = Publicacion_ObjetoValioso.objects.get(id=publicacion_id)
-    solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion)
 
-    return render(request, "ver_mis_publicaciones.html", {'objetos': solicitudes})
+    # Obtener todas las solicitudes relacionadas con esta publicación
+    solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion)
+    context = {
+        'solicitudes': solicitudes,
+    }
+    return render(request, "ver_solicitudes_trueque.html", context)
 
 def solicitudes_trueque_embarcacion(request, publicacion_id):
-    #return render(request, "ver_mis_publicaciones.html", {'embarcaciones': solicitudes})
-    pass
+    # Obtener la publicación de objeto valioso
+    publicacion = Publicacion_Embarcacion.objects.get(id=publicacion_id)
+
+    # Obtener todas las solicitudes relacionadas con esta publicación
+    solicitudes = Solicitud_Embarcaciones.objects.filter(publicacion=publicacion)
+    context = {
+        'solicitudes': solicitudes,
+    }
+    return render(request, "ver_solicitudes_trueque.html", context)
 
 def solisitar_trueque(request, publicacion_id,tipo):
     if tipo == "Embarcaciones":
