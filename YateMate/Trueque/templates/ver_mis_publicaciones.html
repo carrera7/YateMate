@@ -63,7 +63,7 @@ Mis publicaciones
                 <a href={% url 'eliminar_objeto' objeto.id %} class="btn btn-card">Eliminar</a>
                 <a href="#" class="btn btn-card">Modificar</a>
                 {% if objeto.id in objetos_con_solicitudes %}
-                    <a href={% url 'solicitudes_trueque_objeto' objeto.id %} class="btn btn-cardVerde">Solicitudes</a>
+                    <a href={% url 'solicitudes_trueque_objeto' objeto.id %} class="btn btn-cardRojo" >Solicitudes</a>
                 {% else %}
                     <a href="#" class="btn btn-cardRojo">Solicitudes</a>
                 {% endif %}
@@ -80,7 +80,7 @@ Mis publicaciones
                 <a href={% url 'eliminar_embarcacion' embarcacion.id %} class="btn btn-card">Eliminar</a>
                 <a href="#" class="btn btn-card">Modificar</a>
                 {% if embarcacion.id in embarcaciones_con_solicitudes %}
-                    <a href="#" class="btn btn-cardVerde">Solicitudes</a>
+                    <a href={% url 'solicitudes_trueque_embarcacion' embarcacion.id %} class='btn btn-cardVerde'>Solicitudes</a>
                 {% else %}
                     <a href="#" class="btn btn-cardRojo">Solicitudes</a>
                 {% endif %}

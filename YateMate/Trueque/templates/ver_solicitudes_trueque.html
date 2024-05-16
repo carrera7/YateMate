@@ -36,18 +36,21 @@ Mis solicitudes
     <title>Solicitudes de Trueque</title>
 </head>
 <body>
-    <h1>Solicitudes de Trueque para</h1>
+    <h1>Solicitudes de Trueque </h1>
     {% if solicitudes.exists %}
         <ul>
+        <div class="card">
             {% for solicitud in solicitudes %}
-                <li>Solicitud ID: {{ solicitud.id }} - Usuarios interesados:
+                Nombre solicitante:
                     <ul>
                         {% for user in solicitud.usuarios_interesados.all %}
-                            <li>{{ user.nombre }}</li>
+                            <p>{{ user.nombre }}</p>
+                            <a href="#" class="btn btn-card">Rechazar Solicitud</a>
+                            <a href="#" class="btn btn-card">Iniciar Trueque</a>
                         {% endfor %}
                     </ul>
-                </li>
             {% endfor %}
+        </div>
         </ul>
     {% else %}
         <p>No hay solicitudes para esta publicación.</p>
