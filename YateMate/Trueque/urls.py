@@ -15,4 +15,5 @@ urlpatterns = [
     path("solisitar_trueque/<int:publicacion_id>/<str:tipo>/",views.solisitar_trueque, name="solisitar_trueque"),
     path("solicitud_embarcacion/<int:publicacion_id>/",views.solicitud_embarcacion, name="solicitud_embarcacion"),
     path("solicitud_objeto_valioso/<int:publicacion_id>/", views.solicitud_objeto_valioso, name="solicitud_objeto_valioso"),
+    path("rechazar_trueque/<int:solicitud_id>/<str:tipo>/", views.rechazar_trueque, name="rechazar_trueque"),
 ]

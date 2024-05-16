@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from Register.models import User
-from .models import Publicacion_ObjetoValioso, Publicacion_Embarcacion , Solicitud_Embarcaciones , Solicitud_ObjetosValiosos , MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones
+from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos , MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones)
 from Register.models import Embarcacion
 from itertools import chain
 from django.core.mail import send_mail
@@ -90,8 +90,10 @@ def solicitudes_trueque_objeto(request, publicacion_id):
 
     # Obtener todas las solicitudes relacionadas con esta publicación
     solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion)
+    tipo = "objetos valiosos"
     context = {
         'solicitudes': solicitudes,
+        'tipoObj': tipo,
     }
     return render(request, "ver_solicitudes_trueque.html", context)
 
@@ -101,10 +103,33 @@ def solicitudes_trueque_embarcacion(request, publicacion_id):
 
     # Obtener todas las solicitudes relacionadas con esta publicación
     solicitudes = Solicitud_Embarcaciones.objects.filter(publicacion=publicacion)
+    tipo = "embarcaciones"
     context = {
         'solicitudes': solicitudes,
+        'tipoObj': tipo,
     }
     return render(request, "ver_solicitudes_trueque.html", context)
+
+def rechazar_trueque(request, solicitud_id, tipo):
+    if tipo == "objetos valiosos":
+        solicitudO = Solicitud_ObjetosValiosos.objects.get(id=solicitud_id)
+        dueño = solicitudO.publicacion.dueño
+        nombre_objeto_embarcacion = solicitudO.publicacion.tip
+        solicitudO.delete()
+    else:
+        solicitudE = Solicitud_Embarcaciones.objects.get(id=solicitud_id)
+        dueño = solicitudE.publicacion.embarcacion.dueno
+        nombre_objeto_embarcacion = solicitudE.publicacion.embarcacion.nombre_fantasia
+        solicitudE.delete()
+
+    if dueño.mail:
+        subject = 'Actualizacion solicitud de trueque'
+        message = f'La solicitud hecha para el trueque { nombre_objeto_embarcacion } fue rechazada'
+        send_mail(subject, message, EMAIL_HOST_USER, [dueño.mail])
+
+    return render(request, "ver_solicitudes_trueque.html")
+
+
 
 def solisitar_trueque(request, publicacion_id,tipo):
     if tipo == "Embarcaciones":
