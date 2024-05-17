@@ -34,7 +34,12 @@ Saber más
         <!-- Verifica si hay una sesión de usuario activa -->
         {% if request.session.user_id %}
           {% if objeto.embarcacion %}
-            <button type="button" class="btn btn-primary mt-3" onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'Embarcaciones')">Solicitar un Trueque</button>
+            <button type="button" class="btn btn-primary mt-3" 
+            onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'Embarcaciones')"
+            {% if deshabilitar %} disabled {% endif %}>
+            Solicitar un Trueque
+            </button>
+
             <script>
               function solicitarTrueque(publicacionId, tipo) {
                   // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
@@ -42,13 +47,17 @@ Saber más
               }
               </script>
           {% else %}
-          <button type="button" class="btn btn-primary mt-3" onclick="solicitarTrueque({{ objeto.id }}, 'Objetos Valiosos')">Solicitar un Trueque</button>
-
-          <script>
-          function solicitarTrueque(publicacionId, tipo) {
-              // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
-              window.location.href = `/solisitar_trueque/{{ objeto.id }}/${tipo}`;
-          }
+            <button type="button" class="btn btn-primary mt-3" 
+            onclick="solicitarTrueque({{ objeto.id }}, 'Objetos Valiosos')"
+            {% if deshabilitar %} disabled {% endif %}>
+            Solicitar un Trueque
+            </button>
+           
+            <script>
+            function solicitarTrueque(publicacionId, tipo) {
+                // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
+                window.location.href = `/solisitar_trueque/{{ objeto.id }}/${tipo}`;
+            }
           </script>
           {% endif %} 
         {% endif %}

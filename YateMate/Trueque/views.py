@@ -190,16 +190,21 @@ def solicitud_objeto_valioso(request, publicacion_id):
     return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos': 'Objetos Valiosos' , 'mensaje': mensaje})
  
 def saber_mas(request, id, tipo_objetos):
+    user_id = request.session['user_id']
+    user = User.objects.get(id=user_id)
+    
     # Dependiendo del tipo de objeto, obtén la publicación correspondiente
     if tipo_objetos == 'Objetos Valiosos':
         objeto = Publicacion_ObjetoValioso.objects.get(id=id)
+        existe = Solicitud_ObjetosValiosos.objects.filter(publicacion=objeto, usuarios_interesados=user).exists()
     elif tipo_objetos == 'Embarcaciones':
         objeto = Publicacion_Embarcacion.objects.get(id=id)
+        existe = Solicitud_Embarcaciones.objects.filter(publicacion=objeto, usuarios_interesados=user).exists()
     else:
         # Manejar el caso en el que el tipo de objeto no sea válido
         return render(request, 'error.html', {'mensaje': 'Tipo de objeto no válido'})
 
-    return render(request, 'ver_mas.html', {'objeto': objeto, 'tipo_objetos': tipo_objetos})
+    return render(request, 'ver_mas.html', {'objeto': objeto, 'tipo_objetos': tipo_objetos , 'deshabilitar':existe})
 
 def eliminarObjeto(request, id):
     # logica para eliminar las solicitudes
