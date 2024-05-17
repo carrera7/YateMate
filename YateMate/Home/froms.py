@@ -86,7 +86,7 @@ class CustomUserRegistrationForm(forms.ModelForm):
             edad = today.year - fecha_nacimiento.year - ((today.month, today.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
             if edad < 18:
                 raise ValidationError("Debes ser mayor de edad para registrarte.")
-            return edad
+            return fecha_nacimiento  # Devuelve la fecha de nacimiento validada
         return None
 
     def save(self, commit=True):
