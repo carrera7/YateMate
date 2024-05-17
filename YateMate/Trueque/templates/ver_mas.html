@@ -35,8 +35,7 @@ Saber más
         {% if request.session.user_id %}
           {% if objeto.embarcacion %}
             <button type="button" class="btn btn-primary mt-3" 
-            onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'Embarcaciones')"
-            {% if deshabilitar %} disabled {% endif %}>
+            onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'Embarcaciones')">
             Solicitar un Trueque
             </button>
 
@@ -48,8 +47,7 @@ Saber más
               </script>
           {% else %}
             <button type="button" class="btn btn-primary mt-3" 
-            onclick="solicitarTrueque({{ objeto.id }}, 'Objetos Valiosos')"
-            {% if deshabilitar %} disabled {% endif %}>
+            onclick="solicitarTrueque({{ objeto.id }}, 'Objetos Valiosos')">
             Solicitar un Trueque
             </button>
            
@@ -64,7 +62,7 @@ Saber más
         
         <!-- Mostrar mensaje de éxito -->
         {% if mensaje %}
-          <div class="alert alert-success mt-3">{{ mensaje}}</div>
+          <div class="alert alert-success mt-3">{{ mensaje }}</div>
         {% else %}
           <div class="alert alert-danger mt-3">{{ mensaje }}</div>
         {% endif %}
