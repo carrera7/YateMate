@@ -8,16 +8,11 @@ import dns.resolver
 from Register.models import User
 
 class CustomUserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput, 
-                               validators=[MinLengthValidator(8)])
-    mail = forms.CharField(label='Correo Electrónico', validators=[EmailValidator(message='Por favor, introduce un correo electrónico válido.')])
-
+    
     class Meta:
         model = User
         fields = ['mail', 'password', 'nombre', 'apellido', 'dni', 'fecha_nacimiento', 'fecha_expiracion_dni', 'nacionalidad', 'genero', 'domicilio', 'cuil_cuit']
         labels = {
-            'mail': 'Correo Electrónico',
-            'tipo': 'Tipo',
             'nombre': 'Nombre',
             'apellido': 'Apellido',
             'dni': 'DNI',
@@ -27,6 +22,8 @@ class CustomUserRegistrationForm(forms.ModelForm):
             'genero': 'Género',
             'domicilio': 'Domicilio',
             'cuil_cuit': 'CUIL/CUIT',
+            'mail': 'Correo Electrónico',
+            'tipo': 'Tipo',
         }
         help_texts = {
             'dni': 'El DNI debe contener entre 7 y 8 dígitos numéricos.',
@@ -44,6 +41,11 @@ class CustomUserRegistrationForm(forms.ModelForm):
                 'invalid': 'El CUIL/CUIT solo puede contener números y guiones.',
             },
         }
+       
+    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput, 
+                               validators=[MinLengthValidator(8)])
+    mail = forms.CharField(label='Correo Electrónico', validators=[EmailValidator(message='Por favor, introduce un correo electrónico válido.')])
+    
 
     def clean_mail(self):
         mail = self.cleaned_data['mail']
@@ -93,3 +95,6 @@ class CustomUserRegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+    field_order = ['nombre', 'apellido', 'dni', 'fecha_nacimiento', 'fecha_expiracion_dni', 'nacionalidad', 'genero', 'domicilio', 'cuil_cuit', 'mail', 'password']
+
