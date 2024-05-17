@@ -77,7 +77,7 @@ class CustomUserRegistrationForm(forms.ModelForm):
             raise ValidationError("El CUIL/CUIT solo puede contener números y guiones.")
         return cuil_cuit
 
-    def clean_edad(self):
+    def clean_fecha_nacimiento(self):
         fecha_nacimiento = self.cleaned_data.get('fecha_nacimiento')
         if fecha_nacimiento:
             today = date.today()
