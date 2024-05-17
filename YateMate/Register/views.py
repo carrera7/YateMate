@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from .forms import EmbarcacionForm
 
 def crear_embarcacion(request):
     if request.method == 'POST':
         form = EmbarcacionForm(request.POST, request.FILES)
         if form.is_valid():
-            embarcacion = form.save()
-            # Hacer algo con la embarcacion creada, como redirigir a una página de detalle
+            form.save()
+            messages.success(request, 'Embarcación registrada con éxito.')
             return redirect('index')
     else:
         form = EmbarcacionForm()
