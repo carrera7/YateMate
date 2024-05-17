@@ -1,8 +1,8 @@
 from datetime import date
-
+import re 
 from django import forms
 from django.core.exceptions import ValidationError
-from django.core.validators import EmailValidator, MinLengthValidator
+from django.core.validators import EmailValidator, MinLengthValidator, RegexValidator
 import dns
 import dns.resolver
 from Register.models import User
@@ -28,6 +28,8 @@ class CustomUserRegistrationForm(forms.ModelForm):
         help_texts = {
             'dni': 'El DNI debe contener entre 7 y 8 dígitos numéricos.',
             'cuil_cuit': 'El CUIL/CUIT debe contener entre 11 y 13 caracteres numéricos y guiones.',
+            'fecha_nacimiento': 'Formato: AAAA-MM-DD. Ejemplo: 1990-01-01',
+            'password': 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial de la lista @$!%*?&. Ejemplo: P@ssw0rd!',
         }
         error_messages = {
             'dni': {
@@ -42,8 +44,20 @@ class CustomUserRegistrationForm(forms.ModelForm):
             },
         }
        
-    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput, 
-                               validators=[MinLengthValidator(8)])
+    password = forms.CharField(
+    label='Contraseña',
+    widget=forms.PasswordInput,
+    validators=[
+        MinLengthValidator(8),
+        # Validación personalizada para la contraseña
+        RegexValidator(
+            regex=r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$',
+            message='La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.'
+        )
+    ],
+    help_text='La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.'
+)
+    
     mail = forms.CharField(label='Correo Electrónico', validators=[EmailValidator(message='Por favor, introduce un correo electrónico válido.')])
     
 
