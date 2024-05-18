@@ -114,7 +114,7 @@ def rechazar_trueque(request, solicitud_id, tipo):
     if tipo == "objetos valiosos":
         solicitudO = Solicitud_ObjetosValiosos.objects.get(id=solicitud_id)
         dueño = solicitudO.publicacion.dueño
-        nombre_objeto_embarcacion = solicitudO.publicacion.tip
+        nombre_objeto_embarcacion = solicitudO.publicacion.marca
         publicacion = solicitudO.publicacion
         solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion)
         solicitudO.delete()
