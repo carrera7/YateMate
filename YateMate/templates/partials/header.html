@@ -6,19 +6,57 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Header</title>
 <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+<style>
+  .header1 {
+    position: relative;
+    z-index: 1000;
+  }
+  .navegacion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #menu {
+    position: relative;
+  }
+  #menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  #menu ul li {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+  }
+  #menu ul li a {
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+  }
+  #menu ul li ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1000;
+  }
+  #menu ul li:hover ul {
+    display: block;
+  }
+</style>
 </head>
 <body>
 <header class="header1">
   <div class="navegacion">
-    
     <div id="box-img">
-      <img src="{% static 'img/iconY.jpg' %}">
+      <img src="{% static 'img/iconY.jpg' %}" alt="Logo">
     </div>
-  
     <div class="titulo-cli">
       <h1>YateMate</h1>
     </div>  
-
     <nav id="menu">
       <div id="div-nav">
         <ul>
@@ -33,7 +71,6 @@
           </li>
           <li>
             <a href="#">Secciones</a>
-            <!-- start menu desplegable -->
             <ul>
               {% if request.path != '/list_publication/' %}
               {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
@@ -52,7 +89,6 @@
               <li><a href="http://127.0.0.1:8000/">Inicio</a></li>
               {% endif %}
             </ul>
-            <!-- end menu desplegable -->
           </li>
           {% if request.session.user_id %}
             <li><a href="http://127.0.0.1:8000/login/logout">Cerrar sesión</a></li>
@@ -61,7 +97,6 @@
             <li><a href="http://127.0.0.1:8000/register/">Registrarse</a></li>
           {% endif %}
         </ul>
-        <!-- end menu -->
       </div>  
     </nav>
   </div>

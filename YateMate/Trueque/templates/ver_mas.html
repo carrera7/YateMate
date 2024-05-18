@@ -32,7 +32,7 @@ Saber más
         <p>Descripción: {{ objeto.descripcion }}</p>
         
         <!-- Verifica si hay una sesión de usuario activa -->
-        {% if request.session.user_id %}
+        {% if request.session.user_id and request.session.user_type != 'Administrador' %}
           {% if objeto.embarcacion %}
             <button type="button" class="btn btn-primary mt-3" 
             onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'Embarcaciones')">

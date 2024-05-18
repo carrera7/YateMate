@@ -32,7 +32,7 @@ def login_view(request):
             # Mostrar un mensaje de error si el usuario no existe
             return render(request, 'login.html', {'error_message': 'Nombre de usuario o contraseña incorrectos'})
     else:
-        return render(request, 'login.html')
+        return render(request, 'login.html',)
     
 def logout_view(request):
     if 'user_id' in request.session:
