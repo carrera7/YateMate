@@ -215,20 +215,21 @@ def eliminarObjeto(request, id):
     
     # Obtener la lista de usuarios que hicieron solicitudes al objeto valioso
     usuarios_interesados = User.objects.filter(solicitudes_objetos_valiosos__in=solicitudes_objetos_valiosos).distinct()
-
-    # Eliminar todas las solicitudes relacionadas con el objeto valioso
-    solicitudes_objetos_valiosos.delete()
-    objeto.delete()
     
     # Enviar correo electrónico a los usuarios que hicieron solicitudes al objeto valioso
     for usuario in usuarios_interesados:
         subject = f'Eliminación de publicación {objeto.tipo}'
         message = f'Hola {usuario.nombre},\n\nLa publicación {objeto.tipo} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
         send_mail(subject, message, EMAIL_HOST_USER, [usuario.mail])
+        
+    
+    # Eliminar todas las solicitudes relacionadas con el objeto valioso
+    solicitudes_objetos_valiosos.delete()
+    objeto.delete()
     
     # Obtener las publicaciones del usuario actual
     objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
-    embarcaciones = Publicacion_Embarcacion.objects.filter(dueno_id=request.session['user_id'])
+    embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno=request.session['user_id'])
     
     return render(request, "ver_mis_publicaciones.html", {'objetos': objetos, 'embarcaciones': embarcaciones})
 
@@ -242,9 +243,6 @@ def eliminarEmbarcacion(request, id):
     # Obtener la lista de usuarios que hicieron solicitudes a la embarcación
     usuarios_interesados = User.objects.filter(solicitudes_embarcaciones__in=solicitudes_embarcaciones).distinct()
 
-    # Eliminar todas las solicitudes relacionadas con la embarcación
-    solicitudes_embarcaciones.delete()
-    
     # Enviar correo electrónico a los usuarios que hicieron solicitudes a la embarcación
     for usuario in usuarios_interesados:
         subject = f'Eliminación de embarcación {embarcacion.descripcion}'
@@ -252,10 +250,12 @@ def eliminarEmbarcacion(request, id):
         print(usuario.mail)
         send_mail(subject, message, EMAIL_HOST_USER, [usuario.mail])
     
+    # Eliminar todas las solicitudes relacionadas con la embarcación
+    solicitudes_embarcaciones.delete()
     embarcacion.delete()
     
     # Obtener las publicaciones del usuario actual
     objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
-    embarcaciones = Publicacion_Embarcacion.objects.filter(dueno=request.session['user_id'])
+    embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno=request.session['user_id'])
     
     return render(request, "ver_mis_publicaciones.html", {'objetos': objetos, 'embarcaciones': embarcaciones})
