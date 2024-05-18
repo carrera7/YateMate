@@ -2,6 +2,7 @@
 
 import django.db.models.deletion
 from django.db import migrations, models
+from Register.models import User
 
 
 class Migration(migrations.Migration):
@@ -17,7 +18,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('publicacion', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Trueque.publicacion_embarcacion')),
-                ('usuarios_interesados', models.ManyToManyField(related_name='solicitudes_embarcaciones', to='Register.user')),
+                ('usuario_interesado',models.ForeignKey(null=True, on_delete=models.SET_NULL, to='Register.User')),
             ],
         ),
         migrations.CreateModel(
@@ -25,7 +26,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('publicacion', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Trueque.publicacion_objetovalioso')),
-                ('usuarios_interesados', models.ManyToManyField(related_name='solicitudes_objetos_valiosos', to='Register.user')),
+                ('usuario_interesado', models.ForeignKey(null=True, on_delete=models.SET_NULL, to='Register.User')),
             ],
         ),
         migrations.DeleteModel(

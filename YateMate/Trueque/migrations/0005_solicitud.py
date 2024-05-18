@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('publicacion', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Trueque.publicacion_embarcacion')),
-                ('usuarios_interesados', models.ManyToManyField(related_name='solicitudes', to='Register.user')),
+                ('usuario_interesado', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Register.user')),
             ],
         ),
     ]

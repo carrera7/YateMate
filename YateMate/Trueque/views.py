@@ -115,19 +115,31 @@ def rechazar_trueque(request, solicitud_id, tipo):
         solicitudO = Solicitud_ObjetosValiosos.objects.get(id=solicitud_id)
         dueño = solicitudO.publicacion.dueño
         nombre_objeto_embarcacion = solicitudO.publicacion.tip
+        publicacion = solicitudO.publicacion
+        solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion)
         solicitudO.delete()
+        context = {
+            'solicitudes': solicitudes,
+            'tipoObj': tipo,
+        }
     else:
         solicitudE = Solicitud_Embarcaciones.objects.get(id=solicitud_id)
         dueño = solicitudE.publicacion.embarcacion.dueno
         nombre_objeto_embarcacion = solicitudE.publicacion.embarcacion.nombre_fantasia
+        publicacion = solicitudE.publicacion
+        solicitudes = Solicitud_Embarcaciones.objects.filter(publicacion=publicacion)
         solicitudE.delete()
+        context = {
+            'solicitudes': solicitudes,
+            'tipoObj': tipo,
+        }
 
     if dueño.mail:
         subject = 'Actualizacion solicitud de trueque'
         message = f'La solicitud hecha para el trueque { nombre_objeto_embarcacion } fue rechazada'
         send_mail(subject, message, EMAIL_HOST_USER, [dueño.mail])
 
-    return render(request, "ver_solicitudes_trueque.html")
+    return render(request, "ver_solicitudes_trueque.html", context)
 
 
 
@@ -140,55 +152,48 @@ def solisitar_trueque(request, publicacion_id,tipo):
 
 def solicitud_embarcacion(request, publicacion_id):
     user_id = request.session['user_id']
-    user = User.objects.get(id=user_id)
+    user = get_object_or_404(User, id=user_id)
     mensaje_solicitud = request.GET.get('mensaje_solicitud', '')  # Obtener el mensaje de la URL
-    publicacion = Publicacion_Embarcacion.objects.get(id=publicacion_id)
+    publicacion = get_object_or_404(Publicacion_Embarcacion, id=publicacion_id)
     
-    if Solicitud_Embarcaciones.objects.filter(publicacion=publicacion, usuarios_interesados=user).exists():
-            mensaje = 'Ya tienes una solicitud previa de esta publicación.'
-    else:
-        solicitud = Solicitud_Embarcaciones.objects.create(publicacion=publicacion)
-        solicitud.usuarios_interesados.add(user)
-        solicitud.save()
-        # Crear el mensaje asociado a la solicitud
-        mensaje_solicitud_embarcaciones = MensajeSolicitudEmbarcaciones.objects.create(mensaje=mensaje_solicitud, solicitud_embarcacion=solicitud)
-        mensaje_solicitud_embarcaciones.save()
-        mensaje = 'La solicitud fue exitosa.'
-        
-        # Enviar correo electrónico al dueño de la publicación
-        if publicacion.embarcacion.dueno.mail:
-            subject = 'Nueva solicitud de trueque'
-            message = f'Hola {publicacion.embarcacion.dueno.mail}, tienes una nueva solicitud de trueque para tu embarcación {publicacion.embarcacion.nombre_fantasia}. Revisa tu perfil en YateMate.'
-            send_mail(subject, message,EMAIL_HOST_USER, [publicacion.embarcacion.dueno.mail])
-    
-    return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos':'Embarcaciones', 'mensaje':mensaje })
-    
-def solicitud_objeto_valioso(request, publicacion_id):
-    user_id = request.session['user_id']
-    user = User.objects.get(id=user_id)
-    mensaje_solicitud = request.GET.get('mensaje_solicitud', '')  # Obtener el mensaje de la URL
-    publicacion = Publicacion_ObjetoValioso.objects.get(id=publicacion_id)
-    # Verificar si el usuario ya tiene una solicitud previa de esta publicación
-    if Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion, usuarios_interesados=user).exists():
+    if Solicitud_Embarcaciones.objects.filter(publicacion=publicacion, usuario_interesado=user).exists():
         mensaje = 'Ya tienes una solicitud previa de esta publicación.'
     else:
-        solicitud = Solicitud_ObjetosValiosos.objects.create(publicacion=publicacion)
-        solicitud.usuarios_interesados.add(user)
-        solicitud.save()
+        solicitud = Solicitud_Embarcaciones.objects.create(publicacion=publicacion, usuario_interesado=user)
         # Crear el mensaje asociado a la solicitud
-        mensaje_solicitud_objetos_valiosos = MensajeSolicitudObjetosValiosos.objects.create(mensaje=mensaje_solicitud, solicitud_objeto_valioso=solicitud)
-        mensaje_solicitud_objetos_valiosos.save()
+        MensajeSolicitudEmbarcaciones.objects.create(mensaje=mensaje_solicitud, solicitud_embarcacion=solicitud)
         mensaje = 'La solicitud fue exitosa.'
         
         # Enviar correo electrónico al dueño de la publicación
-        if publicacion.dueño:
+        if publicacion.embarcacion.dueno and publicacion.embarcacion.dueno.mail:
             subject = 'Nueva solicitud de trueque'
-            message = f'Hola {publicacion.dueño}, tienes una nueva solicitud de trueque para tu embarcación {publicacion.dueño}. Revisa tu perfil en YateMate.'
-            send_mail(subject, message, EMAIL_HOST_USER, [publicacion.dueño])    
+            message = f'Hola {publicacion.embarcacion.dueno.nombre}, tienes una nueva solicitud de trueque para tu embarcación {publicacion.embarcacion.nombre_fantasia}. Revisa tu perfil en YateMate.'
+            send_mail(subject, message,EMAIL_HOST_USER, [publicacion.embarcacion.dueno.mail])
+    
+    return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos': 'Embarcaciones', 'mensaje': mensaje})
 
+def solicitud_objeto_valioso(request, publicacion_id):
+    user_id = request.session['user_id']
+    user = get_object_or_404(User, id=user_id)
+    mensaje_solicitud = request.GET.get('mensaje_solicitud', '')  # Obtener el mensaje de la URL
+    publicacion = get_object_or_404(Publicacion_ObjetoValioso, id=publicacion_id)
+    
+    if Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion, usuario_interesado=user).exists():
+        mensaje = 'Ya tienes una solicitud previa de esta publicación.'
+    else:
+        solicitud = Solicitud_ObjetosValiosos.objects.create(publicacion=publicacion, usuario_interesado=user)
+        # Crear el mensaje asociado a la solicitud
+        MensajeSolicitudObjetosValiosos.objects.create(mensaje=mensaje_solicitud, solicitud_objeto_valioso=solicitud)
+        mensaje = 'La solicitud fue exitosa.'
+        
+        # Enviar correo electrónico al dueño de la publicación
+        if publicacion.dueño and publicacion.dueño.mail:
+            subject = 'Nueva solicitud de trueque'
+            message = f'Hola {publicacion.dueño.nombre}, tienes una nueva solicitud de trueque para tu objeto valioso {publicacion.tipo}. Revisa tu perfil en YateMate.'
+            send_mail(subject, message,EMAIL_HOST_USER, [publicacion.dueño.mail])
+    
+    return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos': 'Objetos Valiosos', 'mensaje': mensaje})
 
-    return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos': 'Objetos Valiosos' , 'mensaje': mensaje})
- 
 def saber_mas(request, id, tipo_objetos):    
     # Dependiendo del tipo de objeto, obtén la publicación correspondiente
     if tipo_objetos == 'Objetos Valiosos':
@@ -202,59 +207,55 @@ def saber_mas(request, id, tipo_objetos):
     return render(request, 'ver_mas.html', {'objeto': objeto, 'tipo_objetos': tipo_objetos})
 
 def eliminarObjeto(request, id):
-    # logica para eliminar las solicitudes
-    
-    # Elimino el Objeto
+    # Eliminar el objeto valioso
     objeto = Publicacion_ObjetoValioso.objects.get(id=id)
+    
     # Obtener todas las solicitudes relacionadas con el objeto valioso
     solicitudes_objetos_valiosos = Solicitud_ObjetosValiosos.objects.filter(publicacion=objeto)
-
+    
     # Obtener la lista de usuarios que hicieron solicitudes al objeto valioso
-    usuarios_solicitudes = solicitudes_objetos_valiosos.values_list('usuarios_interesados', flat=True).distinct()
+    usuarios_interesados = User.objects.filter(solicitudes_objetos_valiosos__in=solicitudes_objetos_valiosos).distinct()
 
     # Eliminar todas las solicitudes relacionadas con el objeto valioso
     solicitudes_objetos_valiosos.delete()
     objeto.delete()
     
     # Enviar correo electrónico a los usuarios que hicieron solicitudes al objeto valioso
-    for usuario_id in usuarios_solicitudes:
-        usuario = User.objects.get(id=usuario_id)
+    for usuario in usuarios_interesados:
         subject = f'Eliminación de publicación {objeto.tipo}'
-        message = f'Hola {usuario.mail},\n\nLa publicación {objeto.tipo} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
+        message = f'Hola {usuario.nombre},\n\nLa publicación {objeto.tipo} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
         send_mail(subject, message, EMAIL_HOST_USER, [usuario.mail])
     
+    # Obtener las publicaciones del usuario actual
     objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
-    embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=request.session['user_id'])
+    embarcaciones = Publicacion_Embarcacion.objects.filter(dueno_id=request.session['user_id'])
     
-    return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
+    return render(request, "ver_mis_publicaciones.html", {'objetos': objetos, 'embarcaciones': embarcaciones})
 
 def eliminarEmbarcacion(request, id):
-    # logica para eliminar las solicitdes
-    
-    # Elimino embarcacion
-    objeto = Publicacion_Embarcacion.objects.get(id=id)
+    # Eliminar la embarcación
+    embarcacion = Publicacion_Embarcacion.objects.get(id=id)
     
     # Obtener todas las solicitudes relacionadas con la embarcación
-    solicitudes_embarcaciones = Solicitud_Embarcaciones.objects.filter(publicacion=objeto)
+    solicitudes_embarcaciones = Solicitud_Embarcaciones.objects.filter(publicacion=embarcacion)
 
     # Obtener la lista de usuarios que hicieron solicitudes a la embarcación
-    usuarios_solicitudes = solicitudes_embarcaciones.values_list('usuarios_interesados', flat=True).distinct()
+    usuarios_interesados = User.objects.filter(solicitudes_embarcaciones__in=solicitudes_embarcaciones).distinct()
 
     # Eliminar todas las solicitudes relacionadas con la embarcación
     solicitudes_embarcaciones.delete()
     
     # Enviar correo electrónico a los usuarios que hicieron solicitudes a la embarcación
-    for usuario_id in usuarios_solicitudes:
-        usuario = User.objects.get(id=usuario_id)
-        subject = f'Eliminación de embarcación { objeto.embarcacion.nombre_fantasia}'
-        message = f'Hola {usuario.mail},\n\nLa embarcación { objeto.embarcacion.nombre_fantasia} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
-        send_mail(subject, message,EMAIL_HOST_USER, [usuario.mail])
+    for usuario in usuarios_interesados:
+        subject = f'Eliminación de embarcación {embarcacion.descripcion}'
+        message = f'Hola {usuario.nombre},\n\nLa embarcación {embarcacion.descripcion} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
+        print(usuario.mail)
+        send_mail(subject, message, EMAIL_HOST_USER, [usuario.mail])
     
-    objeto.delete()
+    embarcacion.delete()
     
+    # Obtener las publicaciones del usuario actual
     objetos = Publicacion_ObjetoValioso.objects.filter(dueño=request.session['user_id'])
-    embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=request.session['user_id'])
+    embarcaciones = Publicacion_Embarcacion.objects.filter(dueno=request.session['user_id'])
     
-    return render(request, "ver_mis_publicaciones.html",{'objetos': objetos, 'embarcaciones': embarcaciones})
-
-
+    return render(request, "ver_mis_publicaciones.html", {'objetos': objetos, 'embarcaciones': embarcaciones})
