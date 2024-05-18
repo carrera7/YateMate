@@ -215,12 +215,12 @@ def eliminarObjeto(request, id):
     
     # Obtener la lista de usuarios que hicieron solicitudes al objeto valioso
     usuarios_interesados = User.objects.filter(solicitudes_objetos_valiosos__in=solicitudes_objetos_valiosos).distinct()
-    
+        
     # Enviar correo electrónico a los usuarios que hicieron solicitudes al objeto valioso
     for usuario in usuarios_interesados:
         subject = f'Eliminación de publicación {objeto.tipo}'
-        message = f'Hola {usuario.nombre},\n\nLa publicación {objeto.tipo} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
-        send_mail(subject, message, EMAIL_HOST_USER, [usuario.mail])
+        message = f'Hola {usuario},\n\nLa publicación {objeto.tipo} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
+        send_mail(subject, message, EMAIL_HOST_USER, [usuario])
         
     
     # Eliminar todas las solicitudes relacionadas con el objeto valioso
@@ -246,9 +246,8 @@ def eliminarEmbarcacion(request, id):
     # Enviar correo electrónico a los usuarios que hicieron solicitudes a la embarcación
     for usuario in usuarios_interesados:
         subject = f'Eliminación de embarcación {embarcacion.descripcion}'
-        message = f'Hola {usuario.nombre},\n\nLa embarcación {embarcacion.descripcion} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
-        print(usuario.mail)
-        send_mail(subject, message, EMAIL_HOST_USER, [usuario.mail])
+        message = f'Hola {usuario},\n\nLa embarcación {embarcacion.descripcion} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
+        send_mail(subject, message, EMAIL_HOST_USER, [usuario])
     
     # Eliminar todas las solicitudes relacionadas con la embarcación
     solicitudes_embarcaciones.delete()
