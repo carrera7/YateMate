@@ -27,10 +27,10 @@ def login_view(request):
                 return redirect('index')  # Redirige a la página principal después del inicio de sesión exitoso
             else:
                 # Mostrar un mensaje de error
-                return render(request, 'login.html', {'error_message': 'Credenciales inválidas'})
+                return render(request, 'login.html', {'error_message': 'Nombre de usuario o contraseña incorrectos'})
         except User.DoesNotExist:
             # Mostrar un mensaje de error si el usuario no existe
-            return render(request, 'login.html', {'error_message': 'El usuario no existe'})
+            return render(request, 'login.html', {'error_message': 'Nombre de usuario o contraseña incorrectos'})
     else:
         return render(request, 'login.html')
     

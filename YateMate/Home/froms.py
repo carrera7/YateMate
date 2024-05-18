@@ -28,7 +28,7 @@ class CustomUserRegistrationForm(forms.ModelForm):
         help_texts = {
             'dni': 'El DNI debe contener entre 7 y 8 dígitos numéricos.',
             'cuil_cuit': 'El CUIL/CUIT debe contener entre 11 y 13 caracteres numéricos y guiones.',
-            'fecha_nacimiento': 'Formato: AAAA-MM-DD. Ejemplo: 1990-01-01',
+            'fecha_nacimiento': 'Formato: DD-MM-AAAA. Ejemplo: 01/02/1990',
             'password': 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial de la lista @$!%*?&. Ejemplo: P@ssw0rd!',
         }
         error_messages = {
@@ -51,7 +51,7 @@ class CustomUserRegistrationForm(forms.ModelForm):
         MinLengthValidator(8),
         # Validación personalizada para la contraseña
         RegexValidator(
-            regex=r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$',
+            regex=r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$',
             message='La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.'
         )
     ],
