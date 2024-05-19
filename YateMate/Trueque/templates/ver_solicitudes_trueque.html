@@ -27,6 +27,17 @@ Mis solicitudes
         text-decoration: none;
         border-radius: 3px;
     }
+
+    .messages {
+        margin-top: 10px;
+    }
+
+    .message {
+        background-color: #e9ecef;
+        border-radius: 3px;
+        padding: 10px;
+        margin-bottom: 5px;
+    }
 </style>
 
 <head>
@@ -34,11 +45,20 @@ Mis solicitudes
 </head>
 <body>
     <h1>Solicitudes de Trueque</h1>
-    {% if solicitudes.exists %}
+    {% if solicitudes_con_mensajes %}
         <ul>
-            {% for solicitud in solicitudes %}
+            {% for solicitud, mensajes in solicitudes_con_mensajes %}
                 <div class="card">
                     <p>Nombre solicitante: {{ solicitud.usuario_interesado.nombre }}</p>
+                    <p>Mensaje:</p>
+                    <div class="messages">
+                        {% for mensaje in mensajes %}
+                            <div class="message">
+                                <p>{{ mensaje.mensaje }}</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+
                     <a href="{% url 'rechazar_trueque' solicitud.id tipoObj %}" class="btn btn-card">Rechazar Solicitud</a>
                     <a href="#" class="btn btn-card">Iniciar Trueque</a>
                 </div>

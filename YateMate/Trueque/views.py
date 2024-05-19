@@ -90,25 +90,40 @@ def solicitudes_trueque_objeto(request, publicacion_id):
 
     # Obtener todas las solicitudes relacionadas con esta publicación
     solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion)
+    
+    # Obtener los mensajes para cada solicitud
+    solicitudes_con_mensajes = []
+    for solicitud in solicitudes:
+        mensajes = MensajeSolicitudObjetosValiosos.objects.filter(solicitud_objeto_valioso=solicitud)
+        solicitudes_con_mensajes.append((solicitud, mensajes))
+    
     tipo = "objetos valiosos"
     context = {
-        'solicitudes': solicitudes,
+        'solicitudes_con_mensajes': solicitudes_con_mensajes,
         'tipoObj': tipo,
     }
     return render(request, "ver_solicitudes_trueque.html", context)
 
 def solicitudes_trueque_embarcacion(request, publicacion_id):
-    # Obtener la publicación de objeto valioso
+    # Obtener la publicación de embarcación
     publicacion = Publicacion_Embarcacion.objects.get(id=publicacion_id)
 
     # Obtener todas las solicitudes relacionadas con esta publicación
     solicitudes = Solicitud_Embarcaciones.objects.filter(publicacion=publicacion)
+    
+    # Obtener los mensajes para cada solicitud
+    solicitudes_con_mensajes = []
+    for solicitud in solicitudes:
+        mensajes = MensajeSolicitudEmbarcaciones.objects.filter(solicitud_embarcacion=solicitud)
+        solicitudes_con_mensajes.append((solicitud, mensajes))
+    
     tipo = "embarcaciones"
     context = {
-        'solicitudes': solicitudes,
+        'solicitudes_con_mensajes': solicitudes_con_mensajes,
         'tipoObj': tipo,
     }
     return render(request, "ver_solicitudes_trueque.html", context)
+
 
 def rechazar_trueque(request, solicitud_id, tipo):
     if tipo == "objetos valiosos":
