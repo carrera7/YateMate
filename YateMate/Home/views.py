@@ -45,7 +45,7 @@ def register(request):
         form = CustomUserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            messages.success(request, "Usuario registrado correctamente. Se le enviara un mail cuando su usuario este activo.")
+            messages.success(request, "Usuario registrado correctamente.")
             return redirect('index')  # Redirige a la página de inicio de sesión después del registro
     else:
         form = CustomUserRegistrationForm()
