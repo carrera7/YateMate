@@ -293,17 +293,18 @@ def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objet
         interesado = User.objects.get(id=solicitud.usuario_interesado_id)
         mensaje_solicitud = f"Hola {interesado.nombre} ,estoy interesado para hacer un trueque"
         MensajeSolicitudObjetosValiosos.objects.create(mensaje=mensaje_solicitud, solicitud_objeto_valioso=solicitud)
+        respuesta = solicitudes_trueque_objeto(request, publicacionID)
     else:
         publicacion = Publicacion_Embarcacion.objects.get(id=publicacionID)
         solicitud = Solicitud_Embarcaciones.objects.get(id=solicitudID)
         interesado = User.objects.get(id=solicitud.usuario_interesado_id)
         mensaje_solicitud = f"Hola {interesado.nombre} ,estoy interesado para hacer un trueque"
         MensajeSolicitudEmbarcaciones.objects.create(mensaje=mensaje_solicitud, solicitud_embarcacion=solicitud)
-
+        respuesta = solicitudes_trueque_embarcacion(request, publicacionID)
     # Cambiamos el estado de la publicación
     publicacion.estado = "Proceso"
     publicacion.save()
 
-    return render(request, "ver_solicitudes_trueque.html")
+    return respuesta
 
 
