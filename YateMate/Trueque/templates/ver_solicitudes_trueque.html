@@ -60,7 +60,7 @@ Mis solicitudes
                     </div>
 
                     <a href="{% url 'rechazar_trueque' solicitud.id tipoObj %}" class="btn btn-card">Rechazar Solicitud</a>
-                    <a href="#" class="btn btn-card">Iniciar Trueque</a>
+                    <a href="{% url 'iniciarSolicitudDeTrueque' solicitud.id solicitud.publicacion_id tipoObj %}" class="btn btn-card">Iniciar Trueque</a>
                 </div>
             {% endfor %}
         </ul>

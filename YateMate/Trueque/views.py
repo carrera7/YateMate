@@ -283,3 +283,27 @@ def eliminarEmbarcacion(request, id):
     embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno=request.session['user_id'])
     
     return render(request, "ver_mis_publicaciones.html", {'objetos': objetos, 'embarcaciones': embarcaciones})
+
+
+def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objetos):
+    # Recuperamos la publicación por la cual se hizo una solicitud y agregamos el msj a la BD
+    if tipo_objetos == 'Objetos Valiosos':
+        publicacion = Publicacion_ObjetoValioso.objects.get(id=publicacionID)
+        solicitud = Solicitud_ObjetosValiosos.objects.get(id=solicitudID)
+        interesado = User.objects.get(id=solicitud.usuario_interesado_id)
+        mensaje_solicitud = f"Hola {interesado.nombre} ,estoy interesado para hacer un trueque"
+        MensajeSolicitudObjetosValiosos.objects.create(mensaje=mensaje_solicitud, solicitud_objeto_valioso=solicitud)
+    else:
+        publicacion = Publicacion_Embarcacion.objects.get(id=publicacionID)
+        solicitud = Solicitud_Embarcaciones.objects.get(id=solicitudID)
+        interesado = User.objects.get(id=solicitud.usuario_interesado_id)
+        mensaje_solicitud = f"Hola {interesado.nombre} ,estoy interesado para hacer un trueque"
+        MensajeSolicitudEmbarcaciones.objects.create(mensaje=mensaje_solicitud, solicitud_embarcacion=solicitud)
+
+    # Cambiamos el estado de la publicación
+    publicacion.estado = "Proceso"
+    publicacion.save()
+
+    return render(request, "ver_solicitudes_trueque.html")
+
+
