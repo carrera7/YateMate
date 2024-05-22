@@ -290,17 +290,24 @@ def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objet
     if tipo_objetos == 'Objetos Valiosos':
         publicacion = Publicacion_ObjetoValioso.objects.get(id=publicacionID)
         solicitud = Solicitud_ObjetosValiosos.objects.get(id=solicitudID)
+        # Se que se repiten las dos lineas de abajo, pero sino me dejaria iniciar el trueque dos veces y no se debe
+        solicitud.iniciado = True  # No sacar del if
+        solicitud.save()  # No sacar
         interesado = User.objects.get(id=solicitud.usuario_interesado_id)
-        mensaje_solicitud = f"Hola {interesado.nombre} ,estoy interesado para hacer un trueque"
+        mensaje_solicitud = f"Hola {interesado.nombre}, estoy interesado para hacer un trueque"
         MensajeSolicitudObjetosValiosos.objects.create(mensaje=mensaje_solicitud, solicitud_objeto_valioso=solicitud)
         respuesta = solicitudes_trueque_objeto(request, publicacionID)
     else:
         publicacion = Publicacion_Embarcacion.objects.get(id=publicacionID)
         solicitud = Solicitud_Embarcaciones.objects.get(id=solicitudID)
+        # Se que se repiten las dos lineas de abajo, pero sino me dejaria iniciar el trueque dos veces y no se debe
+        solicitud.iniciado = True  # No sacar del if
+        solicitud.save()  # No sacar
         interesado = User.objects.get(id=solicitud.usuario_interesado_id)
-        mensaje_solicitud = f"Hola {interesado.nombre} ,estoy interesado para hacer un trueque"
+        mensaje_solicitud = f"Hola {interesado.nombre}, estoy interesado para hacer un trueque"
         MensajeSolicitudEmbarcaciones.objects.create(mensaje=mensaje_solicitud, solicitud_embarcacion=solicitud)
         respuesta = solicitudes_trueque_embarcacion(request, publicacionID)
+
     # Cambiamos el estado de la publicación
     publicacion.estado = "Proceso"
     publicacion.save()

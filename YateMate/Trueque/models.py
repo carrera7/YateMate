@@ -36,6 +36,7 @@ class Publicacion_Embarcacion(models.Model):
 class Solicitud_Embarcaciones(models.Model):
     publicacion = models.ForeignKey(Publicacion_Embarcacion, on_delete=models.CASCADE)
     usuario_interesado = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitudes_embarcaciones')
+    iniciado = models.BooleanField(default=False)
     
     def __str__(self):
         return f'Solicitud de {self.usuario_interesado} para {self.publicacion}'
@@ -43,6 +44,7 @@ class Solicitud_Embarcaciones(models.Model):
 class Solicitud_ObjetosValiosos(models.Model):
     publicacion = models.ForeignKey(Publicacion_ObjetoValioso, on_delete=models.CASCADE)
     usuario_interesado = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitudes_objetos_valiosos')
+    iniciado = models.BooleanField(default=False)
     
     def __str__(self):
         return f'Solicitud de {self.usuario_interesado} para {self.publicacion}'

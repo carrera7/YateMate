@@ -28,6 +28,14 @@ Mis solicitudes
         border-radius: 3px;
     }
 
+        .btn-cardDesactivado {
+        background-color: #3f424e;
+        color: #fff;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+
     .messages {
         margin-top: 10px;
     }
@@ -60,7 +68,11 @@ Mis solicitudes
                     </div>
 
                     <a href="{% url 'rechazar_trueque' solicitud.id tipoObj %}" class="btn btn-card">Rechazar Solicitud</a>
-                    <a href="{% url 'iniciarSolicitudDeTrueque' solicitud.id solicitud.publicacion_id tipoObj %}" class="btn btn-card">Iniciar Trueque</a>
+                    {% if solicitud.iniciado %}
+                       <a href="#" class="btn btn-cardDesactivado">Iniciar Trueque</a>
+                    {% else %}
+                        <a href="{% url 'iniciarSolicitudDeTrueque' solicitud.id solicitud.publicacion_id tipoObj %}" class="btn btn-card">Iniciar Trueque</a
+                    {% endif %}
                 </div>
             {% endfor %}
         </ul>
