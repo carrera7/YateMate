@@ -62,24 +62,24 @@ Mi Página de Inicio
 
 <!-- Formulario de filtro por estado y tipo de publicación -->
 <form class="filter-form" method="GET" action="">
-    <div>
-        <label for="estado">Filtrar por Estado:</label>
-        <select name="estado" id="estado">
-            <option value="Vigente">Vigente</option>
-            <option value="Proceso">Proceso</option>
-            <option value="Finalizado">Finalizado</option>
-        </select>
+    <div style="display: flex; align-items: center;">
+        <div style="margin-right: 10px;">
+            <label for="estado">Filtrar por Estado:</label>
+            <select name="estado" id="estado">
+                <option value="Vigente"{% if request.GET.estado == 'Vigente' %} selected{% endif %}>Vigente</option>
+                <option value="Proceso"{% if request.GET.estado == 'Proceso' %} selected{% endif %}>Proceso</option>
+                <option value="Finalizado"{% if request.GET.estado == 'Finalizado' %} selected{% endif %}>Finalizado</option>
+            </select>
+        </div>
+        <div>
+            <label for="tipo">Filtrar por Tipo de Publicación:</label>
+            <select name="tipo" id="tipo">
+                <option value="objetos valiosos"{% if request.GET.tipo == 'objetos valiosos' %} selected{% endif %}>Objetos Valiosos</option>
+                <option value="embarcaciones"{% if request.GET.tipo == 'embarcaciones' %} selected{% endif %}>Embarcaciones</option>
+            </select>
+        </div>
+        <button type="submit" style="margin-left: 10px;">Filtrar</button>
     </div>
-
-    <div>
-        <label for="tipo">Filtrar por Tipo de Publicación:</label>
-        <select name="tipo" id="tipo">
-            <option value="objetos valiosos">Objetos Valiosos</option>
-            <option value="embarcaciones">Embarcaciones</option>
-        </select>
-    </div>
-
-    <button type="submit">Filtrar</button>
 </form>
 
 {% if objetos %}
@@ -96,7 +96,7 @@ Mi Página de Inicio
                     - {{ objeto.embarcacion.tipo }}
                 {% else %}
                     - {{ objeto.tipo }}
-                {% endif %}    
+                {% endif %}
             </h3>
             <p>{{ objeto.descripcion|truncatechars:70 }}</p>
             <a href="{% url 'saber_mas' id=objeto.id tipo_objetos=tipo_objetos %}" class="btn btn-card">Saber más</a>
@@ -105,4 +105,5 @@ Mi Página de Inicio
 {% else %}
     <p>No se cuenta con Publicaciones.</p>
 {% endif %}
+
 {% endblock %}

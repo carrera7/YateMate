@@ -43,6 +43,10 @@
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     z-index: 1000;
   }
+  #box-img img {
+    max-height: 55px;
+    margin-top: -10px;
+  }
   #menu ul li:hover ul {
     display: block;
   }
@@ -52,11 +56,11 @@
 <header class="header1">
   <div class="navegacion">
     <div id="box-img">
-      <img src="{% static 'img/iconY.jpg' %}" alt="Logo">
+      <img src="{% static 'img/iconY.jpg' %}" alt="Logo" >
     </div>
     <div class="titulo-cli">
       <h1>YateMate</h1>
-    </div>  
+    </div>
     <nav id="menu">
       <div id="div-nav">
         <ul>
