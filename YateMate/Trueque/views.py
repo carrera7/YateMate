@@ -315,3 +315,5 @@ def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objet
     return respuesta
 
 
+
+

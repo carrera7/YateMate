@@ -85,3 +85,22 @@ def habilitar_usuario(request, usuario_id):
         'usuarios_inhabilitados': usuarios_inhabilitados
     }
     return render(request, 'enable_accounts.html', context)
+
+def listado_clientes(request):
+    clientes = User.objects.filter(tipo='Cliente')  # Cambiar 'Clientes' por 'Cliente'
+    return render(request, "listado_clientes.html", {'clientes': clientes})
+
+
+def moroso_clientes(request, cliente_id):
+    cliente = User.objects.get(id=cliente_id)
+    cliente.moroso = True
+    cliente.save()
+    respuesta = listado_clientes(request)
+    return respuesta
+
+def cancelar_deuda(request, cliente_id):
+    cliente = User.objects.get(id=cliente_id)
+    cliente.moroso = False
+    cliente.save()
+    respuesta = listado_clientes(request)
+    return respuesta
