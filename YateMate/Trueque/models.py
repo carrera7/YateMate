@@ -45,7 +45,7 @@ class Solicitud_ObjetosValiosos(models.Model):
     publicacion = models.ForeignKey(Publicacion_ObjetoValioso, on_delete=models.CASCADE)
     usuario_interesado = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitudes_objetos_valiosos')
     iniciado = models.BooleanField(default=False)
-    
+
     def __str__(self):
         return f'Solicitud de {self.usuario_interesado} para {self.publicacion}'
     
@@ -56,3 +56,29 @@ class MensajeSolicitudObjetosValiosos(models.Model):
 class MensajeSolicitudEmbarcaciones(models.Model):
     mensaje = models.TextField()
     solicitud_embarcacion = models.ForeignKey('Solicitud_Embarcaciones', on_delete=models.CASCADE)
+
+class Conversacion(models.Model):
+    dueño_publicacion = models.ForeignKey(User, related_name='conversations_initiated', on_delete=models.CASCADE)
+    solicitante = models.ForeignKey(User, related_name='conversations_received', on_delete=models.CASCADE)
+    creado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('dueño_publicacion', 'solicitante')
+
+    def get_mensajes(self):
+        return self.message_set.order_by('created_at')
+
+    def get_participantes(self):
+        return [self.dueño_publicacion, self.solicitante]
+
+    def __str__(self):
+        return f'Conversation between {self.dueño_publicacion.nombre} and {self.solicitante.nombre}'
+
+class Mesajes_chat(models.Model):
+    conversacion = models.ForeignKey(Conversacion, on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    mensaje_texto = models.TextField()
+    enviado_a = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.sender.nombre}: {self.mensaje_texto[:30]}... ({self.enviado_a.strftime("%Y-%m-%d %H:%M:%S")})'
