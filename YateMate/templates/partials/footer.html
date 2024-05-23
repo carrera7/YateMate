@@ -1,40 +1,117 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Footer</title>
-<style>
-  /* Estilos para el footer */
-  footer {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 0; /* Ajusta el padding según sea necesario */
-    text-align: center;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página con Mensajes</title>
+    <style>
+        /* Estilos para el footer */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0; /* Ajusta el padding según sea necesario */
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
 
-  /* Estilos para el contenedor dentro del footer */
-  .container {
-    padding: 0; /* Eliminar el padding para que el contenedor sea más pequeño */
-    margin: 0; /* Eliminar el margen para ajustar al contenido */
-  }
-  /* Estilos para el texto dentro del footer */
-  footer p {
-    margin: 0; /* Eliminar el margen del párrafo para ajustar al contenedor */
-    font-size: 20px; /* Tamaño de fuente ajustado */
-  }
-</style>
+        /* Estilos para el contenedor dentro del footer */
+        .container {
+            padding: 0; /* Eliminar el padding para que el contenedor sea más pequeño */
+            margin: 0; /* Eliminar el margen para ajustar al contenido */
+        }
+
+        /* Estilos para el texto dentro del footer */
+        footer p {
+            margin: 0; /* Eliminar el margen del párrafo para ajustar al contenedor */
+            font-size: 20px; /* Tamaño de fuente ajustado */
+        }
+
+        /* Estilos para la barra de mensajes */
+        .mensaje-bar {
+            position: fixed;
+            bottom: 0px;
+            right: 10px;
+            background-color: #091c30;
+            color: #fff;
+            padding: 10px 30px;;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* Estilos para el contenedor de mensajes desplegable */
+        .mensaje-container {
+            display: none;
+            position: fixed;
+            bottom: 60px;
+            right: 10px;
+            background-color: #fff;
+            color: #000000;
+            width: 300px;
+            height: 50%;
+            border: 1px solid #000000;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            z-index: 2000;
+        }
+
+        .mensaje-container h3 {
+            background-color: #091c30;
+            color: #fff;
+            margin: 0;
+            padding: 10px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+
+        .mensaje-container ul {
+            list-style: none;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .mensaje-container ul li {
+            padding: 10px;
+            border-bottom: 1px solid #ced4da;
+        }
+
+        .mensaje-container ul li:last-child {
+            border-bottom: none;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const mensajeBar = document.querySelector('.mensaje-bar');
+            const mensajeContainer = document.querySelector('.mensaje-container');
+
+            mensajeBar.addEventListener('click', function() {
+                if (mensajeContainer.style.display === 'none' || mensajeContainer.style.display === '') {
+                    mensajeContainer.style.display = 'block';
+                } else {
+                    mensajeContainer.style.display = 'none';
+                }
+            });
+        });
+    </script>
 </head>
 <body>
+
+<!-- Contenido de tu página -->
+
 <footer>
-  <div class="container">
-    <p>&copy; 2024 Mi Empresa. Todos los derechos reservados.</p>
-  </div>
+    <div class="container">
+        <p>&copy; 2024 Mi Empresa. Todos los derechos reservados.</p>
+    </div>
+    {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
+        <div class="mensaje-bar">Mensajes</div>
+        <div class="mensaje-container">
+            <h3>Mis Mensajes</h3>
+        </div>
+    {% endif %}
 </footer>
+
 </body>
 </html>
-
-
