@@ -74,7 +74,7 @@ class Conversacion(models.Model):
     def __str__(self):
         return f'Conversation between {self.dueño_publicacion.nombre} and {self.solicitante.nombre}'
 
-class Mesajes_chat(models.Model):
+class Mensajes_chat(models.Model):
     conversacion = models.ForeignKey(Conversacion, on_delete=models.CASCADE)
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
     mensaje_texto = models.TextField()

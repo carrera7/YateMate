@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from Register.models import User
-from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos , MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones)
+from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos , MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones, Conversacion, Mensajes_chat)
 from Register.models import Embarcacion
 from itertools import chain
 from django.core.mail import send_mail
@@ -286,33 +286,46 @@ def eliminarEmbarcacion(request, id):
 
 
 def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objetos):
-    # Recuperamos la publicación por la cual se hizo una solicitud y agregamos el msj a la BD
+    # Obtener el modelo de publicación y solicitud correcto según el tipo de objetos
     if tipo_objetos == 'Objetos Valiosos':
-        publicacion = Publicacion_ObjetoValioso.objects.get(id=publicacionID)
-        solicitud = Solicitud_ObjetosValiosos.objects.get(id=solicitudID)
-        # Se que se repiten las dos lineas de abajo, pero sino me dejaria iniciar el trueque dos veces y no se debe
-        solicitud.iniciado = True  # No sacar del if
-        solicitud.save()  # No sacar
-        interesado = User.objects.get(id=solicitud.usuario_interesado_id)
-        mensaje_solicitud = f"Hola {interesado.nombre}, estoy interesado para hacer un trueque"
-        MensajeSolicitudObjetosValiosos.objects.create(mensaje=mensaje_solicitud, solicitud_objeto_valioso=solicitud)
+        publicacion_modelo = Publicacion_ObjetoValioso
+        solicitud_modelo = Solicitud_ObjetosValiosos
         respuesta = solicitudes_trueque_objeto(request, publicacionID)
     else:
-        publicacion = Publicacion_Embarcacion.objects.get(id=publicacionID)
-        solicitud = Solicitud_Embarcaciones.objects.get(id=solicitudID)
-        # Se que se repiten las dos lineas de abajo, pero sino me dejaria iniciar el trueque dos veces y no se debe
-        solicitud.iniciado = True  # No sacar del if
-        solicitud.save()  # No sacar
-        interesado = User.objects.get(id=solicitud.usuario_interesado_id)
-        mensaje_solicitud = f"Hola {interesado.nombre}, estoy interesado para hacer un trueque"
-        MensajeSolicitudEmbarcaciones.objects.create(mensaje=mensaje_solicitud, solicitud_embarcacion=solicitud)
+        publicacion_modelo = Publicacion_Embarcacion
+        solicitud_modelo = Solicitud_Embarcaciones
         respuesta = solicitudes_trueque_embarcacion(request, publicacionID)
 
-    # Cambiamos el estado de la publicación
+    # Obtener la publicación y la solicitud
+    publicacion = publicacion_modelo.objects.get(id=publicacionID)
+    solicitud = solicitud_modelo.objects.get(id=solicitudID)
+
+    # Cambiar el estado de la solicitud
+    solicitud.iniciado = True
+    solicitud.save()
+
+    # Crear o obtener la conversación entre los usuarios involucrados
+    usuario_interesado = solicitud.usuario_interesado
+    dueño_publicacion = publicacion.embarcacion.dueno
+    conversacion, creado = Conversacion.objects.get_or_create(
+        dueño_publicacion=dueño_publicacion,
+        solicitante=usuario_interesado
+    )
+
+    # Crear el mensaje en la conversación
+    mensaje_solicitud = f"Hola {usuario_interesado.nombre}, estoy interesado para hacer un trueque"
+    mensaje = Mensajes_chat.objects.create(
+        conversacion=conversacion,
+        sender=dueño_publicacion,
+        mensaje_texto=mensaje_solicitud
+    )
+
+    # Cambiar el estado de la publicación
     publicacion.estado = "Proceso"
     publicacion.save()
 
     return respuesta
+
 
 
 
