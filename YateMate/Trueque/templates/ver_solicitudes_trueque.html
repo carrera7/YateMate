@@ -49,7 +49,9 @@ Mis solicitudes
 </style>
 
 <head>
+    <meta charset="UTF-8">
     <title>Solicitudes de Trueque</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <h1>Solicitudes de Trueque</h1>
@@ -69,9 +71,9 @@ Mis solicitudes
 
                     <a href="{% url 'rechazar_trueque' solicitud.id tipoObj %}" class="btn btn-card">Rechazar Solicitud</a>
                     {% if solicitud.iniciado %}
-                       <a href="#" class="btn btn-cardDesactivado">Iniciar Trueque</a>
+                        <a href="#" class="btn btn-cardDesactivado">Iniciar Trueque</a>
                     {% else %}
-                        <a href="{% url 'iniciarSolicitudDeTrueque' solicitud.id solicitud.publicacion_id tipoObj %}" class="btn btn-card">Iniciar Trueque</a
+                        <a href="{% url 'iniciarSolicitudDeTrueque' solicitud.id solicitud.publicacion_id tipoObj %}" class="btn btn-card iniciarTruequeBtn" data-url="{% url 'iniciarSolicitudDeTrueque' solicitud.id solicitud.publicacion_id tipoObj %}">Iniciar Trueque</a>
                     {% endif %}
                 </div>
             {% endfor %}
@@ -79,6 +81,28 @@ Mis solicitudes
     {% else %}
         <p>No hay solicitudes para esta publicación.</p>
     {% endif %}
+
+    <!-- Script para manejar el clic del botón de iniciar trueque -->
+    <script>
+        $(document).ready(function(){
+            $('.iniciarTruequeBtn').on('click', function(e) {
+                e.preventDefault();
+                var url = $(this).data('url');
+                console.log('URL:', url);  // Depuración: Verifica la URL
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    success: function(response) {
+                        console.log('Solicitud AJAX exitosa:', response);  // Depuración: Verifica la respuesta
+                        location.reload();
+                    },
+                    error: function(response) {
+                        console.log('Error en la solicitud AJAX:', response);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
 {% endblock %}

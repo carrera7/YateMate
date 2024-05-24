@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from YateMate.settings import EMAIL_HOST_USER
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 
 
 def list_publication(request):
@@ -304,7 +305,7 @@ def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objet
     solicitud.iniciado = True
     solicitud.save()
 
-    # Crear o obtener la conversación entre los usuarios involucrados
+    # Crear u obtener la conversación entre los usuarios involucrados
     usuario_interesado = solicitud.usuario_interesado
     dueño_publicacion = publicacion.embarcacion.dueno
     conversacion, creado = Conversacion.objects.get_or_create(

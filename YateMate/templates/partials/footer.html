@@ -82,20 +82,6 @@
             border-bottom: none;
         }
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const mensajeBar = document.querySelector('.mensaje-bar');
-            const mensajeContainer = document.querySelector('.mensaje-container');
-
-            mensajeBar.addEventListener('click', function() {
-                if (mensajeContainer.style.display === 'none' || mensajeContainer.style.display === '') {
-                    mensajeContainer.style.display = 'block';
-                } else {
-                    mensajeContainer.style.display = 'none';
-                }
-            });
-        });
-    </script>
 </head>
 <body>
 
@@ -105,12 +91,6 @@
     <div class="container">
         <p>&copy; 2024 Mi Empresa. Todos los derechos reservados.</p>
     </div>
-    {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
-        <div class="mensaje-bar">Mensajes</div>
-        <div class="mensaje-container">
-            <h3>Mis Mensajes</h3>
-        </div>
-    {% endif %}
 </footer>
 
 </body>

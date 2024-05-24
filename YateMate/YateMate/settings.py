@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CONVERSACIONES_USUARIO = []
+
 
 # Application definition
 
@@ -74,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Trueque.context_processors.conversaciones_usuario',
             ],
         },
     },

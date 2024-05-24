@@ -66,13 +66,13 @@ class Conversacion(models.Model):
         unique_together = ('dueño_publicacion', 'solicitante')
 
     def get_mensajes(self):
-        return self.message_set.order_by('created_at')
+        return Mensajes_chat.objects.filter(conversacion=self).order_by('enviado_a')
 
     def get_participantes(self):
         return [self.dueño_publicacion, self.solicitante]
 
     def __str__(self):
-        return f'Conversation between {self.dueño_publicacion.nombre} and {self.solicitante.nombre}'
+        return f'Conversación entre {self.dueño_publicacion.nombre} y {self.solicitante.nombre}'
 
 class Mensajes_chat(models.Model):
     conversacion = models.ForeignKey(Conversacion, on_delete=models.CASCADE)
@@ -82,3 +82,7 @@ class Mensajes_chat(models.Model):
 
     def __str__(self):
         return f'{self.sender.nombre}: {self.mensaje_texto[:30]}... ({self.enviado_a.strftime("%Y-%m-%d %H:%M:%S")})'
+
+    @classmethod
+    def get_ordered_messages(cls, conversation_id):
+        return cls.objects.filter(conversacion_id=conversation_id).order_by('enviado_a')

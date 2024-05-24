@@ -14,5 +14,9 @@
 {% endblock %}
 
 {% include "partials/footer.html" %}
+
+{% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
+        {% include 'partials/messages_bar.html' %}
+{% endif %}
 </body>
 </html>
