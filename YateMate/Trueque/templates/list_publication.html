@@ -63,8 +63,8 @@ Lista publicaciones
         <div style="margin-right: 10px;"> <!-- Divisor para el menú desplegable -->
             <label for="tipo">Filtrar por Tipo de Publicación:</label>
             <select name="tipo" id="tipo">
-                <option value="objetos valiosos">Objetos Valiosos</option>
-                <option value="embarcaciones">Embarcaciones</option>
+                <option value="objetos valiosos" {% if request.GET.tipo == 'objetos valiosos' %}selected{% endif %}>Objetos Valiosos</option>
+                <option value="embarcaciones" {% if request.GET.tipo == 'embarcaciones' %}selected{% endif %}>Embarcaciones</option>
             </select>
         </div>
         <button type="submit">Filtrar</button>
