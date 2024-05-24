@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Barra de Mensajes</title>
+    <style>
+        /* Estilos para la barra de mensajes */
+        .mensaje-bar {
+            position: fixed;
+            bottom: 0px;
+            right: 10px;
+            background-color: #091c30;
+            color: #fff;
+            padding: 10px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        /* Estilos para el contenedor de mensajes desplegable */
+        .mensaje-container {
+            display: none;
+            position: fixed;
+            bottom: 60px;
+            right: 10px;
+            background-color: #fff;
+            color: #000000;
+            width: 300px;
+            height: 50%;
+            border: 1px solid #000000;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            z-index: 2000;
+        }
+
+        .mensaje-container h3 {
+            background-color: #091c30;
+            color: #fff;
+            margin: 0;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .mensaje-container ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mensaje-container ul li {
+            padding: 10px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+        }
+
+        .solicitante-message {
+            background-color: #DCF8C6;
+            text-align: left;
+        }
+
+        .usuario-message {
+            background-color: #C2D0FF;
+            text-align: right;
+        }
+
+        /* Estilo para los cuadros diferenciados */
+        .solicitante-box {
+            background-color: #ccc;
+            border: 1px solid #999;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 20px;
+            display: block; /* Cambio aquí */
+            width: 100%; /* Nuevo */
+            margin-right: 5px;
+        }
+
+
+        .solicitante-box:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de mensajes -->
+
+<div class="mensaje-bar">Mensajes</div>
+<div class="mensaje-container">
+    <h3>Mis Mensajes</h3>
+    {% for conversacion in conversaciones_usuario %}
+        <div class="solicitante-box" data-conversacion-id="{{ conversacion.id }}">{{ conversacion.solicitante.nombre }}</div>
+        <div class="conversacion" data-conversacion-id="{{ conversacion.id }}" style="display: none;">
+            <ul>
+                {% for mensaje in conversacion.get_mensajes %}
+                    <li class="{% if mensaje.sender == usuario_actual %}usuario-message{% else %}solicitante-message{% endif %}">{{ mensaje.sender.nombre }}: {{ mensaje.mensaje_texto }}</li>
+                {% empty %}
+                    <li>No hay mensajes.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% empty %}
+        <div>No hay conversaciones.</div>
+    {% endfor %}
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const mensajeBar = document.querySelector('.mensaje-bar');
+        const mensajeContainer = document.querySelector('.mensaje-container');
+
+        mensajeBar.addEventListener('click', function() {
+            if (mensajeContainer.style.display === 'none' || mensajeContainer.style.display === '') {
+                mensajeContainer.style.display = 'block';
+            } else {
+                mensajeContainer.style.display = 'none';
+            }
+        });
+
+        // Función para mostrar los mensajes al hacer clic en el solicitante
+        const solicitanteBoxes = document.querySelectorAll('.solicitante-box');
+        solicitanteBoxes.forEach(function(box) {
+            box.addEventListener('click', function() {
+                const conversacionId = box.dataset.conversacionId;
+                const conversacionDiv = document.querySelector(`.conversacion[data-conversacion-id="${conversacionId}"]`);
+                if (conversacionDiv.style.display === 'none' || conversacionDiv.style.display === '') {
+                    conversacionDiv.style.display = 'block';
+                } else {
+                    conversacionDiv.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
