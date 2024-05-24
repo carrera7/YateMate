@@ -327,7 +327,12 @@ def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objet
 
     return respuesta
 
-
-
-
-
+def enviar_mensaje(request):
+    if request.method == 'POST':
+        conversacion_id = request.POST.get('conversacion_id')
+        mensaje_texto = request.POST.get('mensaje_texto')
+        user_id = request.session['user_id']
+        user = get_object_or_404(User, id=user_id)
+        conversacion = get_object_or_404(Conversacion, id=conversacion_id)
+        Mensajes_chat.objects.create(mensaje_texto=mensaje_texto, conversacion=conversacion, sender=user)
+    return redirect(request.META.get('HTTP_REFERER', '/'))  # Redirige a la página de conversaciones después de enviar el mensaje

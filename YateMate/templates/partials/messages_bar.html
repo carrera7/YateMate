@@ -92,7 +92,11 @@
 <div class="mensaje-container">
     <h3>Mis Mensajes</h3>
     {% for conversacion in conversaciones_usuario %}
-        <div class="solicitante-box" data-conversacion-id="{{ conversacion.id }}">{{ conversacion.solicitante.nombre }}</div>
+        {% if conversacion.dueño_publicacion.id != request.session.user_id %}
+            <div class="solicitante-box" data-conversacion-id="{{ conversacion.id }}">{{ conversacion.dueño_publicacion.nombre }}</div>
+        {% else %}
+            <div class="solicitante-box" data-conversacion-id="{{ conversacion.id }}">{{ conversacion.solicitante.nombre }}</div>
+        {% endif %}
         <div class="conversacion" data-conversacion-id="{{ conversacion.id }}" style="display: none;">
             <ul>
                 {% for mensaje in conversacion.get_mensajes %}
@@ -101,6 +105,12 @@
                     <li>No hay mensajes.</li>
                 {% endfor %}
             </ul>
+            <form method="post" action="{% url 'enviar_mensaje' %}">
+                {% csrf_token %}
+                <input type="hidden" name="conversacion_id" value="{{ conversacion.id }}">
+                <input type="text" name="mensaje_texto" placeholder="Escribe tu mensaje aquí">
+                <button type="submit">Enviar</button>
+            </form>
         </div>
     {% empty %}
         <div>No hay conversaciones.</div>

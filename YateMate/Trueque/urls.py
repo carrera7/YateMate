@@ -17,6 +17,6 @@ urlpatterns = [
     path("solicitud_objeto_valioso/<int:publicacion_id>/", views.solicitud_objeto_valioso, name="solicitud_objeto_valioso"),
     path("rechazar_trueque/<int:solicitud_id>/<str:tipo>/", views.rechazar_trueque, name="rechazar_trueque"),
     path("iniciarSolicitudTrueque/<int:solicitudID>/<int:publicacionID>/<str:tipo_objetos>/", views.iniciar_solicitud_de_trueque, name="iniciarSolicitudDeTrueque"),
-
+    path('enviar_mensaje/', views.enviar_mensaje, name='enviar_mensaje'),
 
 ]
