@@ -43,6 +43,10 @@
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     z-index: 1000;
   }
+  #box-img img {
+    max-height: 55px;
+    margin-top: -10px;
+  }
   #menu ul li:hover ul {
     display: block;
   }
@@ -52,11 +56,11 @@
 <header class="header1">
   <div class="navegacion">
     <div id="box-img">
-      <img src="{% static 'img/iconY.jpg' %}" alt="Logo">
+      <img src="{% static 'img/iconY.jpg' %}" alt="Logo" >
     </div>
     <div class="titulo-cli">
       <h1>YateMate</h1>
-    </div>  
+    </div>
     <nav id="menu">
       <div id="div-nav">
         <ul>
@@ -70,7 +74,7 @@
             {% endif %}
           </li>
           <li>
-            <a href="#">Secciones</a>
+            <a href="#">Menu</a>
             <ul>
               {% if request.path != '/list_publication/' %}
               {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
@@ -79,6 +83,7 @@
                   <li><a href="http://127.0.0.1:8000/list/">Trueque</a></li>
                   <li><a href="http://127.0.0.1:8000/enable_accounts/">Habilitar Cuentas</a></li>
                   <li><a href="http://127.0.0.1:8000/crear_embarcacion/">Cargar Embarcacion</a></li>
+                  <li><a href="http://127.0.0.1:8000/listado_clientes/">Listado de clientes</a></li>
                 {% endif %}
                 {% if not request.session.user_id %}
                   <li><a href="http://127.0.0.1:8000/list_publication_boat/">Trueque</a></li>                

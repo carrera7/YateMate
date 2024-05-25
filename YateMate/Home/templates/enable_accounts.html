@@ -14,10 +14,13 @@ Habilitar Usuarios para ser Clientes
   }
 
   .usuario-bloque {
-    background-color: #f0f0f0;
+    background-color: #ffffff;
     padding: 10px;
+    border: 2px solid #000000;
     border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 1);
+    width: 200px;
+    text-align: center; 
   }
 
   .btn-habilitar {
@@ -31,13 +34,14 @@ Habilitar Usuarios para ser Clientes
 
   /* Estilos para el filtro */
   .filtro-container {
-    margin-top: 20px;
+    margin-bottom: 20px; /* Ajustar la separación del filtro */
   }
 
   .filtro-input {
     padding: 5px;
     border-radius: 3px;
     border: 1px solid #ccc;
+    width: 300px; /* Ajustar el ancho del input de filtro */
   }
 
   .resultado-filtro {
@@ -89,7 +93,13 @@ Habilitar Usuarios para ser Clientes
       }
     });
 
-    resultadoFiltro.textContent = `Mostrando usuario con correo "${filtro}"`;
+    if (filtro) {
+      resultadoFiltro.textContent = `Mostrando usuarios con correo que contiene "${filtro}"`;
+    } else {
+      resultadoFiltro.textContent = '';
+    }
   });
 </script>
 {% endblock %}
+
+

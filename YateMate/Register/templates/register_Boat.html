@@ -6,10 +6,89 @@ Registrar embarcacion
 {% endblock %}
 
 {% block content %}
-<h1>Crear Embarcación</h1>
+<style>
+  .form-container {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    min-height: 70vh; /* Altura mínima para centrar verticalmente */
+    background-color: #f9f9f9; /* Fondo para mejor visualización */
+    padding: 20px; /* Espaciado interno */
+  }
+
+  .form-wrapper {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* Ancho máximo del formulario */
+    width: 100%; /* Ancho completo dentro del contenedor */
+  }
+
+  .preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px;
+  }
+
+  .preview-container img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 5px;
+    margin-top: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+<div class="form-container">
+  <div class="form-wrapper">
+    <h1>Crear Embarcación</h1>
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Registrar Embarcación</button>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Registrar Embarcación</button>
     </form>
+  </div>
+  <div class="preview-container">
+    <p>Vista previa de la imagen</p>
+    <img id="image-preview" src="#" alt="Vista previa" style="display: none;">
+  </div>
+</div>
+
+<script>
+  document.querySelector('input[type="file"]').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById('image-preview');
+        img.src = e.target.result;
+        img.style.display = 'block';
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
 {% endblock %}
+

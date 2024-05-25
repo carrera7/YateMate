@@ -25,6 +25,7 @@ class User(models.Model):
     domicilio = models.CharField(max_length=255)
     fecha_nacimiento = models.DateField()
     cuil_cuit = models.CharField(max_length=20)
+    moroso = models.BooleanField(default=False)
     
     def __str__(self):
         return f'{self.mail}'

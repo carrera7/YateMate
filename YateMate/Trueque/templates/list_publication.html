@@ -59,14 +59,16 @@ Lista publicaciones
     }
 </style>
 <form class="filter-form" method="GET" action="">
-    <div>
-        <label for="tipo">Filtrar por Tipo de Publicación:</label>
-        <select name="tipo" id="tipo">
-            <option value="objetos valiosos">Objetos Valiosos</option>
-            <option value="embarcaciones">Embarcaciones</option>
-        </select>
+    <div style="display: flex; align-items: center;"> <!-- Contenedor de elementos flexibles -->
+        <div style="margin-right: 10px;"> <!-- Divisor para el menú desplegable -->
+            <label for="tipo">Filtrar por Tipo de Publicación:</label>
+            <select name="tipo" id="tipo">
+                <option value="objetos valiosos" {% if request.GET.tipo == 'objetos valiosos' %}selected{% endif %}>Objetos Valiosos</option>
+                <option value="embarcaciones" {% if request.GET.tipo == 'embarcaciones' %}selected{% endif %}>Embarcaciones</option>
+            </select>
+        </div>
+        <button type="submit">Filtrar</button>
     </div>
-    <button type="submit">Filtrar</button>
 </form>
 
 {% if objetos %}
@@ -83,7 +85,7 @@ Lista publicaciones
                     - {{ objeto.embarcacion.tipo }}
                 {% else %}
                     - {{ objeto.tipo }}
-                {% endif %}    
+                {% endif %}
             </h3>
             <p>{{ objeto.descripcion|truncatechars:70 }}</p>
             <a href="{% url 'saber_mas' id=objeto.id tipo_objetos=tipo_objetos %}" class="btn btn-card">Saber más</a>
@@ -92,4 +94,5 @@ Lista publicaciones
 {% else %}
     <p>No se cuenta con Publicaciones.</p>
 {% endif %}
+
 {% endblock %}

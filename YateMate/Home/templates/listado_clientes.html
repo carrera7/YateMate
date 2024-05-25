@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mi Página de Inicio
+{% endblock %}
+
+{% block content %}
+<style>
+    /* Estilo para el contenedor principal */
+    .clientes-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    /* Estilo para cada tarjeta */
+    .card {
+        background-color: #f8f9fa;
+        border: 1px solid #000000;
+        border-radius: 10px;
+        padding: 20px;
+        width: 200px; /* Ancho fijo para un aspecto más uniforme */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    /* Estilo para el título de la tarjeta */
+    .card-title {
+        color: #000000;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    /* Estilo para el botón de la tarjeta */
+    .btn-card, .btn-cardDesactivado {
+        display: inline-block;
+        margin-top: 10px; /* Añadir espacio entre el contenido y los botones */
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .btn-card {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .btn-cardDesactivado {
+        background-color: #454c53;
+        color: #fff;
+    }
+</style>
+
+{% if clientes %}
+    <h2>Clientes</h2>
+    <div class="clientes-container">
+        {% for cliente in clientes %}
+            <div class="card">
+                <h3 class="card-title">{{ cliente.nombre }}</h3>
+                <p>{{ cliente.dni }}</p>
+                {% if cliente.moroso %}
+                    <a href="#" class="btn btn-cardDesactivado">Moroso</a>
+                    <a href="{% url 'cancelar_deuda' cliente.id %}" class="btn btn-card">Cancelar deuda</a>
+                {% else %}
+                    <a href="{% url 'moroso_clientes' cliente.id %}" class="btn btn-card">Moroso</a>
+                    <a href="#" class="btn btn-cardDesactivado">Cancelar deuda</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No hay clientes para mostrar</p>
+{% endif %}
+
+{% endblock %}

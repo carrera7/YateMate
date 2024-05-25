@@ -8,4 +8,7 @@ urlpatterns = [
     path('register/',views.register,name='register'),
     path('enable_accounts/',views.usuarios_inhabilitados,name='enable_accounts'),
     path('habilitar-usuario/<int:usuario_id>/', views.habilitar_usuario, name='habilitar_usuario'),
+    path('listado_clientes/',views.listado_clientes, name='listado_clientes'),
+    path('moroso_clientes/<int:cliente_id>/',views.moroso_clientes, name='moroso_clientes'),
+    path('cancelar_deuda/<int:cliente_id>/',views.cancelar_deuda, name='cancelar_deuda'),
 ]

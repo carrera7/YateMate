@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from Register.models import User
-from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos , MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones)
+from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos , MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones, Conversacion, Mensajes_chat)
 from Register.models import Embarcacion
 from itertools import chain
 from django.core.mail import send_mail
 from YateMate.settings import EMAIL_HOST_USER
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 
 
 def list_publication(request):
@@ -283,3 +284,55 @@ def eliminarEmbarcacion(request, id):
     embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno=request.session['user_id'])
     
     return render(request, "ver_mis_publicaciones.html", {'objetos': objetos, 'embarcaciones': embarcaciones})
+
+
+def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objetos):
+    # Obtener el modelo de publicación y solicitud correcto según el tipo de objetos
+    if tipo_objetos == 'Objetos Valiosos':
+        publicacion_modelo = Publicacion_ObjetoValioso
+        solicitud_modelo = Solicitud_ObjetosValiosos
+        respuesta = solicitudes_trueque_objeto(request, publicacionID)
+    else:
+        publicacion_modelo = Publicacion_Embarcacion
+        solicitud_modelo = Solicitud_Embarcaciones
+        respuesta = solicitudes_trueque_embarcacion(request, publicacionID)
+
+    # Obtener la publicación y la solicitud
+    publicacion = publicacion_modelo.objects.get(id=publicacionID)
+    solicitud = solicitud_modelo.objects.get(id=solicitudID)
+
+    # Cambiar el estado de la solicitud
+    solicitud.iniciado = True
+    solicitud.save()
+
+    # Crear u obtener la conversación entre los usuarios involucrados
+    usuario_interesado = solicitud.usuario_interesado
+    dueño_publicacion = publicacion.embarcacion.dueno
+    conversacion, creado = Conversacion.objects.get_or_create(
+        dueño_publicacion=dueño_publicacion,
+        solicitante=usuario_interesado
+    )
+
+    # Crear el mensaje en la conversación
+    mensaje_solicitud = f"Hola {usuario_interesado.nombre}, estoy interesado para hacer un trueque"
+    mensaje = Mensajes_chat.objects.create(
+        conversacion=conversacion,
+        sender=dueño_publicacion,
+        mensaje_texto=mensaje_solicitud
+    )
+
+    # Cambiar el estado de la publicación
+    publicacion.estado = "Proceso"
+    publicacion.save()
+
+    return respuesta
+
+def enviar_mensaje(request):
+    if request.method == 'POST':
+        conversacion_id = request.POST.get('conversacion_id')
+        mensaje_texto = request.POST.get('mensaje_texto')
+        user_id = request.session['user_id']
+        user = get_object_or_404(User, id=user_id)
+        conversacion = get_object_or_404(Conversacion, id=conversacion_id)
+        Mensajes_chat.objects.create(mensaje_texto=mensaje_texto, conversacion=conversacion, sender=user)
+    return redirect(request.META.get('HTTP_REFERER', '/'))  # Redirige a la página de conversaciones después de enviar el mensaje
