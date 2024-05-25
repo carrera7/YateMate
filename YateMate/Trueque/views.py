@@ -162,7 +162,7 @@ def rechazar_trueque(request, solicitud_id, tipo):
             'tipoObj': tipo,
         }
     if dueño.mail:
-        subject = 'Actualizacion solicitud de trueque'
+        subject = 'Solicitud Rechazada'
         message = f'La solicitud hecha para el trueque { nombre_objeto_embarcacion } fue rechazada'
         send_mail(subject, message, EMAIL_HOST_USER, [dueño.mail])
 

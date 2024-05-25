@@ -10,9 +10,6 @@ def inicializar_datos_ObjetosValiosos(apps, schema_editor):
     # Obtener instancias de User
     user1 = User.objects.get(pk=1)
     user2 = User.objects.get(pk=2)
-    user3 = User.objects.get(pk=3)
-    user4 = User.objects.get(pk=4)
-    user5 = User.objects.get(pk=5)
 
     # Crear las instancias de Publicacion_ObjetoValioso con los dueños correctos
     Publicacion_ObjetoValioso.objects.create(
@@ -31,30 +28,6 @@ def inicializar_datos_ObjetosValiosos(apps, schema_editor):
         dueño=user2,
         foto='o_2.jpeg'
     )
-    Publicacion_ObjetoValioso.objects.create(
-        tipo='Tipo3',
-        marca='Marca3',
-        descripcion='Descripción 3',
-        estado='Vigente',
-        dueño=user3,
-        foto='o_3.jpeg'
-    )
-    Publicacion_ObjetoValioso.objects.create(
-        tipo='Tipo4',
-        marca='Marca4',
-        descripcion='Descripción 4',
-        estado='Finalizado',
-        dueño=user4,
-        foto='o_4.jpeg'
-    )
-    Publicacion_ObjetoValioso.objects.create(
-        tipo='Tipo5',
-        marca='Marca5',
-        descripcion='Descripción 5',
-        estado='Proceso',
-        dueño=user5,
-        foto='o_5.jpeg'
-    )
 
 def inicializar_datos_Embarcaciones(apps, schema_editor):
     Publicacion_Embarcacion = apps.get_model('Trueque', 'Publicacion_Embarcacion')
@@ -62,26 +35,6 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
         embarcacion=1,
         descripcion='Descripción de la Embarcación Fantástica 1',
         estado='Vigente'
-    )
-    Publicacion_Embarcacion.objects.create(
-        embarcacion=2,
-        descripcion='Descripción de la Embarcación Fantástica 2',
-        estado='Proceso'
-    )
-    Publicacion_Embarcacion.objects.create(
-        embarcacion=3,
-        descripcion='Descripción de la Embarcación Fantástica 3',
-        estado='Finalizado'
-    )
-    Publicacion_Embarcacion.objects.create(
-        embarcacion=4,
-        descripcion='Descripción de la Embarcación Fantástica 4',
-        estado='Vigente'
-    )
-    Publicacion_Embarcacion.objects.create(
-        embarcacion=5,
-        descripcion='Descripción de la Embarcación Fantástica 5',
-        estado='Proceso'
     )
 
 class Migration(migrations.Migration):

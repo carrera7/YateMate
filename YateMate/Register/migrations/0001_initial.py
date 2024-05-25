@@ -8,7 +8,7 @@ def inicializar_datos_User(apps, schema_editor):
     user_data = [
         {
             'mail': 'usuario1@mail.com',
-            'tipo': 'Usuario',  # Aquí debes poner la clave foránea a otro Usuario si es relevante para tu aplicación
+            'tipo': 'Cliente',  # Aquí debes poner la clave foránea a otro Usuario si es relevante para tu aplicación
             'password': 'password1',
             'nombre': 'Nombre1',
             'apellido': 'Apellido1',
@@ -35,62 +35,6 @@ def inicializar_datos_User(apps, schema_editor):
             'cuil_cuit': '30345678901',
         },
         {
-            'mail': 'usuario3@mail.com',
-            'tipo': 'Usuario',
-            'password': 'password3',
-            'nombre': 'Nombre3',
-            'apellido': 'Apellido3',
-            'dni': '34567890',
-            'fecha_expiracion_dni': timezone.now(),
-            'nacionalidad': 'Nacionalidad3',
-            'genero': 'Masculino',
-            'domicilio': 'Dirección3',
-            'fecha_nacimiento': date(1970, 1, 1),
-            'cuil_cuit': '40345678901',
-        },
-        {
-            'mail': 'usuario4@mail.com',
-            'tipo': 'Usuario',
-            'password': 'password4',
-            'nombre': 'Nombre4',
-            'apellido': 'Apellido4',
-            'dni': '45678901',
-            'fecha_expiracion_dni': timezone.now(),
-            'nacionalidad': 'Nacionalidad4',
-            'genero': 'Femenino',
-            'domicilio': 'Dirección4',
-            'fecha_nacimiento': date(1985, 1, 1),
-            'cuil_cuit': '50345678901',
-        },
-        {
-            'mail': 'usuario5@mail.com',
-            'tipo': 'Usuario',
-            'password': 'password5',
-            'nombre': 'Nombre5',
-            'apellido': 'Apellido5',
-            'dni': '56789012',
-            'fecha_expiracion_dni': timezone.now(),
-            'nacionalidad': 'Nacionalidad5',
-            'genero': 'Masculino',
-            'domicilio': 'Dirección5',
-            'fecha_nacimiento': date(1995, 1, 1),
-            'cuil_cuit': '60345678901',
-        },
-        {
-            'mail': 'usuario6@mail.com',
-            'tipo': 'Administrador',
-            'password': 'password6',
-            'nombre': 'Nombre6',
-            'apellido': 'Apellido6',
-            'dni': '67890123',
-            'fecha_expiracion_dni': timezone.now(),
-            'nacionalidad': 'Nacionalidad6',
-            'genero': 'Femenino',
-            'domicilio': 'Dirección6',
-            'fecha_nacimiento': date(1975, 1, 1),
-            'cuil_cuit': '70345678901',
-        },
-        {
             'mail': 'usuario7@mail.com',
             'tipo': 'Administrador',
             'password': 'password7',
@@ -104,20 +48,6 @@ def inicializar_datos_User(apps, schema_editor):
             'fecha_nacimiento': date(1982, 1, 1),
             'cuil_cuit': '80345678901',
         },
-        {
-            'mail': 'usuario8@mail.com',
-            'tipo': 'Administrador',
-            'password': 'password8',
-            'nombre': 'Nombre8',
-            'apellido': 'Apellido8',
-            'dni': '89012345',
-            'fecha_expiracion_dni': timezone.now(),
-            'nacionalidad': 'Nacionalidad8',
-            'genero': 'Femenino',
-            'domicilio': 'Dirección8',
-            'fecha_nacimiento': date(1988, 1, 1),
-            'cuil_cuit': '90345678901',
-        }, 
     ]
     
     for data in user_data:
@@ -136,48 +66,6 @@ def inicializar_datos_Embarcaciones(apps, schema_editor):
             'dueno_id': 1,  # Assuming the ID of the related user is 1
             'tipo': 'Velero',
         },
-        {
-            'eslora': 12.0,
-            'manga': 4.0,
-            'calado': 2.0,
-            'matricula': 'CD67890',
-            'nombre_fantasia': 'Embarcacion2',
-            'foto': 'b_2.jpeg',
-            'dueno_id': 2,  # Assuming the ID of the related user is 2
-            'tipo': 'Yate',
-        },
-        {
-            'eslora': 8.5,
-            'manga': 2.5,
-            'calado': 1.5,
-            'matricula': 'EF54321',
-            'nombre_fantasia': 'Embarcacion3',
-            'foto': 'b_3.jpeg',
-            'dueno_id': 3,  # Assuming the ID of the related user is 3
-            'tipo': 'Lancha',
-        },
-        {
-            'eslora': 15.0,
-            'manga': 5.0,
-            'calado': 2.5,
-            'matricula': 'GH09876',
-            'nombre_fantasia': 'Embarcacion4',
-            'foto': 'b_4.jpeg',
-            'dueno_id': 4,  # Assuming the ID of the related user is 4
-            'tipo': 'Barco',
-        },
-        {
-            'eslora': 11.0,
-            'manga': 3.5,
-            'calado': 2.0,
-            'matricula': 'IJ65432',
-            'nombre_fantasia': 'Embarcacion5',
-            'foto': 'b_5.jpeg',
-            'dueno_id': 5,  # Assuming the ID of the related user is 5
-            'tipo': 'Velero',
-        }
-
-        # Agrega más datos de embarcaciones según sea necesario
     ]
     
     for data in embarcacion_data:
