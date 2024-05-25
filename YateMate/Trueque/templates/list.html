@@ -100,6 +100,12 @@ Mi Página de Inicio
             </h3>
             <p>{{ objeto.descripcion|truncatechars:70 }}</p>
             <a href="{% url 'saber_mas' id=objeto.id tipo_objetos=tipo_objetos %}" class="btn btn-card">Saber más</a>
+            {% if request.GET.estado == 'Proceso' %}
+                <a href="#" class="btn btn-card">Finalizar Trueque</a>
+            {% endif %}
+            {% if request.GET.estado == 'Proceso' or request.GET.estado == 'Finalizado' %}
+                <a href="#" class="btn btn-card">Ver mensajes</a>
+            {% endif %}
         </div>
     {% endfor %}
 {% else %}
