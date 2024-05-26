@@ -147,20 +147,6 @@ Registrarse
         color: #3c667d;
     }
 </style>
-
-<div class="container-r">
-    <div class="recuadroLogin-r">
-        <div class="container-form-r" id="container-form">
-            <form method="post" class="form-r" id="formu-r" action="{% url 'register' %}">
-                {% csrf_token %}
-                {{ form.as_p }}  <!-- Muestra el formulario utilizando el formato predeterminado de Django -->
-                <div>
-                    <button type="submit" class="boton-r" id="boton-r">registrarme</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 {% if form.errors %}
     <div style="color: red;">
         {% for field in form %}
@@ -177,4 +163,17 @@ Registrarse
         </div>
     {% endfor %}
 {% endif %}
+<div class="container-r">
+    <div class="recuadroLogin-r">
+        <div class="container-form-r" id="container-form">
+            <form method="post" class="form-r" id="formu-r" action="{% url 'register' %}">
+                {% csrf_token %}
+                {{ form.as_p }}  <!-- Muestra el formulario utilizando el formato predeterminado de Django -->
+                <div>
+                    <button type="submit" class="boton-r" id="boton-r">registrarme</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

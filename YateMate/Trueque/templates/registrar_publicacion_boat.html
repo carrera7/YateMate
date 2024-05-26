@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Registrar Publicación de Objeto Valioso
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+<body>
+    <button type="button" id="publicar-embarcacion">Publicar Objeto Valioso</button>
+    <h1>Registrar Publicación de Embarcacion</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Crear Publicación</button>
+    </form>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const publicarBtn = document.getElementById('publicar-embarcacion');
+        if (publicarBtn) {
+            publicarBtn.addEventListener('click', () => {
+                window.location.href = "http://127.0.0.1:8000/registrar_Objeto_Valioso/";  // Reemplaza 'ruta_de_redireccion' con la URL a la que deseas redirigir
+            });
+        }
+    });
+</script>
+{% endblock %}

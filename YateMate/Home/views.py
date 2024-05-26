@@ -41,6 +41,8 @@ def logout_view(request):
     return redirect('index')
 
 def register(request):
+    if request.GET.get('action') == 'usuario_no_registrado_pu':
+        messages.info(request, 'Para hacer una publicación debes estar registrado.')
     if request.method == 'POST':
         form = CustomUserRegistrationForm(request.POST)
         if form.is_valid():

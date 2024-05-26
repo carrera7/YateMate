@@ -65,11 +65,15 @@
       <div id="div-nav">
         <ul>
           <li>
-              {% if request.path == '/list_publication/' %}
+            {% if request.path == '/list_publication/' or request.path == '/list_publication_boat/' %}
                 <a href="#">Publicaciones</a>
                 <ul>
-                    <li><a href="#">Hacer Publicacion</a></li>
-                    <li><a href="http://127.0.0.1:8000/mis_publicaciones/">Ver mis publicaciones</a></li>
+                    {% if not request.session.user_id %}
+                      <li><a href="http://127.0.0.1:8000/register/?action=usuario_no_registrado_pu">Hacer Publicacion</a></li>
+                    {% else %}
+                      <li><a href="http://127.0.0.1:8000/registrar_Objeto_Valioso/">Hacer Publicacion</a></li>
+                      <li><a href="http://127.0.0.1:8000/mis_publicaciones/">Ver mis publicaciones</a></li>
+                    {% endif %}
                 </ul>
             {% endif %}
           </li>

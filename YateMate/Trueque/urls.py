@@ -18,5 +18,8 @@ urlpatterns = [
     path("rechazar_trueque/<int:solicitud_id>/<str:tipo>/", views.rechazar_trueque, name="rechazar_trueque"),
     path("iniciarSolicitudTrueque/<int:solicitudID>/<int:publicacionID>/<str:tipo_objetos>/", views.iniciar_solicitud_de_trueque, name="iniciarSolicitudDeTrueque"),
     path('enviar_mensaje/', views.enviar_mensaje, name='enviar_mensaje'),
+    path('registrar_Objeto_Valioso/', views.registrar_Objeto_Valioso, name='registrar_Objeto_Valioso'),
+    path('registrar_publicacion_boat/', views.registrar_Embarcacion, name='registrar_publicacion_boat'),
+
 
 ]

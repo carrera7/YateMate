@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render
 from Register.models import User
 from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos , MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones, Conversacion, Mensajes_chat)
@@ -8,6 +9,9 @@ from YateMate.settings import EMAIL_HOST_USER
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
+from .froms import PublicacionObjetoValiosoForm ,PublicacionEmbarcacionForm
+#from django.contrib.auth.decorators import login_required
+
 
 
 def list_publication(request):
@@ -285,7 +289,6 @@ def eliminarEmbarcacion(request, id):
     
     return render(request, "ver_mis_publicaciones.html", {'objetos': objetos, 'embarcaciones': embarcaciones})
 
-
 def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objetos):
     # Obtener el modelo de publicación y solicitud correcto según el tipo de objetos
     if tipo_objetos == 'Objetos Valiosos':
@@ -336,3 +339,27 @@ def enviar_mensaje(request):
         conversacion = get_object_or_404(Conversacion, id=conversacion_id)
         Mensajes_chat.objects.create(mensaje_texto=mensaje_texto, conversacion=conversacion, sender=user)
     return redirect(request.META.get('HTTP_REFERER', '/'))  # Redirige a la página de conversaciones después de enviar el mensaje
+
+def registrar_Objeto_Valioso(request):
+    usuario = User.objects.get(id=request.session['user_id'])  # Asegúrate de que el usuario esté autenticado
+    if request.method == 'POST':
+        form = PublicacionObjetoValiosoForm(usuario, request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Publicación exitosa')  # Enviar mensaje de éxito
+            return redirect('list_publication')  # Redirige a la vista de lista de publicaciones
+    else:
+        form = PublicacionObjetoValiosoForm(usuario)
+    return render(request, 'registrar_publicacion.html', {'form': form})
+
+def registrar_Embarcacion(request):
+    usuario = request.session['user_id']
+    if request.method == 'POST':
+        form = PublicacionEmbarcacionForm(usuario, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Publicación exitosa')  # Enviar mensaje de éxito
+            return redirect('list_publication')
+    else:
+        form = PublicacionEmbarcacionForm(usuario)
+    return render(request, 'registrar_publicacion_boat.html', {'form': form})
