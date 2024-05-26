@@ -1,0 +1,665 @@
+[33mcommit 98f16b81bcd1198fd3b689d8a0c64a0826572c5f[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sun May 26 15:32:13 2024 -0300
+
+    agrego el cargar una publicacion
+
+[33mcommit daed45e4d047c1e83ae25715ac3954a0027c11c6[m
+Merge: 5a052c3 ccef4f3
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 25 20:36:09 2024 -0300
+
+    Resolved merge conflict in db.sqlite3 by keeping remote version
+
+[33mcommit 5a052c3329798e0dcd9d5a5fad40ba733066a43f[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 25 20:33:26 2024 -0300
+
+    presentacion
+
+[33mcommit ccef4f304a811033f592bba72b159cde23b4a0a6[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Sat May 25 19:33:26 2024 -0300
+
+    Agrego botones de finalizar trueque y ver mensajes de las publicaciones como admin
+
+[33mcommit b76841e12b804603b94c785fe6a5bef4a8517b66[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Fri May 24 15:37:33 2024 -0300
+
+    Hago enviar mensaje
+
+[33mcommit dc5117e52ec3ac19d8e903995235fe56bdcf4c98[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Fri May 24 15:09:01 2024 -0300
+
+    actualizo para que en el filtro se vea la opcion seleccionada y no la default
+
+[33mcommit ff366d563c752642860ff53edeb7811a989829f3[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Fri May 24 15:02:31 2024 -0300
+
+    hice la barirta de mensajes, y arregle un problema de solicitudes
+
+[33mcommit c64d38f5048d04228bb09e50871e309caf2bc9ef[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Fri May 24 15:01:33 2024 -0300
+
+    hice la barirta de mensajes, y arregle un problema de solicitudes
+
+[33mcommit c34edcf37cf0967e9aaf6dd2b9dbcedf5488de04[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Fri May 24 14:57:47 2024 -0300
+
+    actualizo
+
+[33mcommit 0492abbcb8cd96f0b7ad6bb2f98ac51abd0d1944[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Thu May 23 12:31:36 2024 -0300
+
+    actualizo settings.py para que se ponga bien la hora
+
+[33mcommit 6cacf17e622a4121bb3cc47244e3c232457cd8f3[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Thu May 23 12:22:05 2024 -0300
+
+    actualizo BD
+
+[33mcommit c5306cc97fe5a280e31aa65b660b0b39111b0a70[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Thu May 23 12:21:09 2024 -0300
+
+    cambio el guardado del mensaje a la nueva BD y arranco las conversaciones
+
+[33mcommit 790c8e0d5d3c315caf5c964ea66e28851b78c488[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Thu May 23 11:43:28 2024 -0300
+
+    Agrego la barra de los mensajes - solo disponible para usuarios y clientes
+
+[33mcommit c21638790fd219b367724a39515033c7dd1e6de8[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Thu May 23 11:17:38 2024 -0300
+
+    Creo BD de mensajes
+
+[33mcommit 481f84696ec3826a3cffcc6042462dd0676f2150[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 18:04:26 2024 -0300
+
+    Cambio estilo del mostrado de clientes
+
+[33mcommit 31e23859ef9e735c5e3660708b031d41de0bd5fb[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 17:58:06 2024 -0300
+
+    Actualice para poner el form en el medio y una previsualización de la imagen a seleccionar
+
+[33mcommit 45276d8f1c6760e7ca265066351d1aba08d7b4b6[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 17:51:04 2024 -0300
+
+    Cambio visual de los usuarios, los pongo en boxes
+
+[33mcommit 13892460e9b5a9c624854d4afe7e63382550f92c[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 17:35:15 2024 -0300
+
+    Hago cambio visual de los filtros para que esten juntos y para que las opciones elegidas se mantengan cuando se apreta filtrar. Y subo un poquito la imagen de yatemate
+
+[33mcommit c2b770d8ce3c0de347e85ae8279203a28e56cc7d[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 15:21:42 2024 -0300
+
+    migraciones
+
+[33mcommit 0d307f5bf30e1397247701c3567fa8087400260f[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 15:20:43 2024 -0300
+
+    Agregue las HU de listado de clientes, de seleccionar moroso y cancelar deuda
+
+[33mcommit 8c9f6b3e8d93df54528382d453766ef3ebd8f200[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 14:35:13 2024 -0300
+
+    agrego el campo de moroso
+
+[33mcommit a2cfcedbf30d2e11c0bc472694343b051be5c4fe[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 14:29:08 2024 -0300
+
+    Movi el botón de filtrar al lado del filtro (es solo visual no cambie funcionalidades)
+
+[33mcommit 0838b3bb582310e526a93d1728390aef494143f6[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 14:19:52 2024 -0300
+
+    Ahora si termino iniciar solicitud - Agregue el desactivado del boton, cuando ya fue iniciada y agregue una columna a la BD de solicitudes para hacer esto posible
+
+[33mcommit d0ba0111cda9804407b6b8ddfd4e3bd2e0e6bbe7[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 12:26:57 2024 -0300
+
+    Termino iniciar solicitud
+
+[33mcommit 38e181ccd5700698f6379e401f61512a5898d39a[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 22 12:08:56 2024 -0300
+
+    Iniciar solicitud de trueque
+
+[33mcommit 453b734e5ad88f851945e94e1692bc8f92506cc4[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 18 22:57:08 2024 -0300
+
+    arreglo rechazar trueque
+
+[33mcommit 8c91f98e87f79d6e49c2a52e67df246dfeaa343a[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 18 22:05:47 2024 -0300
+
+    modificacion
+
+[33mcommit c24198a6bac6ae8f26728c318688f167338e371f[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 18 21:00:57 2024 -0300
+
+    agrego mensaje
+
+[33mcommit 430c18564631162d1d625015abbd085842e09ddd[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 18 19:51:07 2024 -0300
+
+    arreglo errores
+
+[33mcommit bf92aa11e5a846fd01ae42228fb9971367d97286[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 18 18:52:24 2024 -0300
+
+    modifico
+
+[33mcommit 42d087a8921fa127d5ff8d3d01873825c601a412[m
+Author: Ayelen Andereggen <ayelenandereggen@gmail.com>
+Date:   Sat May 18 17:14:01 2024 -0300
+
+    cambio el tamaño de las imagenes del ver mas y el texto de un boton
+
+[33mcommit d47d4a70d30107683d0f72d06d0e84a1735803d0[m
+Author: Ayelen Andereggen <ayelenandereggen@gmail.com>
+Date:   Sat May 18 15:12:29 2024 -0300
+
+    validacion de la constraseña y mensajes de error
+
+[33mcommit 4c14d2a07ae4d38142982e1ce424e01dd869f0c7[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 17 23:17:34 2024 -0300
+
+    modifico
+
+[33mcommit 94f5ef244c483658911f058ff932b4c456c4eb1e[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 17 22:58:35 2024 -0300
+
+    modificacion en ayuda en registro
+
+[33mcommit c27c655d4489bfd0541f2e3d14d5012685d6b4c1[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 17 22:11:41 2024 -0300
+
+    modificacion en ayuda en registro
+
+[33mcommit 614dadea891e9a00454174880af3543333b9b3a4[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Thu May 16 23:36:00 2024 -0300
+
+    modificacion en ayuda en registro
+
+[33mcommit e5cd3203af29db9e2b4937a0db35d1ca0178d8b5[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Thu May 16 22:38:20 2024 -0300
+
+    arreglo edad
+
+[33mcommit 319e45903e53cb63505489b37923c3e2a6472de2[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 17 01:00:38 2024 -0300
+
+    modificacion parte caro
+
+[33mcommit 9899aafc6bcc1d3b67e8dc108f42b20373f21538[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 17 00:36:38 2024 -0300
+
+    modifico html register
+
+[33mcommit 262af7b371c71f51636b85bd678a8b9a0dfaa2ad[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 17 00:25:36 2024 -0300
+
+    arreglo funcion de registro
+
+[33mcommit 44b59439958ec6a742aa77cb4f5eddc30f525813[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Thu May 16 23:52:18 2024 -0300
+
+    registro de Embarcacion fin
+
+[33mcommit 0b33bbf923037eaf253e22286d734743c0fad5e2[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Thu May 16 23:19:30 2024 -0300
+
+    modificaion cesar
+
+[33mcommit 9924176b93c018e3f392a777bd9d52f1294b53b4[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Thu May 16 16:36:01 2024 -0300
+
+    termino HU de rechazar solicitudes de trueque
+
+[33mcommit 7ce4b98f160f70b711f543a933c2160202b5ba04[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Thu May 16 15:00:20 2024 -0300
+
+    termino HU de ver solicitudes de mis publicaciones
+
+[33mcommit 39313acb08c6bd7676dc83901915bc854840f609[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Thu May 16 14:44:41 2024 -0300
+
+    termino HU de ver solicitudes de mis publicaciones
+
+[33mcommit ff3b8ec53c701062eed0caaaa3da7f831e4901d2[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 15 19:08:39 2024 -0300
+
+    agrego funcion cliente en home
+
+[33mcommit 303aeae6d0fa7d781912d8bf01e3bc3fe3055257[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 15 18:10:08 2024 -0300
+
+    registro de embarcaciones
+
+[33mcommit bbc3ae93cea0f19719546480c51a1536c0719154[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 15 17:08:01 2024 -0300
+
+    finalizxacion de apartado trueques
+
+[33mcommit 56ac9ec95f8720f08a5178639076a86c3e700a38[m
+Merge: 64aa237 3b976ae
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 15 13:19:18 2024 -0300
+
+    Merge branch 'main' of github.com:carrera7/YateMate
+
+[33mcommit 64aa23700f4ac5e025334cda742c084d67f2bbba[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 15 13:05:09 2024 -0300
+
+    agrego html de solisitud de trueque
+
+[33mcommit 3b976ae320dbf753567708b0349a88167b334f2a[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Wed May 15 12:57:56 2024 -0300
+
+    solicitudes
+
+[33mcommit 7e8e193e083f5ed07acf815ff875dcaf2805a8e4[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 15 11:46:54 2024 -0300
+
+    solucion fotos
+
+[33mcommit 2a5a87c5bf173fb702d843db41318e5bc619af97[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 15 01:01:14 2024 -0300
+
+    problemas en el html pero hay loguica
+
+[33mcommit 88af05deab942bf6355454d74d2b1c16b0e011a4[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 14 21:41:16 2024 -0300
+
+    modifico detalles de imagenes y eliminar publicaciones
+
+[33mcommit 7306e4f2e24c4ea1fd90dc9721808eef4c200125[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 14 21:14:46 2024 -0300
+
+    modifico a ricardo foert
+
+[33mcommit 153106e2f8cbce7e151866e6ebce059ad7404426[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 14 20:43:11 2024 -0300
+
+    modifico static
+
+[33mcommit 7db72b24b4b659d985caac69d753156d7bc394d5[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 14 20:31:05 2024 -0300
+
+    arreglo registro
+
+[33mcommit 5761f6afff89aef2e6f45a7d8ea00367d1cbc73a[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 14 20:01:53 2024 -0300
+
+    agrego envio de mail
+
+[33mcommit de905aa54a3d22f1bec7425199c69f639f047938[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Tue May 14 16:02:53 2024 -0300
+
+    cosillas
+
+[33mcommit 2068112f988e791c27fe0079290a573ce8fb8b37[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Tue May 14 15:52:06 2024 -0300
+
+    termino ver mis publicaciones
+
+[33mcommit 760cc4f4eaee0e1c767fbfa356831b6082978cdf[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Tue May 14 15:01:42 2024 -0300
+
+    arreglo falla ortografica
+
+[33mcommit 8384198a3082b94b2649367e071c6764f8b2589c[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Tue May 14 14:28:51 2024 -0300
+
+    Agrego eliminacion de publicacion de objetos y embarcaciones
+
+[33mcommit b2726c27d87680e64e524e71328478de14dfd1f4[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 14 13:20:03 2024 -0300
+
+    arreglo el registro
+
+[33mcommit c320e95f61046e384f8fa0274e45da7beab64ed2[m
+Merge: bc05581 9ac2b03
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 14 13:11:29 2024 -0300
+
+    solucion conflictos
+
+[33mcommit bc055810a6b083182d32d60fe5099e04d9ced657[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 14 13:09:26 2024 -0300
+
+    imagenes para la publicaciones
+
+[33mcommit 9ac2b03c63654f1a30841979544e29ce21680061[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Tue May 14 11:57:40 2024 -0300
+
+    cambio titulo
+
+[33mcommit ea06e4590787b06e42d0bb6dbc495b06a94cdbf6[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Tue May 14 11:57:00 2024 -0300
+
+    Agrego botones de las publicaciones
+
+[33mcommit ff3b0b51fdfcdc0d40d833e166c8632efabc0699[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Tue May 14 11:47:44 2024 -0300
+
+    arreglo un error de import
+
+[33mcommit bd1ab24847dbf2793267470ce2cca13c6c98b9c6[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Tue May 14 11:07:07 2024 -0300
+
+    muestra mis publicaciones
+
+[33mcommit af8f5be9f5756958744a795d9f8b12f7d91429bf[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 14 01:36:14 2024 -0300
+
+    saber_mas
+
+[33mcommit faaa4685d3a6572f64bb8d66284c16b5dcdbbca8[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 14 00:10:14 2024 -0300
+
+    correciones
+
+[33mcommit 815b5876e4577e35a790d6056e04d24ad1205115[m
+Merge: 877bed4 6dbe969
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Mon May 13 17:08:54 2024 -0300
+
+    Merge branch 'main' of github.com:carrera7/YateMate
+
+[33mcommit 877bed4b7aa84e8e95d6d72e0bacbd94286a534c[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Mon May 13 17:01:51 2024 -0300
+
+    agrego apartado de habilitar cuenta
+
+[33mcommit 6dbe9692bff30832092b8641919863a2850a9bb1[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Mon May 13 15:55:47 2024 -0300
+
+    mostrar objetos valiosos de usuario
+
+[33mcommit 7729b956a2711e00a67915b6d3f4ae914c81f536[m
+Merge: f4c9219 0a70ae1
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Mon May 13 15:08:30 2024 -0300
+
+    Merge remote-tracking branch 'origin/main'
+
+[33mcommit f4c92193aa75d1f0fe8d1e0cfd74f998236ec6e5[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Mon May 13 15:07:56 2024 -0300
+
+    Agrego que aparezca los botones en sesion iniciada
+
+[33mcommit ae62e3cdd2e5c4ff11943feba539ca3d6a29b94b[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Mon May 13 15:04:35 2024 -0300
+
+    Agrego que aparezca los botones en sesion iniciada
+
+[33mcommit 0a70ae14d84d404e90f7df93cc907bf81cb14a41[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Mon May 13 14:40:44 2024 -0300
+
+    funciona el register
+
+[33mcommit 32a5c6f9a2b52f808673f030dc4afd11c7a71199[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sun May 12 21:11:47 2024 -0300
+
+    agrego parte de cesar (todavia falta)
+
+[33mcommit e6a4bb9ad8ff267980a0584fc1f66ae623f788c7[m
+Author: Ayelen Andereggen <ayelenandereggen@gmail.com>
+Date:   Sat May 11 23:59:19 2024 -0300
+
+    modifico el .gitignore
+
+[33mcommit 3181216801b231b534e210d643a0612caeaa1341[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Sat May 11 10:53:39 2024 -0300
+
+    cambio el link del boton por cambio de nombre de pagina
+
+[33mcommit c68bf5642e9dd1bf4e2da3eb1e4d22732007ff5d[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 11 10:11:39 2024 -0300
+
+    arrglo problema de caro
+
+[33mcommit 93df28d5268bf3a6610759071cb1f727fbd801bb[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 11 09:27:12 2024 -0300
+
+    funcionalidad depublicaciones finalizada
+
+[33mcommit 734b72f87b14516cbecaca10966093aafecfe311[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 11 02:10:44 2024 -0300
+
+    agrego sesiones a los trueques
+
+[33mcommit 2db353cd184887230e925e2c60e6ec0699fb85c3[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Sat May 11 01:02:51 2024 -0300
+
+    inicio/cierre de sesion funcionando
+
+[33mcommit 2d00460b2ca144eae31fb207d7ce2e03b2703aee[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 10 23:53:57 2024 -0300
+
+    antes de errores
+
+[33mcommit a3df02ab7e0879fd421e3883e561412670445375[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 10 23:35:06 2024 -0300
+
+    modifico el heard
+
+[33mcommit 2a8f14efcb66b59118bd6355d32680c30c5497d3[m
+Merge: a97131f 55a12d3
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 10 20:25:46 2024 -0300
+
+    bajo cambios caro
+
+[33mcommit a97131f0d34e9896aa9b5918820cbd3c5bfa3e33[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 10 20:19:10 2024 -0300
+
+    agrego modelos usuario(USUARIO,ADMINISTRADOR) Y embarcaciones
+
+[33mcommit 55a12d3bd058423c9529f1710cc64e98aa2b8b57[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Fri May 10 18:40:04 2024 -0300
+
+    linkeo las pantallas a sus botones
+
+[33mcommit 62a909189c3b631c87a3eb668e25139a55833111[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Fri May 10 18:39:44 2024 -0300
+
+    Agrego las pantallas de ver mis publicaciones y mis solicitudes
+
+[33mcommit ca99f6a6a0ef21259a5e04a7d938887a043db4da[m
+Author: CaroSchwab97 <carolina.schwab190496@alumnos.info.unlp.edu.ar>
+Date:   Fri May 10 17:22:46 2024 -0300
+
+    Agregado de botones de trueques y publicaciones y cambio en el menu de secciones para que "trueque" no se muestre en su propia seccion
+
+[33mcommit 7399f70ef0e10478c21bd76d764c44052e56e2f6[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 10 00:50:58 2024 -0300
+
+    agrego el tema de filtros
+
+[33mcommit b460661e9ec47f6ed84003c425401d02204fdc11[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Thu May 9 21:19:50 2024 -0300
+
+    agrego el html de registrarse
+
+[33mcommit 3b27b0d1531099a1dcf8129616d1befa94821785[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Thu May 9 21:00:59 2024 -0300
+
+    agrego estilo en secion Tueques
+
+[33mcommit 6778a1305cf51f7f1f62659237bba985a91cf7d3[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 8 22:46:41 2024 -0300
+
+    agrego funcionalidad de listado de objetos valiosos
+
+[33mcommit 7f4728a01c3fcc8c1e408b16aba407d1e352af81[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 8 22:26:10 2024 -0300
+
+    cargo base de datos
+
+[33mcommit eff083a360645c3efe0e7896bf9ddc4e276cce07[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 8 19:11:30 2024 -0300
+
+    creo la BD y Admin
+
+[33mcommit 02d6cfba4580dafdd340d52113165491a8777012[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Wed May 8 13:17:56 2024 -0300
+
+    agrego el app Trueque
+
+[33mcommit 996ea22bbffa35eaf8e3b1b9e8284a12468d529a[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 7 23:46:00 2024 -0300
+
+    ingreso a la paguina
+
+[33mcommit 9cfbe2a3ec38d5ed28250b23825644f9edb1367c[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 7 22:46:25 2024 -0300
+
+    antes de modificar el contenido de home
+
+[33mcommit 1e71e2b669bb1394accdc4264afc30998de4d3fb[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 7 22:08:57 2024 -0300
+
+    arreglo de estilos
+
+[33mcommit 4a953451441a8cfa0bcf3b9055dec2130134d293[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 7 21:20:18 2024 -0300
+
+    agrego conexiones static
+
+[33mcommit 678501ee0dc8a59b8aa6760490040d5920405b58[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 7 11:38:51 2024 -0300
+
+    modificacions de templates
+
+[33mcommit e5651b1d9037bc1f36fd8dd507b7f0a4362f3cb7[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Tue May 7 01:22:34 2024 -0300
+
+    agrego funciones de cesar
+
+[33mcommit e4281fac553d01fe094349cc5d66bbfd58a1931c[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 3 14:35:15 2024 -0300
+
+    agrego el requirements
+
+[33mcommit 1598a575baff0f57c79e47ecf60ccbc1fe80f610[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 3 14:20:16 2024 -0300
+
+    agrego urls
+
+[33mcommit 46b8a31c34930e9f003ea1b2c252c97c0c51916f[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 3 13:09:00 2024 -0300
+
+    agrego Readme
+
+[33mcommit 99c61039ff5e1a9b10f0080d376a64677af282a9[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 3 13:07:25 2024 -0300
+
+    agrego .gitignare
+
+[33mcommit fb7d74585d8549c4154b3b1c66022c12b693fcef[m
+Author: carrera7 <josuecarrera788@gmail.com>
+Date:   Fri May 3 13:04:06 2024 -0300
+
+    Creacion de YateMate

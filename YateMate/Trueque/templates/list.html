@@ -29,6 +29,7 @@ Mi Página de Inicio
         padding: 5px 10px;
         text-decoration: none;
         border-radius: 3px;
+        margin-bottom: 10px;
     }
 
     /* Estilo para el formulario de filtro */
@@ -57,6 +58,14 @@ Mi Página de Inicio
         border: none;
         border-radius: 3px;
         cursor: pointer;
+    }
+
+    .error-message {
+        background-color: #ffdddd;
+        color: #d8000c;
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
     }
 </style>
 
@@ -92,7 +101,7 @@ Mi Página de Inicio
                 {% else %}
                     {{ objeto.marca }}
                 {% endif %}
-                {% if objeto.embarcacion.tipo%}
+                {% if objeto.embarcacion.tipo %}
                     - {{ objeto.embarcacion.tipo }}
                 {% else %}
                     - {{ objeto.tipo }}
@@ -100,9 +109,11 @@ Mi Página de Inicio
             </h3>
             <p>{{ objeto.descripcion|truncatechars:70 }}</p>
             <a href="{% url 'saber_mas' id=objeto.id tipo_objetos=tipo_objetos %}" class="btn btn-card">Saber más</a>
-            {% if request.GET.estado == 'Proceso' %}
-                <a href="#" class="btn btn-card">Finalizar Trueque</a>
-            {% endif %}
+
+            {% if request.GET.estado == 'Proceso'%}
+                <a href="{% url 'finalizar_trueque' publicacion_id=objeto.id tipo_obj=tipo_objetos %}" class="btn btn-card finalizar-trueque">Finalizar Trueque</a>
+             {% endif %}
+
             {% if request.GET.estado == 'Proceso' or request.GET.estado == 'Finalizado' %}
                 <a href="#" class="btn btn-card">Ver mensajes</a>
             {% endif %}

@@ -20,6 +20,5 @@ urlpatterns = [
     path('enviar_mensaje/', views.enviar_mensaje, name='enviar_mensaje'),
     path('registrar_Objeto_Valioso/', views.registrar_Objeto_Valioso, name='registrar_Objeto_Valioso'),
     path('registrar_publicacion_boat/', views.registrar_Embarcacion, name='registrar_publicacion_boat'),
-
-
+    path('finalizar_trueque/<int:publicacion_id>/<str:tipo_obj>/', views.finalizar_trueque, name='finalizar_trueque'),
 ]

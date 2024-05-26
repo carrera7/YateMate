@@ -12,6 +12,7 @@ from django.shortcuts import redirect
 from .froms import PublicacionObjetoValiosoForm ,PublicacionEmbarcacionForm
 #from django.contrib.auth.decorators import login_required
 
+from django.contrib import messages
 
 
 def list_publication(request):
@@ -34,19 +35,21 @@ def list_publication_boat(request):
     embarcaciones_vigentes = Publicacion_Embarcacion.objects.filter(estado='Vigente')
     return render(request, "list_publication_boat.html", {'embarcaciones_vigentes': embarcaciones_vigentes,'tipo_objetos': 'Embarcaciones',})
 
+
 def list(request):
+    # Consultar todas las publicaciones de objetos valiosos y embarcaciones
     objetos_valiosos = Publicacion_ObjetoValioso.objects.all()
     embarcaciones = Publicacion_Embarcacion.objects.all()
 
     # Obtener el filtro de tipo y estado de la solicitud GET
-    tipo_filtro = request.GET.get('tipo','objetos valiosos')  # Valor por defecto 'objetos valiosos'
-    estado_filtro = request.GET.get('estado','Vigente')  # Valor por defecto 'Vigente'
+    tipo_filtro = request.GET.get('tipo', 'objetos valiosos')  # Valor por defecto 'objetos valiosos'
+    estado_filtro = request.GET.get('estado', 'Vigente')  # Valor por defecto 'Vigente'
 
-    if tipo_filtro == " ":
+    if tipo_filtro == "":
         tipo_filtro = 'objetos valiosos'
-    if estado_filtro == " ":
-          estado_filtro = 'Vigente'   
-            
+    if estado_filtro == "":
+        estado_filtro = 'Vigente'
+
     # Filtrar objetos_valiosos y embarcaciones según el tipo y estado seleccionados
     if tipo_filtro == 'objetos valiosos':
         objetos = objetos_valiosos.filter(estado=estado_filtro)
@@ -55,6 +58,14 @@ def list(request):
 
     # Agregar el tipo al contexto para pasarlo al HTML
     tipo_objetos = 'Objetos Valiosos' if tipo_filtro == 'objetos valiosos' else 'Embarcaciones'
+
+    # Verificar si se ha finalizado un trueque y recargar las publicaciones si es necesario
+    if request.session.get('trueque_finalizado', False):
+        del request.session['trueque_finalizado']  # Eliminar la clave de la sesión
+        return redirect('list')  # Redirigir para volver a cargar las publicaciones
+
+    user_id = request.session['user_id']
+    user = get_object_or_404(User, id=user_id)
 
     # Renderizar el HTML con los datos filtrados o no
     return render(request, 'list.html', {
@@ -330,6 +341,7 @@ def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objet
 
     return respuesta
 
+
 def enviar_mensaje(request):
     if request.method == 'POST':
         conversacion_id = request.POST.get('conversacion_id')
@@ -363,3 +375,20 @@ def registrar_Embarcacion(request):
     else:
         form = PublicacionEmbarcacionForm(usuario)
     return render(request, 'registrar_publicacion_boat.html', {'form': form})
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+def finalizar_trueque(request, publicacion_id, tipo_obj):
+    if tipo_obj == 'Objetos Valiosos':
+        publi = get_object_or_404(Publicacion_ObjetoValioso, id=publicacion_id)
+        user = publi.dueño
+    else:
+        publi = get_object_or_404(Publicacion_Embarcacion, id=publicacion_id)
+        user = publi.embarcacion.dueno
+
+    if user.moroso:
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+    else:
+        publi.estado = "Finalizado"
+        publi.save()
+        return redirect(request.META.get('HTTP_REFERER', '/'))
