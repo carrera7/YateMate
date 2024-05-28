@@ -73,7 +73,7 @@ Mis solicitudes
                     {% if solicitud.iniciado %}
                         <a href="#" class="btn btn-cardDesactivado">Iniciar Trueque</a>
                     {% else %}
-                        <a href="{% url 'iniciarSolicitudDeTrueque' solicitud.id solicitud.publicacion_id tipoObj %}" class="btn btn-card iniciarTruequeBtn" data-url="{% url 'iniciarSolicitudDeTrueque' solicitud.id solicitud.publicacion_id tipoObj %}">Iniciar Trueque</a>
+                        <a href="{% url 'iniciarSolicitudDeTrueque' solicitud.id solicitud.publicacion_id tipoObj %}" class="btn btn-card iniciarTruequeBtn" data-url="{% url 'iniciarSolicitudDeTrueque' solicitud.id solicitud.publicacion_id tipoObj %}">Aceptar Trueque</a>
                     {% endif %}
                 </div>
             {% endfor %}
