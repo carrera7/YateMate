@@ -24,4 +24,5 @@ urlpatterns = [
     path("", include("Home.urls")),
     path("", include("Trueque.urls")),
     path("", include("Register.urls")),
+    path("", include("Amarra.urls"))
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

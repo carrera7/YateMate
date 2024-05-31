@@ -36,6 +36,7 @@ CONVERSACIONES_USUARIO = []
 INSTALLED_APPS = [
     'Register.apps.RegisterConfig',
     'Trueque.apps.TruequeConfig',
+    'Amarra.apps.AmarraConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

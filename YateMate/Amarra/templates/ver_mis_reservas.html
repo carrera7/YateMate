@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Ver las Reservas de mi publicacion
+{% endblock %}
+
+{% block content %}
+<style>
+    /* Estilo para cada tarjeta */
+    .card {
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+
+    /* Estilo para el título de la tarjeta */
+    .card-title {
+        color: #007bff;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    /* Estilo para el botón de la tarjeta */
+    .btn-card {
+        background-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+
+    /* Estilo para el botón de la tarjeta cuando hay solicitudes */
+    .btn-cardVerde {
+        background-color: #28a745;
+        color: #fff;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+
+    /* Estilo para el botón de la tarjeta cuando no hay solicitudes */
+    .btn-cardRojo {
+        background-color: #dc3545;
+        color: #fff;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+</style>
+
+    {% if objetos %}
+    <h2>Mis publicaciones</h2>
+        {% for objeto in objetos %}
+            <div class="card">
+                <p>{{ objeto.ubicacion }}</p>
+                <p>{{objeto.inicio}}  -  {{objeto.fin}}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endif %}
+{% else %}
+    <p>Usted no cuenta con ninguna publicación.</p>
+{% endif %}
+
+{% endblock %}

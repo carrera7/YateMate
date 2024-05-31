@@ -11,7 +11,7 @@ class PublicacionObjetoValiosoForm(forms.ModelForm):
 
     def __init__(self, usuario, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.usuario = usuario  # Guardamos el usuario para usarlo en el método save
+        self.usuario=usuario = usuario  # Guardamos el usuario para usarlo en el método save
 
     def save(self, commit=True):
         instance = super().save(commit=False)
