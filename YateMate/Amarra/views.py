@@ -8,7 +8,7 @@ from Register.models import User
 def list_amarra(request):
     #obtengo todos los alquileres 
     #sino   
-    Amarras = Publicacion_Amarra.objects.filter()        
+    Amarras = Publicacion_Amarra.objects.all()       
     return render(request, "list_amarra.html", {'objetos': Amarras})
 
 
