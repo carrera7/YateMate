@@ -8,6 +8,7 @@ Ver Amarras
 <style>
     /* Estilo para cada tarjeta */
     .card {
+        display: block; /* Mostrar todas las tarjetas inicialmente */
         background-color: #f8f9fa;
         border: 1px solid #ced4da;
         border-radius: 5px;
@@ -34,9 +35,6 @@ Ver Amarras
     /* Estilo para el formulario de filtro */
     .filter-form {
         margin-bottom: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
 
     .filter-form label {
@@ -44,10 +42,11 @@ Ver Amarras
         font-weight: bold;
     }
 
-    .filter-form select {
+    .filter-form input[type="date"] {
         padding: 5px;
         border-radius: 3px;
         border: 1px solid #ced4da;
+        margin-right: 10px;
     }
 
     .filter-form button {
@@ -57,18 +56,76 @@ Ver Amarras
         border: none;
         border-radius: 3px;
         cursor: pointer;
+        margin-left: 10px;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 0.8rem;
+        margin-top: 5px;
     }
 </style>
 
-
 {% if objetos %}
     <h2>Publicaciones</h2>
-    {% for amarra in  objetos %}
-        <div class="card">
-            <h3 class="card-title">{{ amarra.ubicacion }} - {{ amarra.precio }}</h3>
-            <p>{{ amarra.fecha_inicio }}- {{amarra.fecha_fin}}</p>
+
+    <!-- Formulario de filtro -->
+    <form id="filtroForm" method="GET" action="">
+        <div class="filter-form">
+            <label for="fecha_inicio">Fecha de inicio:</label>
+            <input type="date" id="fecha_inicio" name="fecha_inicio" min="{{ fecha_actual }}" max="{{ ultima_fecha }}" />
+            <label for="fecha_fin">Fecha de fin:</label>
+            <input type="date" id="fecha_fin" name="fecha_fin" min="{{ fecha_actual }}" max="{{ ultima_fecha }}" />
+            <button type="button" onclick="validarFechas()">Filtrar</button>
+            <button type="button" onclick="limpiarFiltros()">Limpiar filtros</button>
+            <div id="error-msg" class="error-message"></div>
         </div>
-    {% endfor %}
+    </form>
+
+    <div id="amarras-container">
+        {% for amarra in objetos %}
+            <div class="card" data-fecha="{{ amarra.fecha_inicio }}">
+                <h3 class="card-title">{{ amarra.ubicacion }} - {{ amarra.precio }}</h3>
+                <p>{{ amarra.fecha_inicio }} - {{ amarra.cant_dias }} días</p>
+                {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
+                    <a href="#" class="btn-card">Reservar</a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function validarFechas() {
+            let fechaInicio = document.getElementById("fecha_inicio").value;
+            let fechaFin = document.getElementById("fecha_fin").value;
+            let errorMsg = document.getElementById("error-msg");
+            errorMsg.innerHTML = ""; // Limpiar mensajes de error anteriores
+
+            let fechaActual = new Date().toISOString().slice(0, 10);
+            if (fechaInicio === "" || fechaFin === "") {
+                errorMsg.innerHTML = "Debe seleccionar ambas fechas.";
+                return;
+            }
+
+            if (fechaInicio > fechaFin) {
+                errorMsg.innerHTML = "La fecha de inicio no puede ser posterior a la fecha de fin.";
+                return;
+            }
+
+            if (fechaInicio < fechaActual || fechaFin < fechaActual) {
+                errorMsg.innerHTML = "No se permiten fechas pasadas.";
+                return;
+            }
+
+            // Enviar el formulario si las fechas son válidas
+            document.getElementById("filtroForm").submit();
+        }
+
+        function limpiarFiltros() {
+            window.location.href = "{% url 'list_amarra' %}"; // Redirigir a la vista sin filtros
+        }
+    </script>
+
 {% else %}
     <p>No hay amarras temporales disponibles</p>
 {% endif %}
