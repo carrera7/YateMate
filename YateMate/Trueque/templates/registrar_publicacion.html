@@ -6,6 +6,41 @@ Registrar Publicación de Objeto Valioso
 {% endblock %}
 
 {% block content %}
+<style>
+    .btn-card {
+        background-color: #007bff;
+        color: #fff;
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+    }
+  .form-container {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    min-height: 70vh; /* Altura mínima para centrar verticalmente */
+    background-color: #f9f9f9; /* Fondo para mejor visualización */
+    padding: 20px; /* Espaciado interno */
+  }
+
+  .form-wrapper {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px; /* Ancho máximo del formulario */
+    width: 100%; /* Ancho completo dentro del contenedor */
+  }
+  h1 {
+        white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+        text-align: center; /* Centrar el texto */
+  }
+  textarea {
+      width: 100%; /* Ancho completo dentro del contenedor */
+      min-height: 50px; /* Altura mínima del textarea */
+      resize: vertical; /* Permite cambiar el tamaño verticalmente */
+  }
+</style>
 {% if messages %}
     <div class="messages">
         {% for message in messages %}
@@ -14,15 +49,19 @@ Registrar Publicación de Objeto Valioso
     </div>
 {% endif %}
 <body>
-    {% if request.session.user_type == 'Cliente' %}
-        <button type="button" id="publicar-embarcacion">Publicar Embarcación</button>
-    {% endif %}
-    <h1>Registrar Publicación de Objeto Valioso</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Registrar</button>
-    </form>
+    <div class="form-container">
+      <div class="form-wrapper">
+        {% if request.session.user_type == 'Cliente' %}
+            <button type="button" id="publicar-embarcacion">Publicar Embarcación</button>
+        {% endif %}
+        <h1>Registrar Publicación de Objeto Valioso</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-card">Registrar</button>
+        </form>
+      </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const publicarBtn = document.getElementById('publicar-embarcacion');
