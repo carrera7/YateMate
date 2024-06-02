@@ -93,7 +93,16 @@
                   <li><a href="http://127.0.0.1:8000/list_publication_boat/">Trueque</a></li>                
                 {% endif %}
               {% endif %}
-              <li><a href="http://127.0.0.1:8000/list_amarra/">Amarras</a></li>
+              {% if request.path != '/list_amarra/' %}
+                <li><a href="http://127.0.0.1:8000/list_amarra/">Amarras</a></li>
+              {% endif %}
+              {% if request.path == '/list_amarra/' %}
+                {% if request.session.user_type == 'Cliente' %}
+                  <li><a href="http://127.0.0.1:8000/mis_publicaciones_Amarras/">Mis Publicaciones</a></li>
+                {% elif request.session.user_type == 'Administrador'%}
+                  <li><a href="http://127.0.0.1:8000/reservas/">Reservas</a></li>
+                {% endif %}   
+              {% endif %}
               
               {% if request.path != '/' %}
               <li><a href="http://127.0.0.1:8000/">Inicio</a></li>

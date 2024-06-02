@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}
+Reservas en Proceso
+{% endblock %}
+
+{% block content %}
+<style>
+    .reserva-container {
+        margin-top: 20px;
+    }
+
+    .reserva-item {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        background-color: #f8f9fa;
+    }
+
+    .reserva-item p {
+        margin: 5px 0;
+    }
+
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        color: #fff;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        background-color: #007bff;
+        border: 1px solid transparent;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 0.25rem;
+        transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        text-decoration: none;
+    }
+
+    .btn-ingreso {
+        background-color: #28a745;
+    }
+
+    .btn-salida {
+        background-color: #dc3545;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+    .btn-disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+</style>
+
+<h2>Reservas en Proceso</h2>
+
+{% if reservas %}
+    <div class="reserva-container">
+        {% for reserva in reservas %}
+            <div class="reserva-item">
+                <p><strong>Usuario:</strong> {{ reserva.usuario.mail }}</p>
+                <p><strong>Ubicación:</strong> {{ reserva.publicacion.ubicacion }}</p>
+                <p><strong>Precio:</strong> {{ reserva.publicacion.precio }}</p>
+                <p><strong>Cantidad de Días:</strong> {{ reserva.publicacion.cant_dias }}</p>
+                <div>
+                    {% if reserva.fecha_ingreso %}
+                        <button class="btn btn-ingreso btn-disabled" disabled>Registrar Ingreso</button>
+                    {% else %}
+                        <a href="{% url 'registrar_ingreso' reserva.id %}" class="btn btn-ingreso">Registrar Ingreso</a>
+                    {% endif %}
+                    {% if reserva.fecha_salida %}
+                        <button class="btn btn-salida btn-disabled" disabled>Registrar Salida</button>
+                    {% else %}
+                        <a href="{% url 'registrar_salida' reserva.id %}" class="btn btn-salida">Registrar Salida</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No tienes reservas en proceso.</p>
+{% endif %}
+{% endblock %}
+

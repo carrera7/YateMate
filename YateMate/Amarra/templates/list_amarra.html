@@ -84,13 +84,15 @@ Ver Amarras
 
     <div id="amarras-container">
         {% for amarra in objetos %}
-            <div class="card" data-fecha="{{ amarra.fecha_inicio }}">
-                <h3 class="card-title">{{ amarra.ubicacion }} - {{ amarra.precio }}</h3>
-                <p>{{ amarra.fecha_inicio }} - {{ amarra.cant_dias }} días</p>
-                {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
-                    <a href="#" class="btn-card">Reservar</a>
-                {% endif %}
-            </div>
+            {% if amarra.estado == 'Vigente' %}
+                <div class="card" data-fecha="{{ amarra.fecha_inicio }}">
+                    <h3 class="card-title">{{ amarra.ubicacion }} - {{ amarra.precio }}</h3>
+                    <p>{{ amarra.fecha_inicio }} - {{ amarra.cant_dias }} días</p>
+                    {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
+                        <a href="{% url 'crear_reserva' publicacion_id=amarra.id %}" class="btn-card">Reservar</a>
+                    {% endif %}
+                </div>
+            {% endif %}
         {% endfor %}
     </div>
 

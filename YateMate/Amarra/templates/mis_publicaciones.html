@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mis Publicaciones de Amarras
+{% endblock %}
+
+{% block content %}
+<style>
+    /* Estilo para cada tarjeta */
+    .card {
+        display: block; /* Mostrar todas las tarjetas inicialmente */
+        background-color: #f8f9fa;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+
+    /* Estilo para el título de la tarjeta */
+    .card-title {
+        color: #007bff;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+    /* Estilo para el botón de la tarjeta */
+    .btn-card {
+        padding: 5px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+        margin-right: 5px;
+    }
+
+    .btn-card-delete {
+        background-color: #000;
+        color: #fff; /* Texto en color blanco */
+    }
+
+    .btn-card-modify {
+        background-color: #ffc107;
+        color: #000;
+    }
+
+    .btn-card-reservas {
+        border: 1px solid;
+        margin-top: 5px;
+        color: #fff; /* Texto en color blanco */
+    }
+
+    .btn-verde {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+
+    .btn-rojo {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #fff;
+    }
+
+    .error-message {
+        color: red;
+        font-size: 0.8rem;
+        margin-top: 5px;
+    }
+</style>
+
+<h2>Mis Publicaciones de Amarras</h2>
+
+{% if publicaciones_amarras %}
+    <div class="publicaciones-container">
+        {% for publicacion in publicaciones_amarras %}
+            <div class="card">
+                <h3 class="card-title">{{ publicacion.ubicacion }}</h3>
+                <p><strong>Precio:</strong> {{ publicacion.precio }}</p>
+                <p><strong>Fecha de Inicio:</strong> {{ publicacion.fecha_inicio }}</p>
+                <p><strong>Cantidad de Días:</strong> {{ publicacion.cant_dias }}</p>
+                <!-- Botones para acciones -->
+                <div>
+                    <a href="{% url 'eliminar_publicacion' publicacion.id %}" class="btn-card btn-card-delete">Eliminar</a>
+                    <a href="{% url 'modificar_publicacion' publicacion.id %}" class="btn-card btn-card-modify">Modificar</a>
+                    {% if publicacion.tiene_reservas %}
+                        <a href="{% url 'ver_reservas' publicacion.id %}" class="btn-card btn-card-reservas btn-verde">Ver Reservas</a>
+                    {% else %}
+                        <a href="{% url 'ver_reservas' publicacion.id %}" class="btn-card btn-card-reservas btn-rojo">Ver Reservas</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No tienes publicaciones de amarras aún.</p>
+{% endif %}
+
+{% endblock %}
