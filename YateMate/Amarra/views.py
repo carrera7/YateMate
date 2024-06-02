@@ -52,7 +52,7 @@ def modificar_publicacion(request, id):
 
 def ver_reservas(request, id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=id)
-    reservas = Reserva.objects.filter(publicacion=publicacion).order_by('fecha_ingreso', 'fecha_salida')
+    reservas = Reserva.objects.filter(publicacion=publicacion).order_by('fecha_ingreso')
     return render(request, 'ver_reservas.html', {'publicacion': publicacion, 'reservas': reservas})
 
 def crear_reserva(request, publicacion_id):
@@ -98,7 +98,30 @@ def registrar_ingreso(request, id):
 
 def registrar_salida(request, id):
     reserva = get_object_or_404(Reserva, id=id)
-    # Lógica para registrar salida
-    reserva.estado = 'Finalizado'
+    
+    # Acceder a la publicación asociada
+    publicacion = reserva.publicacion
+    
+    #obtengo la fecha de la publicacion
+    publicacion_fecha_creacion = publicacion.fecha_inicio
+    
+    #obtengo la fecha que ingreso a la reserva 
+    reserva_fecha_ingreso = reserva.fecha_ingreso
+    
+    # Calcula la diferencia de tiempo entre la fecha de creación y la fecha de ingreso
+    diferencia_tiempo = reserva_fecha_ingreso - publicacion_fecha_creacion
+    
+    # Obtiene la cantidad de días de la diferencia de tiempo
+    cantidad_dias = diferencia_tiempo.days
+    
+    if (int(publicacion.cant_dias) - cantidad_dias) == 0:
+        publicacion.estado = 'Finalizado'
+    else:
+        publicacion.cant_dias = int(publicacion.cant_dias) - cantidad_dias
+        publicacion.fecha_inicio = datetime.now().date()
+        publicacion.estado = 'Vigente'
+        publicacion.save()
+        
+    reserva.fecha_salida =  datetime.now().date()
     reserva.save()
     return redirect('reservas')

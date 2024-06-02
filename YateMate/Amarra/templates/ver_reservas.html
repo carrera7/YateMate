@@ -56,7 +56,8 @@ Historial de Reservas
                 <p><strong>Usuario:</strong> {{ reserva.usuario.mail }}</p>
                 {% if reserva.fecha_ingreso %}
                     <p><strong>Ingreso el día:</strong> {{ reserva.fecha_ingreso }}</p>
-                {% elif reserva.fecha_salida %}
+                {% endif %}   
+                {% if reserva.fecha_salida %}
                     <p><strong>Salió el día:</strong> {{ reserva.fecha_salida }}</p>
                 {% endif %}
             </div>
