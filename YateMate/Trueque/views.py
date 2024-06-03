@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render
 from Register.models import User
-from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos , MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones, Conversacion, Mensajes_chat)
+from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos, MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones, Conversacion, Mensajes_chat)
 from Register.models import Embarcacion
 from itertools import chain
 from django.core.mail import send_mail
@@ -300,20 +300,23 @@ def eliminarEmbarcacion(request, id):
     
     return render(request, "ver_mis_publicaciones.html", {'objetos': objetos, 'embarcaciones': embarcaciones})
 
+
 def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objetos):
-    # Obtener el modelo de publicación y solicitud correcto según el tipo de objetos
-    if tipo_objetos == 'Objetos Valiosos':
+    # Verifica el tipo de objeto y asigna los modelos adecuados
+    if tipo_objetos == 'objetos%20valiosos':
         publicacion_modelo = Publicacion_ObjetoValioso
         solicitud_modelo = Solicitud_ObjetosValiosos
         respuesta = solicitudes_trueque_objeto(request, publicacionID)
-    else:
+    elif tipo_objetos == 'embarcaciones':
         publicacion_modelo = Publicacion_Embarcacion
         solicitud_modelo = Solicitud_Embarcaciones
         respuesta = solicitudes_trueque_embarcacion(request, publicacionID)
+    else:
+        return render(request, 'error.html', {'mensaje': 'Tipo de objeto no válido'})
 
     # Obtener la publicación y la solicitud
-    publicacion = publicacion_modelo.objects.get(id=publicacionID)
-    solicitud = solicitud_modelo.objects.get(id=solicitudID)
+    publicacion = get_object_or_404(publicacion_modelo, id=publicacionID)
+    solicitud = get_object_or_404(solicitud_modelo, id=solicitudID)
 
     # Cambiar el estado de la solicitud
     solicitud.iniciado = True
@@ -321,14 +324,14 @@ def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objet
 
     # Crear u obtener la conversación entre los usuarios involucrados
     usuario_interesado = solicitud.usuario_interesado
-    dueño_publicacion = publicacion.embarcacion.dueno
+    dueño_publicacion = publicacion.dueño if tipo_objetos == 'objetos%20valiosos' else publicacion.embarcacion.dueno
     conversacion, creado = Conversacion.objects.get_or_create(
         dueño_publicacion=dueño_publicacion,
         solicitante=usuario_interesado
     )
 
     # Crear el mensaje en la conversación
-    mensaje_solicitud = f"Hola {usuario_interesado.nombre}, estoy interesado para hacer un trueque"
+    mensaje_solicitud = f"Hola {usuario_interesado.nombre}, estoy interesado en hacer un trueque"
     mensaje = Mensajes_chat.objects.create(
         conversacion=conversacion,
         sender=dueño_publicacion,
@@ -340,6 +343,7 @@ def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objet
     publicacion.save()
 
     return respuesta
+
 
 
 def enviar_mensaje(request):
