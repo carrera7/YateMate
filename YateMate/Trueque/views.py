@@ -386,9 +386,23 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
     if tipo_obj == 'Objetos Valiosos':
         publi = get_object_or_404(Publicacion_ObjetoValioso, id=publicacion_id)
         user = publi.dueño
+        solicitud = get_object_or_404(Solicitud_ObjetosValiosos, publicacion_id=publicacion_id)
+        interesado_id = solicitud.usuario_interesado_id  # Obtener el ID del usuario interesado
+        intere = get_object_or_404(User, id=interesado_id)
     else:
         publi = get_object_or_404(Publicacion_Embarcacion, id=publicacion_id)
         user = publi.embarcacion.dueno
+        solicitud = get_object_or_404(Solicitud_Embarcaciones, publicacion_id=publicacion_id)
+        interesado_id = solicitud.usuario_interesado_id  # Obtener el ID del usuario interesado
+        intere = get_object_or_404(User, id=interesado_id)
+
+    subject = f'Trueque finalizado'
+    message = f'Hola {intere}, el trueque de {publi.descripcion} ha finalizado'
+    send_mail(subject, message, EMAIL_HOST_USER, [intere])
+
+    subject = f'Trueque finalizado'
+    message = f'Hola {user}, el trueque de {publi.descripcion} ha finalizado'
+    send_mail(subject, message, EMAIL_HOST_USER, [user])
 
     if user.moroso:
         return redirect(request.META.get('HTTP_REFERER', '/'))
