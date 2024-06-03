@@ -12,9 +12,9 @@ Saber más
     <div class="row">
       <div class="col-md-6">
         {% if objeto.foto %}
-        <img src="{{ objeto.foto.url }}" alt="Foto del objeto" class="img-fluid"  style="max-width: 80%; max-height: 280px;">
+        <img src="{% static 'img_o/' %}{{ objeto.foto }}"alt="Foto del objeto" class="img-fluid"  style="max-width: 80%; max-height: 280px;">
         {% else %}
-        <img src="{{ objeto.embarcacion.foto.url }}" alt="Foto del objeto" class="img-fluid" style="max-width: 80%; max-height: 280px;">
+        <img src="{% static 'img_b/' %}{{ embarcacion.embarcacion.foto }}" alt="Foto del objeto" class="img-fluid" style="max-width: 80%; max-height: 280px;">
         {% endif %}      
       </div>
       <div class="col-md-6">
