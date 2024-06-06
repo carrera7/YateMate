@@ -6,6 +6,7 @@ from .models import Publicacion_Amarra , Reserva
 from Register.models import User
 from datetime import datetime, timedelta, timezone
 
+
 def list_amarra(request):
     if request.method == 'GET' and 'fecha_inicio' in request.GET and 'fecha_fin' in request.GET:
         fecha_inicio = request.GET.get('fecha_inicio')
@@ -42,7 +43,8 @@ def mis_publicaciones(request):
 def eliminar_publicacion(request, id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=id)
     publicacion.delete()
-    return redirect('mis_publicaciones')
+    messages.success(request, 'Publicacion eliminada')
+    return redirect('list_amarra')
 
 def modificar_publicacion(request, id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=id)
