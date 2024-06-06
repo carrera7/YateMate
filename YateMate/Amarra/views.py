@@ -70,6 +70,7 @@ def crear_reserva(request, publicacion_id):
     # Actualizar el estado de la publicación a "En Proceso"
     publicacion.estado = 'En Proceso'
     publicacion.save()
+    messages.success(request, '¡Reserva realizada con éxito!')
 
     return redirect('list_amarra')  # Redirigir a la vista de reservas del usuario
 

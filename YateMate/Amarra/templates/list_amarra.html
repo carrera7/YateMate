@@ -64,6 +64,27 @@ Ver Amarras
         font-size: 0.8rem;
         margin-top: 5px;
     }
+    .messages {
+    list-style: none;
+    padding: 0;
+}
+
+.messages li {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
 </style>
 
 {% if objetos %}
@@ -96,6 +117,13 @@ Ver Amarras
         {% endfor %}
     </div>
 
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
     <script>
         function validarFechas() {
             let fechaInicio = document.getElementById("fecha_inicio").value;
