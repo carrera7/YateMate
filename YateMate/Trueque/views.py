@@ -307,14 +307,16 @@ def eliminarEmbarcacion(request, id):
 
 def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objetos):
     # Verifica el tipo de objeto y asigna los modelos adecuados
-    if tipo_objetos == 'objetos%20valiosos':
+    if tipo_objetos == 'objetos valiosos':
         publicacion_modelo = Publicacion_ObjetoValioso
         solicitud_modelo = Solicitud_ObjetosValiosos
         respuesta = solicitudes_trueque_objeto(request, publicacionID)
+        mensaje_original = MensajeSolicitudObjetosValiosos.objects.get(solicitud_objeto_valioso=solicitudID).mensaje
     elif tipo_objetos == 'embarcaciones':
         publicacion_modelo = Publicacion_Embarcacion
         solicitud_modelo = Solicitud_Embarcaciones
         respuesta = solicitudes_trueque_embarcacion(request, publicacionID)
+        mensaje_original = MensajeSolicitudEmbarcaciones.objects.get(solicitud_embarcacion=solicitudID).mensaje
     else:
         return render(request, 'error.html', {'mensaje': 'Tipo de objeto no válido'})
 
@@ -327,11 +329,18 @@ def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objet
     solicitud.save()
 
     # Crear u obtener la conversación entre los usuarios involucrados
-    usuario_interesado = solicitud.usuario_interesado
-    dueño_publicacion = publicacion.dueño if tipo_objetos == 'objetos%20valiosos' else publicacion.embarcacion.dueno
+    usuario_interesado_id = solicitud.usuario_interesado.id  # Corregido
+    usuario_interesado = User.objects.get(id=usuario_interesado_id)
+    dueño_publicacion = publicacion.dueño if tipo_objetos == 'objetos valiosos' else publicacion.embarcacion.dueno
     conversacion, creado = Conversacion.objects.get_or_create(
         dueño_publicacion=dueño_publicacion,
         solicitante=usuario_interesado
+    )
+
+    mensaje = Mensajes_chat.objects.create(
+        conversacion=conversacion,
+        sender=usuario_interesado,  # Corregido
+        mensaje_texto=mensaje_original
     )
 
     # Crear el mensaje en la conversación
@@ -347,7 +356,6 @@ def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objet
     publicacion.save()
 
     return respuesta
-
 
 
 def enviar_mensaje(request):
