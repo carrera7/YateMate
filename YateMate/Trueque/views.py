@@ -6,11 +6,13 @@ from Register.models import Embarcacion
 from itertools import chain
 from django.core.mail import send_mail
 from YateMate.settings import EMAIL_HOST_USER
+from YateMate import settings
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from .froms import PublicacionObjetoValiosoForm ,PublicacionEmbarcacionForm
 #from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 from django.contrib import messages
 
@@ -29,6 +31,7 @@ def list_publication(request):
     tipo_objetos = 'Objetos Valiosos' if tipo_filtro == 'objetos valiosos' else 'Embarcaciones'
     
     return render(request, "list_publication.html", {'objetos': objetos , 'tipo_objetos': tipo_objetos,})
+
 
 # se necesita autenticarse
 def list_publication_boat(request):
@@ -53,7 +56,7 @@ def list(request):
     # Filtrar objetos_valiosos y embarcaciones según el tipo y estado seleccionados
     if tipo_filtro == 'objetos valiosos':
         objetos = objetos_valiosos.filter(estado=estado_filtro)
-    elif tipo_filtro == 'embarcaciones':
+    else:
         objetos = embarcaciones.filter(estado=estado_filtro)
 
     # Agregar el tipo al contexto para pasarlo al HTML
@@ -72,7 +75,8 @@ def list(request):
         'objetos': objetos,
         'tipo_objetos': tipo_objetos,
     })
-    
+
+
 def mis_publicaciones(request):
     
     user_id = request.session['user_id']
@@ -396,17 +400,17 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
         interesado_id = solicitud.usuario_interesado_id  # Obtener el ID del usuario interesado
         intere = get_object_or_404(User, id=interesado_id)
 
-    subject = f'Trueque finalizado'
-    message = f'Hola {intere}, el trueque de {publi.descripcion} ha finalizado'
-    send_mail(subject, message, EMAIL_HOST_USER, [intere])
-
-    subject = f'Trueque finalizado'
-    message = f'Hola {user}, el trueque de {publi.descripcion} ha finalizado'
-    send_mail(subject, message, EMAIL_HOST_USER, [user])
-
     if user.moroso:
-        return redirect(request.META.get('HTTP_REFERER', '/'))
-    else:
-        publi.estado = "Finalizado"
-        publi.save()
-        return redirect(request.META.get('HTTP_REFERER', '/'))
+        return JsonResponse({'moroso': True})
+
+    subject = 'Trueque finalizado'
+    message = f'Hola {intere.nombre}, el trueque de {publi.descripcion} ha finalizado'
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [intere.mail])
+
+    subject = 'Trueque finalizado'
+    message = f'Hola {user.nombre}, el trueque de {publi.descripcion} ha finalizado'
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [user.mail])
+
+    publi.estado = "Finalizado"
+    publi.save()
+    return JsonResponse({'moroso': False})
