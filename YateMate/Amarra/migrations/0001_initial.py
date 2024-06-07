@@ -17,6 +17,7 @@ def create_initial_amarras(apps, schema_editor):
             fecha_inicio=datetime.date(2024, 6, 1),  # Año, mes, día como argumentos
             cant_dias="10",
             ubicacion='Ubicación 1',
+            cant_dias_disponibles="10",
             estado='Vigente'  # Nuevo campo estado
         )
         Publicacion_Amarra.objects.create(
@@ -25,6 +26,7 @@ def create_initial_amarras(apps, schema_editor):
             fecha_inicio=datetime.date(2024, 6, 15),  # Año, mes, día como argumentos
             cant_dias="20",
             ubicacion='Ubicación 2',
+            cant_dias_disponibles="20",
             estado='Vigente'  # Nuevo campo estado
         )
 
@@ -45,6 +47,7 @@ class Migration(migrations.Migration):
                 ('fecha_inicio', models.DateField()),
                 ('cant_dias', models.TextField()),
                 ('ubicacion', models.TextField()),
+                ('cant_dias_disponibles', models.TextField()),
                 ('estado', models.CharField(max_length=20, choices=[('Vigente', 'Vigente'), ('Finalizado', 'Finalizado'),('En Proceso', 'En Proceso')], default='Vigente')),  # Nuevo campo estado
                 ('dueño', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Register.user')),
             ],

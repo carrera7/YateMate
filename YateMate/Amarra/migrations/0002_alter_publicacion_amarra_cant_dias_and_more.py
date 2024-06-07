@@ -20,4 +20,9 @@ class Migration(migrations.Migration):
             name='precio',
             field=models.TextField(),
         ),
+        migrations.AlterField(
+            model_name='publicacion_amarra',
+            name='cant_dias_disponibles',
+            field=models.TextField(),
+        ),
     ]

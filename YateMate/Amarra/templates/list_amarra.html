@@ -109,7 +109,7 @@ Ver Amarras
             {% if amarra.estado == 'Vigente' %}
                 <div class="card" data-fecha="{{ amarra.fecha_inicio }}">
                     <h3 class="card-title">{{ amarra.ubicacion }} - {{ amarra.precio }}</h3>
-                    <p>{{ amarra.fecha_inicio }} - {{ amarra.cant_dias }} días</p>
+                    <p>{{ amarra.fecha_inicio }} - {{ amarra.cant_dias_disponibles}} días</p>
                     {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
                         {% if request.session.user_id !=  amarra.dueño.id %}
                         <a href="{% url 'crear_reserva' publicacion_id=amarra.id %}" class="btn-card">Reservar</a>

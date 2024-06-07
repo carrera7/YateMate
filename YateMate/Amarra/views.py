@@ -1,11 +1,11 @@
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.shortcuts import render, redirect
 from .forms import AmarraForm
 from django.contrib import messages
 from .models import Publicacion_Amarra , Reserva
 from Register.models import User
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
+from django.db import transaction
 
 
 def list_amarra(request):
@@ -21,7 +21,16 @@ def list_amarra(request):
             fecha_inicio__gte=fecha_inicio
         )
     else:
-        Amarras = Publicacion_Amarra.objects.all()
+        usuario_id = request.session.get('user_id')
+        if usuario_id:
+            usuario = get_object_or_404(User, id=usuario_id)
+            Amarras = Publicacion_Amarra.objects.exclude(dueño=usuario)
+        else:
+            Amarras = Publicacion_Amarra.objects.all()    
+
+    # Actualizar la cantidad de días disponibles
+    for amarra in Amarras:
+        amarra.actualizar_dias_disponibles()
 
     return render(request, "list_amarra.html", {'objetos': Amarras})
 
@@ -65,8 +74,8 @@ def son_fechas_consecutivas(fechas):
 def crear_reserva(request, publicacion_id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=publicacion_id)
     fecha_inicio = publicacion.fecha_inicio
-    cant_dias = int(publicacion.cant_dias) - 1 
-    fecha_fin = fecha_inicio + timedelta(days=cant_dias)
+    cant_dias = int(publicacion.cant_dias)
+    fecha_fin = fecha_inicio + timedelta(days=cant_dias - 1)
     usuario = get_object_or_404(User, id=request.session['user_id'])
 
     # Generar listado de fechas disponibles
@@ -95,33 +104,33 @@ def crear_reserva(request, publicacion_id):
 
     if request.method == 'POST':
         fechas_seleccionadas = request.POST.getlist('fechas_seleccionadas')
-        fechas_seleccionadas = [datetime.strptime(fecha, '%Y-%m-%d') for fecha in fechas_seleccionadas]
+        fechas_seleccionadas = [datetime.strptime(fecha, '%Y-%m-%d').date() for fecha in fechas_seleccionadas]
         fechas_seleccionadas.sort()
 
-        if not son_fechas_consecutivas([fecha.strftime('%Y-%m-%d') for fecha in fechas_seleccionadas]):
-            # Crear una reserva para cada fecha seleccionada
-            for fecha in fechas_seleccionadas:
+        with transaction.atomic():
+            if not son_fechas_consecutivas([fecha.strftime('%Y-%m-%d') for fecha in fechas_seleccionadas]):
+                # Crear una reserva para cada fecha seleccionada
+                for fecha in fechas_seleccionadas:
+                    reserva = Reserva(
+                        publicacion=publicacion,
+                        fecha_ingreso=fecha,
+                        cant_dias='1',
+                        usuario=usuario
+                    )
+                    reserva.save()
+            else:
+                # Crear una única reserva con las fechas consecutivas
+                fecha_ingreso = min(fechas_seleccionadas)
+                cant_dias = len(fechas_seleccionadas)
+
                 reserva = Reserva(
                     publicacion=publicacion,
-                    fecha_ingreso=fecha,
-                    cant_dias='1',
+                    fecha_ingreso=fecha_ingreso,
+                    cant_dias=str(cant_dias),
                     usuario=usuario
                 )
                 reserva.save()
-        else:
-            # Crear una única reserva con las fechas consecutivas
-            fecha_ingreso = min(fechas_seleccionadas)
-            cant_dias = len(fechas_seleccionadas)
-
-            reserva = Reserva(
-                publicacion=publicacion,
-                fecha_ingreso=fecha_ingreso,
-                cant_dias=str(cant_dias),
-                usuario=usuario
-            )
-            reserva.save()
-
-        return redirect('list_amarra')  # Redirigir a una página de confirmación o donde prefieras
+        return redirect('list_amarra')
 
     context = {
         'fechas_disponibles': fechas_disponibles_str,
