@@ -68,16 +68,20 @@ Reservas en Proceso
                 <p><strong>Precio:</strong> {{ reserva.publicacion.precio }}</p>
                 <p><strong>Cantidad de Días:</strong> {{ reserva.publicacion.cant_dias }}</p>
                 <div>
-                    {% if reserva.fecha_ingreso %}
-                        <button class="btn btn-ingreso btn-disabled" disabled>Registrar Ingreso</button>
-                    {% else %}
-                        <a href="{% url 'registrar_ingreso' reserva.id %}" class="btn btn-ingreso">Registrar Ingreso</a>
+                    {% if not reserva.fecha_ingreso and not reserva.fecha_salida %}
+                    <!-- No tiene fecha de ingreso ni fecha de salida -->
+                    <a href="{% url 'registrar_ingreso' reserva.id %}" class="btn btn-ingreso">Registrar Ingreso</a>
+                    <button class="btn btn-salida btn-disabled" disabled>Registrar Salida</button>
+                    {% elif reserva.fecha_ingreso and not reserva.fecha_salida %}
+                    <!-- Tiene fecha de ingreso pero no de salida -->
+                    <button class="btn btn-ingreso btn-disabled" disabled>Registrar Ingreso</button>
+                    <a href="{% url 'registrar_salida' reserva.id %}" class="btn btn-salida">Registrar Salida</a>
+                    {% elif reserva.fecha_ingreso and reserva.fecha_salida %}
+                    <!-- Tiene fecha de ingreso y de salida -->
+                    <button class="btn btn-ingreso btn-disabled" disabled>Registrar Ingreso</button>
+                    <button class="btn btn-salida btn-disabled" disabled>Registrar Salida</button>
                     {% endif %}
-                    {% if reserva.fecha_salida %}
-                        <button class="btn btn-salida btn-disabled" disabled>Registrar Salida</button>
-                    {% else %}
-                        <a href="{% url 'registrar_salida' reserva.id %}" class="btn btn-salida">Registrar Salida</a>
-                    {% endif %}
+                
                 </div>
             </div>
         {% endfor %}

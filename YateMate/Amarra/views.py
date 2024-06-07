@@ -102,17 +102,23 @@ def registrar_salida(request, id):
     # Acceder a la publicación asociada
     publicacion = reserva.publicacion
     
-    #obtengo la fecha de la publicacion
+    # Obtengo la fecha de la publicación y aseguro que sea un objeto date
     publicacion_fecha_creacion = publicacion.fecha_inicio
+    if isinstance(publicacion_fecha_creacion, datetime):
+        publicacion_fecha_creacion = publicacion_fecha_creacion.date()
     
-    #obtengo la fecha que ingreso a la reserva 
+    # Obtengo la fecha de ingreso de la reserva y aseguro que sea un objeto date
     reserva_fecha_ingreso = reserva.fecha_ingreso
+    if isinstance(reserva_fecha_ingreso, datetime):
+        reserva_fecha_ingreso = reserva_fecha_ingreso.date()
     
     # Calcula la diferencia de tiempo entre la fecha de creación y la fecha de ingreso
     diferencia_tiempo = reserva_fecha_ingreso - publicacion_fecha_creacion
     
-    # Obtiene la cantidad de días de la diferencia de tiempo
-    cantidad_dias = diferencia_tiempo.days
+    # Verificar el tipo de diferencia_tiempo
+    if isinstance(diferencia_tiempo, timedelta):
+        # Obtiene la cantidad de días de la diferencia de tiempo
+        cantidad_dias = diferencia_tiempo.days
     
     if (int(publicacion.cant_dias) - cantidad_dias) == 0:
         publicacion.estado = 'Finalizado'
