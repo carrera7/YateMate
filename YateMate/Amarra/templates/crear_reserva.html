@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Reserva{% endblock %}
+
+{% block content %}
+    <h2>Crear Reserva</h2>
+    <form id="reserva-form" method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Seleccione las fechas disponibles:</legend>
+            {% for fecha in fechas_disponibles %}
+                <div class="fecha-label">
+                    <input type="checkbox" id="fecha_{{ forloop.counter }}" name="fechas_seleccionadas" value="{{ fecha }}">
+                    <label for="fecha_{{ forloop.counter }}">{{ fecha }}</label>
+                </div>
+            {% endfor %}
+        </fieldset>
+        <button type="button" id="reservar-btn">Reservar</button>
+    </form>
+
+    <script>
+        document.getElementById('reservar-btn').addEventListener('click', function() {
+            if (confirm('¿Está seguro de hacer la reserva?')) {
+                document.getElementById('reserva-form').submit();
+            } else {
+                alert('Reserva cancelada.');
+            }
+        });
+    </script>
+{% endblock %}

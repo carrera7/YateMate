@@ -74,8 +74,6 @@ Ver Amarras
         <div class="filter-form">
             <label for="fecha_inicio">Fecha de inicio:</label>
             <input type="date" id="fecha_inicio" name="fecha_inicio" min="{{ fecha_actual }}" max="{{ ultima_fecha }}" />
-            <label for="fecha_fin">Fecha de fin:</label>
-            <input type="date" id="fecha_fin" name="fecha_fin" min="{{ fecha_actual }}" max="{{ ultima_fecha }}" />
             <button type="button" onclick="validarFechas()">Filtrar</button>
             <button type="button" onclick="limpiarFiltros()">Limpiar filtros</button>
             <div id="error-msg" class="error-message"></div>
@@ -99,27 +97,21 @@ Ver Amarras
     <script>
         function validarFechas() {
             let fechaInicio = document.getElementById("fecha_inicio").value;
-            let fechaFin = document.getElementById("fecha_fin").value;
             let errorMsg = document.getElementById("error-msg");
             errorMsg.innerHTML = ""; // Limpiar mensajes de error anteriores
 
             let fechaActual = new Date().toISOString().slice(0, 10);
-            if (fechaInicio === "" || fechaFin === "") {
-                errorMsg.innerHTML = "Debe seleccionar ambas fechas.";
+            if (fechaInicio === "") {
+                errorMsg.innerHTML = "Debe seleccionar una fecha de inicio.";
                 return;
             }
 
-            if (fechaInicio > fechaFin) {
-                errorMsg.innerHTML = "La fecha de inicio no puede ser posterior a la fecha de fin.";
-                return;
-            }
-
-            if (fechaInicio < fechaActual || fechaFin < fechaActual) {
+            if (fechaInicio < fechaActual) {
                 errorMsg.innerHTML = "No se permiten fechas pasadas.";
                 return;
             }
 
-            // Enviar el formulario si las fechas son válidas
+            // Enviar el formulario si la fecha es válida
             document.getElementById("filtroForm").submit();
         }
 

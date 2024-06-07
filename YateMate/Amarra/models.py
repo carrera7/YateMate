@@ -26,10 +26,9 @@ class Publicacion_Amarra(models.Model):
 class Reserva(models.Model):
     publicacion = models.ForeignKey(Publicacion_Amarra, on_delete=models.CASCADE)
     fecha_ingreso = models.DateField(null=True)
-    fecha_salida = models.DateField(null=True)
+    cant_dias = models.TextField()
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'Reserva de {self.usuario} para {self.publicacion}'
-  
 

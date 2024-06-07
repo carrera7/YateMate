@@ -16,8 +16,8 @@ class Migration(migrations.Migration):
             name='Reserva',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('fecha_ingreso', models.DateField()),
-                ('fecha_salida', models.DateField()),
+                ('fecha_ingreso', models.DateField(null=True)),
+                ('cant_dias', models.TextField()),
                 ('publicacion', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Amarra.publicacion_amarra')),
                 ('usuario', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Register.user')),
             ],

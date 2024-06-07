@@ -7,11 +7,11 @@ from Register.models import Embarcacion
 class PublicacionObjetoValiosoForm(forms.ModelForm):
     class Meta:
         model = Publicacion_ObjetoValioso
-        fields = ['tipo', 'marca', 'descripcion', 'foto']  # No incluimos 'dueño' ni 'estado' en los fields
+        fields = ['tipo', 'marca', 'descripcion', 'foto', 'matricula']  # Incluimos 'matricula' en los fields
 
     def __init__(self, usuario, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.usuario=usuario = usuario  # Guardamos el usuario para usarlo en el método save
+        self.usuario = usuario  # Guardamos el usuario para usarlo en el método save
 
     def save(self, commit=True):
         instance = super().save(commit=False)

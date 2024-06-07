@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.shortcuts import render, redirect
 from .forms import AmarraForm
@@ -7,21 +8,16 @@ from Register.models import User
 from datetime import datetime, timedelta, timezone
 
 def list_amarra(request):
-    if request.method == 'GET' and 'fecha_inicio' in request.GET and 'fecha_fin' in request.GET:
+    if request.method == 'GET' and 'fecha_inicio' in request.GET:
         fecha_inicio = request.GET.get('fecha_inicio')
-        fecha_fin = request.GET.get('fecha_fin')
         try:
             fecha_inicio = datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
-            fecha_fin = datetime.strptime(fecha_fin, '%Y-%m-%d').date()
         except ValueError:
             messages.error(request, 'Formato de fecha inválido.')
             return redirect('list_amarra')
         
-        # Calcular la fecha de fin sumando la cantidad de días a la fecha de inicio
-        dias = (fecha_fin - fecha_inicio).days
         Amarras = Publicacion_Amarra.objects.filter(
-            fecha_inicio__gte=fecha_inicio,
-            fecha_inicio__lte=fecha_inicio + timedelta(days=dias)
+            fecha_inicio__gte=fecha_inicio
         )
     else:
         Amarras = Publicacion_Amarra.objects.all()
@@ -55,23 +51,80 @@ def ver_reservas(request, id):
     reservas = Reserva.objects.filter(publicacion=publicacion).order_by('fecha_ingreso')
     return render(request, 'ver_reservas.html', {'publicacion': publicacion, 'reservas': reservas})
 
+def son_fechas_consecutivas(fechas):
+    # Función para verificar si las fechas son consecutivas
+    fechas = [datetime.strptime(fecha, '%Y-%m-%d') for fecha in fechas]
+    fechas.sort()
+    for i in range(1, len(fechas)):
+        if (fechas[i] - fechas[i-1]).days != 1:
+            return False
+    return True
+
 def crear_reserva(request, publicacion_id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=publicacion_id)
+    fecha_inicio = publicacion.fecha_inicio
+    cant_dias = int(publicacion.cant_dias) - 1 
+    fecha_fin = fecha_inicio + timedelta(days=cant_dias)
     usuario = get_object_or_404(User, id=request.session['user_id'])
 
-    # Crear la reserva
-    Reserva.objects.create(
-        publicacion=publicacion,
-        usuario=usuario,
-        fecha_ingreso=None,
-        fecha_salida=None
-    )
+    # Generar listado de fechas disponibles
+    fechas_disponibles = []
+    fecha_actual = fecha_inicio
+    while fecha_actual <= fecha_fin:
+        fechas_disponibles.append(fecha_actual)
+        fecha_actual += timedelta(days=1)
 
-    # Actualizar el estado de la publicación a "En Proceso"
-    publicacion.estado = 'En Proceso'
-    publicacion.save()
+    # Excluir fechas ya reservadas
+    reservas = Reserva.objects.filter(publicacion=publicacion)
+    fechas_reservadas = set()
+    for reserva in reservas:
+        fecha_ingreso = reserva.fecha_ingreso
+        cant_dias = int(reserva.cant_dias)
+        for i in range(cant_dias):
+            fechas_reservadas.add(fecha_ingreso + timedelta(days=i))
 
-    return redirect('list_amarra')  # Redirigir a la vista de reservas del usuario
+    # Excluir fechas pasadas
+    hoy = datetime.now().date()
+    fechas_disponibles = [fecha for fecha in fechas_disponibles if fecha >= hoy]
+
+    # Excluir fechas ya reservadas
+    fechas_disponibles = [fecha for fecha in fechas_disponibles if fecha not in fechas_reservadas]
+    fechas_disponibles_str = [fecha.strftime('%Y-%m-%d') for fecha in fechas_disponibles]
+
+    if request.method == 'POST':
+        fechas_seleccionadas = request.POST.getlist('fechas_seleccionadas')
+        fechas_seleccionadas = [datetime.strptime(fecha, '%Y-%m-%d') for fecha in fechas_seleccionadas]
+        fechas_seleccionadas.sort()
+
+        if not son_fechas_consecutivas([fecha.strftime('%Y-%m-%d') for fecha in fechas_seleccionadas]):
+            # Crear una reserva para cada fecha seleccionada
+            for fecha in fechas_seleccionadas:
+                reserva = Reserva(
+                    publicacion=publicacion,
+                    fecha_ingreso=fecha,
+                    cant_dias='1',
+                    usuario=usuario
+                )
+                reserva.save()
+        else:
+            # Crear una única reserva con las fechas consecutivas
+            fecha_ingreso = min(fechas_seleccionadas)
+            cant_dias = len(fechas_seleccionadas)
+
+            reserva = Reserva(
+                publicacion=publicacion,
+                fecha_ingreso=fecha_ingreso,
+                cant_dias=str(cant_dias),
+                usuario=usuario
+            )
+            reserva.save()
+
+        return redirect('list_amarra')  # Redirigir a una página de confirmación o donde prefieras
+
+    context = {
+        'fechas_disponibles': fechas_disponibles_str,
+    }
+    return render(request, 'crear_reserva.html', context)
 
 def publicar_Alquiler(request):
     usuario = User.objects.get(id=request.session['user_id'])  # Asegúrate de que el usuario esté autenticado
@@ -99,6 +152,8 @@ def registrar_ingreso(request, id):
 def registrar_salida(request, id):
     reserva = get_object_or_404(Reserva, id=id)
     
+    reserva.fecha_salida =  datetime.now().date()
+    
     # Acceder a la publicación asociada
     publicacion = reserva.publicacion
     
@@ -108,7 +163,7 @@ def registrar_salida(request, id):
         publicacion_fecha_creacion = publicacion_fecha_creacion.date()
     
     # Obtengo la fecha de ingreso de la reserva y aseguro que sea un objeto date
-    reserva_fecha_ingreso = reserva.fecha_ingreso
+    reserva_fecha_ingreso = reserva.fecha_salida
     if isinstance(reserva_fecha_ingreso, datetime):
         reserva_fecha_ingreso = reserva_fecha_ingreso.date()
     

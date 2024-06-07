@@ -354,12 +354,18 @@ def enviar_mensaje(request):
 
 def registrar_Objeto_Valioso(request):
     usuario = User.objects.get(id=request.session['user_id'])  # Asegúrate de que el usuario esté autenticado
+
     if request.method == 'POST':
         form = PublicacionObjetoValiosoForm(usuario, request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Publicación exitosa')  # Enviar mensaje de éxito
-            return redirect('list_publication')  # Redirige a la vista de lista de publicaciones
+            # Validar si ya existe una publicación con la misma matrícula
+            matricula = form.cleaned_data['matricula']
+            if Publicacion_ObjetoValioso.objects.filter(matricula=matricula).exists():
+                messages.error(request, 'Ya existe una publicación con la misma matrícula.')
+            else:
+                form.save()
+                messages.success(request, 'Publicación exitosa')  # Enviar mensaje de éxito
+                return redirect('list_publication')  # Redirige a la vista de lista de publicaciones
     else:
         form = PublicacionObjetoValiosoForm(usuario)
     return render(request, 'registrar_publicacion.html', {'form': form})
