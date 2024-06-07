@@ -135,7 +135,7 @@ def publicar_Alquiler(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Publicacion de alquiler registrada con éxito.')
-            return redirect('list_amarra.html')
+            return redirect('list_amarra')
     else:
         form = AmarraForm(usuario)
     return render(request, 'amarra.html', {'form': form})
