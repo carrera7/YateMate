@@ -9,11 +9,11 @@ class AmarraForm(forms.ModelForm):
     fecha_incio = forms.DateField (label='Etiqueta', widget=forms.TextInput(), required=True)
     cant_dias = forms.FloatField (label='Etiqueta', widget=forms.TextInput(), required=True)
     ubicacion = forms.CharField(label='Etiqueta', widget=forms.TextInput())
-    
+    cant_dias_disponibles= forms.CharField(label="Cantidad dias disponibles", widget=forms.TextInput())    
 
     class Meta:
         model = Amarra
-        fields = ['dueño','fecha_inicio','cant_dias','precio','ubicacion']
+        fields = ['dueño','fecha_inicio','cant_dias','precio','ubicacion','cant_dias_disponibles']
 
     def clean_dueno(self):
         dueño = self.cleaned_data['dueño']
@@ -22,9 +22,8 @@ class AmarraForm(forms.ModelForm):
         return dueño
     
     def __init__(self, usuario, *args, **kwargs):
-        super(Publicacion_Amarra, self).__init__(*args, **kwargs)
-        self.fields['dueño'].queryset = Amarra.objects.filter(dueno=usuario) \
-            .exclude(publicacion_embarcacion__isnull=False)
+        super().__init__(*args, **kwargs)
+        self.fields['dueño'].queryset = Amarra.objects.filter(dueño=usuario) 
     
     def calcular_fecha_fin(fecha_inicio, duracion_dias):
         fecha_fin = fecha_inicio + timedelta(days=duracion_dias)

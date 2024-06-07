@@ -19,6 +19,9 @@ class EmbarcacionForm(forms.ModelForm):
         matricula = self.cleaned_data['matricula']
         if not re.match(r'^[A-Za-z0-9]+$', matricula):
             raise forms.ValidationError("La matrícula solo puede contener letras y números.")
+        if Embarcacion.objects.filter(matricula=matricula).exists():
+            raise forms.ValidationError("¡La matrícula ingresada ya está en uso! Por favor, elija otra.")
+
         return matricula
 
     def clean_dueno(self):

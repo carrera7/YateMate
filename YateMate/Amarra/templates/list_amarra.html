@@ -64,6 +64,27 @@ Ver Amarras
         font-size: 0.8rem;
         margin-top: 5px;
     }
+    .messages {
+    list-style: none;
+    padding: 0;
+}
+
+.messages li {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
 </style>
 
 {% if objetos %}
@@ -80,6 +101,9 @@ Ver Amarras
         </div>
     </form>
 
+
+
+
     <div id="amarras-container">
         {% for amarra in objetos %}
             {% if amarra.estado == 'Vigente' %}
@@ -87,13 +111,25 @@ Ver Amarras
                     <h3 class="card-title">{{ amarra.ubicacion }} - {{ amarra.precio }}</h3>
                     <p>{{ amarra.fecha_inicio }} - {{ amarra.cant_dias }} días</p>
                     {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
+                        {% if request.session.user_id !=  amarra.dueño.id %}
                         <a href="{% url 'crear_reserva' publicacion_id=amarra.id %}" class="btn-card">Reservar</a>
-                    {% endif %}
+                        {%else%}
+                        <a type="button" style="opacity: 0.5 ;" class="btn btn-card mt-3" disabled>Reservar</a>
+
+                            {% endif %}
+                            {% endif %}
                 </div>
             {% endif %}
         {% endfor %}
     </div>
 
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
     <script>
         function validarFechas() {
             let fechaInicio = document.getElementById("fecha_inicio").value;

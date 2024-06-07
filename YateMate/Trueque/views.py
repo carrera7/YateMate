@@ -1,16 +1,18 @@
 from django.contrib import messages
 from django.shortcuts import render
 from Register.models import User
-from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos , MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones, Conversacion, Mensajes_chat)
+from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos, MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones, Conversacion, Mensajes_chat)
 from Register.models import Embarcacion
 from itertools import chain
 from django.core.mail import send_mail
 from YateMate.settings import EMAIL_HOST_USER
+from YateMate import settings
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from .froms import PublicacionObjetoValiosoForm ,PublicacionEmbarcacionForm
 #from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 from django.contrib import messages
 
@@ -29,6 +31,7 @@ def list_publication(request):
     tipo_objetos = 'Objetos Valiosos' if tipo_filtro == 'objetos valiosos' else 'Embarcaciones'
     
     return render(request, "list_publication.html", {'objetos': objetos , 'tipo_objetos': tipo_objetos,})
+
 
 # se necesita autenticarse
 def list_publication_boat(request):
@@ -53,7 +56,7 @@ def list(request):
     # Filtrar objetos_valiosos y embarcaciones según el tipo y estado seleccionados
     if tipo_filtro == 'objetos valiosos':
         objetos = objetos_valiosos.filter(estado=estado_filtro)
-    elif tipo_filtro == 'embarcaciones':
+    else:
         objetos = embarcaciones.filter(estado=estado_filtro)
 
     # Agregar el tipo al contexto para pasarlo al HTML
@@ -72,7 +75,8 @@ def list(request):
         'objetos': objetos,
         'tipo_objetos': tipo_objetos,
     })
-    
+
+
 def mis_publicaciones(request):
     
     user_id = request.session['user_id']
@@ -300,35 +304,47 @@ def eliminarEmbarcacion(request, id):
     
     return render(request, "ver_mis_publicaciones.html", {'objetos': objetos, 'embarcaciones': embarcaciones})
 
+
 def iniciar_solicitud_de_trueque(request, solicitudID, publicacionID, tipo_objetos):
-    # Obtener el modelo de publicación y solicitud correcto según el tipo de objetos
-    if tipo_objetos == 'Objetos Valiosos':
-        publicacion_modelo = Publicacion_ObjetoValioso
-        solicitud_modelo = Solicitud_ObjetosValiosos
-        respuesta = solicitudes_trueque_objeto(request, publicacionID)
-    else:
+    # Verifica el tipo de objeto y asigna los modelos adecuados
+
+    if tipo_objetos == 'embarcaciones':
         publicacion_modelo = Publicacion_Embarcacion
         solicitud_modelo = Solicitud_Embarcaciones
         respuesta = solicitudes_trueque_embarcacion(request, publicacionID)
+        mensaje_original = MensajeSolicitudEmbarcaciones.objects.get(solicitud_embarcacion=solicitudID).mensaje
+    else:
+        publicacion_modelo = Publicacion_ObjetoValioso
+        solicitud_modelo = Solicitud_ObjetosValiosos
+        respuesta = solicitudes_trueque_objeto(request, publicacionID)
+        mensaje_original = MensajeSolicitudObjetosValiosos.objects.get(solicitud_objeto_valioso=solicitudID).mensaje
+
 
     # Obtener la publicación y la solicitud
-    publicacion = publicacion_modelo.objects.get(id=publicacionID)
-    solicitud = solicitud_modelo.objects.get(id=solicitudID)
+    publicacion = get_object_or_404(publicacion_modelo, id=publicacionID)
+    solicitud = get_object_or_404(solicitud_modelo, id=solicitudID)
 
     # Cambiar el estado de la solicitud
     solicitud.iniciado = True
     solicitud.save()
 
     # Crear u obtener la conversación entre los usuarios involucrados
-    usuario_interesado = solicitud.usuario_interesado
-    dueño_publicacion = publicacion.embarcacion.dueno
+    usuario_interesado_id = solicitud.usuario_interesado.id  # Corregido
+    usuario_interesado = User.objects.get(id=usuario_interesado_id)
+    dueño_publicacion = publicacion.embarcacion.dueno if tipo_objetos == 'embarcaciones' else publicacion.dueño
     conversacion, creado = Conversacion.objects.get_or_create(
         dueño_publicacion=dueño_publicacion,
         solicitante=usuario_interesado
     )
 
+    mensaje = Mensajes_chat.objects.create(
+        conversacion=conversacion,
+        sender=usuario_interesado,  # Corregido
+        mensaje_texto=mensaje_original
+    )
+
     # Crear el mensaje en la conversación
-    mensaje_solicitud = f"Hola {usuario_interesado.nombre}, estoy interesado para hacer un trueque"
+    mensaje_solicitud = f"Hola {usuario_interesado.nombre}, estoy interesado en hacer un trueque"
     mensaje = Mensajes_chat.objects.create(
         conversacion=conversacion,
         sender=dueño_publicacion,
@@ -388,13 +404,27 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
     if tipo_obj == 'Objetos Valiosos':
         publi = get_object_or_404(Publicacion_ObjetoValioso, id=publicacion_id)
         user = publi.dueño
+        solicitud = get_object_or_404(Solicitud_ObjetosValiosos, publicacion_id=publicacion_id)
+        interesado_id = solicitud.usuario_interesado_id  # Obtener el ID del usuario interesado
+        intere = get_object_or_404(User, id=interesado_id)
     else:
         publi = get_object_or_404(Publicacion_Embarcacion, id=publicacion_id)
         user = publi.embarcacion.dueno
+        solicitud = get_object_or_404(Solicitud_Embarcaciones, publicacion_id=publicacion_id)
+        interesado_id = solicitud.usuario_interesado_id  # Obtener el ID del usuario interesado
+        intere = get_object_or_404(User, id=interesado_id)
 
     if user.moroso:
-        return redirect(request.META.get('HTTP_REFERER', '/'))
-    else:
-        publi.estado = "Finalizado"
-        publi.save()
-        return redirect(request.META.get('HTTP_REFERER', '/'))
+        return JsonResponse({'moroso': True})
+
+    subject = 'Trueque finalizado'
+    message = f'Hola {intere.nombre}, el trueque de {publi.descripcion} ha finalizado'
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [intere.mail])
+
+    subject = 'Trueque finalizado'
+    message = f'Hola {user.nombre}, el trueque de {publi.descripcion} ha finalizado'
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [user.mail])
+
+    publi.estado = "Finalizado"
+    publi.save()
+    return JsonResponse({'moroso': False})

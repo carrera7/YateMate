@@ -99,6 +99,7 @@
               {% if request.path == '/list_amarra/' %}
                 {% if request.session.user_type == 'Cliente' %}
                   <li><a href="http://127.0.0.1:8000/mis_publicaciones_Amarras/">Mis Publicaciones</a></li>
+                  <li><a href="http://127.0.0.1:8000/PublicarAlquilerTemporal/">Publicar Alquiler</a></li>
                 {% elif request.session.user_type == 'Administrador'%}
                   <li><a href="http://127.0.0.1:8000/reservas/">Reservas</a></li>
                 {% endif %}   

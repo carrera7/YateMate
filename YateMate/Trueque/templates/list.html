@@ -111,8 +111,9 @@ Mi Página de Inicio
             <a href="{% url 'saber_mas' id=objeto.id tipo_objetos=tipo_objetos %}" class="btn btn-card">Saber más</a>
 
             {% if request.GET.estado == 'Proceso'%}
-                <a href="{% url 'finalizar_trueque' publicacion_id=objeto.id tipo_obj=tipo_objetos %}" class="btn btn-card finalizar-trueque">Finalizar Trueque</a>
-             {% endif %}
+                 <a href="{% url 'finalizar_trueque' publicacion_id=objeto.id tipo_obj=tipo_objetos %}" class="btn btn-card finalizar-trueque" data-url="{% url 'finalizar_trueque' publicacion_id=objeto.id tipo_obj=tipo_objetos %}">Finalizar Trueque</a>
+                <div class="messages" style="display: none;"></div> <!-- Div para mostrar el mensaje -->
+            {% endif %}
 
             {% if request.GET.estado == 'Proceso' or request.GET.estado == 'Finalizado' %}
                 <a href="#" class="btn btn-card">Ver mensajes</a>
@@ -122,5 +123,32 @@ Mi Página de Inicio
 {% else %}
     <p>No se cuenta con Publicaciones.</p>
 {% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.finalizar-trueque').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const url = button.getAttribute('data-url');
+                fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.moroso) {
+                        // Mostrar alerta si el usuario es moroso
+                        window.alert('La operación no se puede realizar hasta que el usuario regularice sus deudas');
+                    } else {
+                        window.location.reload(); // Recargar la página si no hay problema
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+</script>
 
 {% endblock %}

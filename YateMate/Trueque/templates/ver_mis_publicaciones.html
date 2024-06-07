@@ -58,7 +58,7 @@ Mis publicaciones
             <div class="card">
                 <p>{{ objeto.descripcion|truncatechars:70 }}</p>
                 {% if objeto.foto %}
-                <img src="{{ objeto.foto.url }}" alt="" class="img-fluid"  style="max-width: 80%; max-height: 200px;">
+                <img src="{% static 'img_o/' %}{{ objeto.foto }}" alt="" class="img-fluid"  style="max-width: 80%; max-height: 200px;">
                 {% endif %}
                 <a href={% url 'eliminar_objeto' objeto.id %} class="btn btn-card">Eliminar</a>
                 <a href="#" class="btn btn-card">Modificar</a>
@@ -75,7 +75,7 @@ Mis publicaciones
             <div class="card">
                 <p>{{ embarcacion.embarcacion.nombre_fantasia|truncatechars:70 }}</p>
                 {% if embarcacion.embarcacion.foto %}
-                <img src="{{ embarcacion.embarcacion.foto.url }}" alt="Foto de la embarcación" class="img-fluid"style="max-width: 80%; max-height: 200px;">
+                <img src="{% static 'img_b/' %}{{ embarcacion.embarcacion.foto }}" alt="Foto de la embarcación" class="img-fluid"style="max-width: 80%; max-height: 200px;">
                 {% endif %}
                 <a href={% url 'eliminar_embarcacion' embarcacion.id %} class="btn btn-card">Eliminar</a>
                 <a href="#" class="btn btn-card">Modificar</a>

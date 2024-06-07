@@ -15,6 +15,7 @@ class Publicacion_Amarra(models.Model):
     fecha_inicio = models.DateField()
     cant_dias = models.TextField()
     ubicacion = models.TextField()
+    cant_dias_disponibles=models.TextField( )
     estado = models.CharField(max_length=20, choices=ESTADOS, default='Vigente')
 
     def __str__(self):

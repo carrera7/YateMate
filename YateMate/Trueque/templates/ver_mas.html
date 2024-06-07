@@ -12,10 +12,10 @@ Saber más
     <div class="row">
       <div class="col-md-6">
         {% if objeto.foto %}
-        <img src="{{ objeto.foto.url }}" alt="Foto del objeto" class="img-fluid"  style="max-width: 80%; max-height: 280px;">
+        <img src="{% static 'img_o/' %}{{ objeto.foto }}"alt="Foto del objeto" class="img-fluid"  style="max-width: 80%; max-height: 280px;">
         {% else %}
-        <img src="{{ objeto.embarcacion.foto.url }}" alt="Foto del objeto" class="img-fluid" style="max-width: 80%; max-height: 280px;">
-        {% endif %}      
+        <img src="{% static 'img_b/' %}{{ objeto.embarcacion.foto }}" alt="Foto del objeto" class="img-fluid" style="max-width: 80%; max-height: 280px;">
+        {% endif %}
       </div>
       <div class="col-md-6">
         {% if objeto.tipo %}
@@ -30,34 +30,44 @@ Saber más
           <p>Nombre de fantasía: {{ objeto.embarcacion.nombre_fantasia }}</p>
         {% endif %}
         <p>Descripción: {{ objeto.descripcion }}</p>
-        
+
         <!-- Verifica si hay una sesión de usuario activa -->
         {% if request.session.user_id and request.session.user_type != 'Administrador' %}
           {% if objeto.embarcacion %}
-            <button type="button" class="btn btn-primary mt-3" 
-            onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'Embarcaciones')">
-            Solicitar un Trueque
-            </button>
-
+            {% if objeto.embarcacion.dueno.id != request.session.user_id %}
+              <button type="button" class="btn btn-primary mt-3"
+              onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'Embarcaciones')">
+              Solicitar un Trueque
+              </button>
+            {% else %}
+              <button type="button" class="btn btn-card mt-3" disabled>
+              Solicitar un Trueque
+              </button>
+            {% endif %}
             <script>
               function solicitarTrueque(publicacionId, tipo) {
                   // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
                   window.location.href = `/solisitar_trueque/{{ objeto.embarcacion.id }}/${tipo}`;
               }
-              </script>
+            </script>
           {% else %}
-            <button type="button" class="btn btn-primary mt-3" 
-            onclick="solicitarTrueque({{ objeto.id }}, 'Objetos Valiosos')">
-            Solicitar un Trueque
-            </button>
-           
+            {% if objeto.dueño.id != request.session.user_id %}
+              <button type="button" class="btn btn-primary mt-3"
+              onclick="solicitarTrueque({{ objeto.id }}, 'Objetos Valiosos')">
+              Solicitar un Trueque
+              </button>
+            {% else %}
+              <button type="button" class="btn btn-card mt-3" disabled>
+              Solicitar un Trueque
+              </button>
+            {% endif %}
             <script>
-            function solicitarTrueque(publicacionId, tipo) {
-                // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
-                window.location.href = `/solisitar_trueque/{{ objeto.id }}/${tipo}`;
-            }
-          </script>
-          {% endif %} 
+              function solicitarTrueque(publicacionId, tipo) {
+                  // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
+                  window.location.href = `/solisitar_trueque/{{ objeto.id }}/${tipo}`;
+              }
+            </script>
+          {% endif %}
         {% endif %}
         
         <!-- Mostrar mensaje de éxito -->
