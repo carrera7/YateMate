@@ -6,7 +6,15 @@ from django.core.validators import EmailValidator, MinLengthValidator, RegexVali
 import dns
 import dns.resolver
 from Register.models import User
+from django import forms
+from django.forms import DateInput
 
+class CustomDateInput(DateInput):
+    input_type = 'date'
+
+    def __init__(self, **kwargs):
+        kwargs['format'] = '%d-%m-%Y'
+        super().__init__(**kwargs)
 
 class CustomUserRegistrationForm(forms.ModelForm):
     mail = forms.CharField(label='Correo Electrónico',
@@ -37,6 +45,9 @@ class CustomUserRegistrationForm(forms.ModelForm):
             'fecha_nacimiento': 'Formato: DD-MM-AAAA. Ejemplo: 01/02/1990',
             'password': 'La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial de la lista @$!%*?&. Ejemplo: P@ssw0rd!',
         }
+        widgets = {
+            'fecha_nacimiento': CustomDateInput(),  # Usando el CustomDateInput para el campo de fecha_nacimiento
+        }
 
     password = forms.CharField(
         label='Contraseña',
@@ -49,7 +60,29 @@ class CustomUserRegistrationForm(forms.ModelForm):
                 message='La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.'
             )
         ],
-        help_text='La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.'
+        help_text='La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
+        error_messages={
+            'min_length': 'La contraseña debe tener al menos 8 caracteres.',
+            'required': 'Este campo es obligatorio.'
+        }
+    )
+
+    fecha_nacimiento = forms.DateField(
+        label='Fecha de Nacimiento',
+        error_messages={
+            'required': 'Este campo es obligatorio',
+            'invalid': 'Introduce una fecha válida en el formato DD-MM-AAAA'
+        },
+        help_text='Formato: DD-MM-AAAA. Ejemplo: 01/02/1990'
+    )
+
+    fecha_expiracion_dni = forms.DateField(
+        label='Fecha de Expiracion DNI',
+        error_messages={
+            'required': 'Este campo es obligatorio',
+            'invalid': 'Introduce una fecha válida en el formato DD-MM-AAAA'
+        },
+        help_text='Formato: DD-MM-AAAA. Ejemplo: 01/02/1990'
     )
 
     def clean_mail(self):
