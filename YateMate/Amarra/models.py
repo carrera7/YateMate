@@ -9,7 +9,7 @@ class Publicacion_Amarra(models.Model):
         ('Finalizado', 'Finalizado'),
     )
 
-    dueño = models.ForeignKey(User, on_delete=models.CASCADE)
+    dueño = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     precio = models.TextField()
     fecha_inicio = models.DateField()
     cant_dias = models.TextField()

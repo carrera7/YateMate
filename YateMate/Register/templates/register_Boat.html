@@ -7,88 +7,178 @@ Registrar embarcacion
 
 {% block content %}
 <style>
-  .form-container {
-    display: flex;
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
-    min-height: 70vh; /* Altura mínima para centrar verticalmente */
-    background-color: #f9f9f9; /* Fondo para mejor visualización */
-    padding: 20px; /* Espaciado interno */
-  }
+    /* Tus estilos anteriores */
+    .container-r {
+        display: flex;
+        width: 60%;
+        margin: auto; /* Centra horizontalmente el contenedor */
+        margin-top: 30px; /* Aumenta el margen superior para bajar el recuadro */
+        align-items: flex-start;
+    }
 
-  .form-wrapper {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    max-width: 500px; /* Ancho máximo del formulario */
-    width: 100%; /* Ancho completo dentro del contenedor */
-  }
+    .recuadroLogin-r {
+        background-color: #b8dee0;
+        height: 100%;
+        width: 100%;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+        -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+        border-left: 3px solid #3c667d;
+    }
 
-  .preview-container {
+    .container-form-r {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        padding: 50px 20px; /* Añade padding interno al contenedor del formulario */
+}
+
+
+    .form-r {
+    width: 50%; /* Tamaño deseado del formulario */
+    margin: auto; /* Centra el formulario horizontalmente */
+    }
+
+    .form-r h1 {
+        font-family: 'Alumni Sans Pinstripe', sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        margin-left: 42px;
+        color: #1f2f38;
+    }
+
+    .correo input {
+        border-radius: 15px;
+        width: 100%;
+        border: 2px solid #3c667d;
+        font-family: 'Roboto Condensed', sans-serif;
+        padding: 6px;
+        height: 25px;
+        font-size: 1rem;
+        margin-top: 6px;
+    }
+
+    .correo label {
+        font-family: 'Roboto Condensed', sans-serif;
+        color: #3c667d;
+        font-size: 1rem;
+        margin-left: 5px;
+    }
+
+    .nombre-r input {
+        border-radius: 15px;
+        width: 100%;
+        border: 2px solid #3c667d;
+        font-family: 'Roboto Condensed', sans-serif;
+        padding: 6px;
+        height: 25px;
+        font-size: 1rem;
+        margin-top: 6px;
+    }
+
+    .nombre-r label {
+        font-family: 'Roboto Condensed', sans-serif;
+        color: #3c667d;
+        font-size: 1rem;
+        margin-left: 5px;
+    }
+
+    .password input {
+        border-radius: 15px;
+        width: 100%;
+        font-size: 1rem;
+        border: 2px solid #3c667d;
+        font-family: 'Roboto Condensed', sans-serif;
+        padding: 6px;
+        height: 25px;
+        margin-top: 6px;
+    }
+
+    .password label {
+        font-family: 'Roboto Condensed', sans-serif;
+        color: #3c667d;
+        font-size: 1rem;
+        margin-left: 5px;
+    }
+
+    .boton-r {
+        border-radius: 15px;
+        width: 156px;
+        border: 2px solid #3c667d;
+        font-family: 'Roboto Condensed', sans-serif;
+        margin-left: 120px;
+        height: 40px;
+        margin-top: 10px;
+        transition: background-color 0.8s;
+        background-color: #3c667d;
+        color: white;
+        padding: 2px;
+    }
+
+    .boton-r:hover {
+        background-color: white;
+        color: #3c667d;
+    }
+
+    .preview-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-left: 20px;
-  }
+    width: 40%; /* Ajusta el ancho según sea necesario */
+    }
 
-  .preview-container img {
-    max-width: 200px;
+    .preview-container p {
+    margin: 0; /* Elimina el margen superior */
+    padding-bottom: 10px; /* Añade un pequeño espacio inferior */
+    }
+
+
+    .preview-container img {
+    max-width: 100%;
     max-height: 200px;
     border-radius: 5px;
-    margin-top: 20px;
-  }
+    display: block; /* Asegura que la imagen se muestre como bloque */
+    }
 
-  h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-  }
-
-  button:hover {
-    background-color: #0056b3;
-  }
 </style>
 
-<div class="form-container">
-  <div class="form-wrapper">
-    <h1>Crear Embarcación</h1>
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Registrar Embarcación</button>
-    </form>
-  </div>
-  <div class="preview-container">
-    <p>Vista previa de la imagen</p>
-    <img id="image-preview" src="#" alt="Vista previa" style="display: none;">
-  </div>
+<div class="container-r">
+    <div class="recuadroLogin-r">
+        <div class="container-form-r" id="container-form">
+            <form method="post" class="form-r" id="formu-r" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div>
+                    <button type="submit" class="boton-r" id="boton-r">Registrar Embarcación</button>
+                </div>
+            </form>
+            <div class="preview-container">
+                <p>Vista previa de la imagen</p>
+                <img id="image-preview" src="#" alt="Vista previa" style="display: none;">
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-  document.querySelector('input[type="file"]').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = document.getElementById('image-preview');
-        img.src = e.target.result;
-        img.style.display = 'block';
-      }
-      reader.readAsDataURL(file);
-    }
-  });
+    document.querySelector('input[type="file"]').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('image-preview');
+                img.src = e.target.result;
+                img.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
 </script>
 {% endblock %}
 
