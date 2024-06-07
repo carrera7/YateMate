@@ -79,7 +79,6 @@
             margin-right: 5px;
         }
 
-
         .solicitante-box:hover {
             background-color: #ddd;
         }
@@ -105,7 +104,7 @@
                     <li>No hay mensajes.</li>
                 {% endfor %}
             </ul>
-            <form method="post" action="{% url 'enviar_mensaje' %}">
+            <form class="message-form" method="post" action="{% url 'enviar_mensaje' %}">
                 {% csrf_token %}
                 <input type="hidden" name="conversacion_id" value="{{ conversacion.id }}">
                 <input type="text" name="mensaje_texto" placeholder="Escribe tu mensaje aquí">
@@ -130,7 +129,6 @@
             }
         });
 
-        // Función para mostrar los mensajes al hacer clic en el solicitante
         const solicitanteBoxes = document.querySelectorAll('.solicitante-box');
         solicitanteBoxes.forEach(function(box) {
             box.addEventListener('click', function() {
@@ -141,6 +139,22 @@
                 } else {
                     conversacionDiv.style.display = 'none';
                 }
+            });
+        });
+
+        const messageForms = document.querySelectorAll('.message-form');
+        messageForms.forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                const mensajeTexto = form.querySelector('input[name="mensaje_texto"]').value.trim();
+
+                if (mensajeTexto === '') {
+                    alert('No puedes enviar un mensaje vacío');
+                    return;
+                }
+
+                form.submit();
             });
         });
     });
