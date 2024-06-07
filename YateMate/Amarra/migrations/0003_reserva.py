@@ -20,6 +20,7 @@ class Migration(migrations.Migration):
                 ('cant_dias', models.TextField()),
                 ('publicacion', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Amarra.publicacion_amarra')),
                 ('usuario', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Register.user')),
+                ('estado', models.CharField(max_length=20, choices=[('Vigente', 'Vigente'), ('Finalizado', 'Finalizado'),('En Proceso', 'En Proceso')], default='Vigente')),
             ],
         ),
     ]

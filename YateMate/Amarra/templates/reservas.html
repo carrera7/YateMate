@@ -86,17 +86,18 @@ Reservas en Proceso
                 <p><strong>Usuario:</strong> {{ reserva.usuario.mail }}</p>
                 <p><strong>Ubicación:</strong> {{ reserva.publicacion.ubicacion }}</p>
                 <p><strong>Precio:</strong> {{ reserva.publicacion.precio }}</p>
-                <p><strong>Cantidad de Días:</strong> {{ reserva.publicacion.cant_dias }}</p>
+                <p><strong>Fecha de Ingreso:</strong> {{ reserva.fecha_ingreso }}</p>
+                <p><strong>Cantidad de Días:</strong> {{ reserva.cant_dias }}</p>
                 <div>
-                    {% if not reserva.fecha_ingreso and not reserva.fecha_salida %}
+                    {% if reserva.estado == 'Vigente' %}
                     <!-- No tiene fecha de ingreso ni fecha de salida -->
                     <a href="{% url 'registrar_ingreso' reserva.id %}" class="btn btn-ingreso">Registrar Ingreso</a>
                     <button class="btn btn-salida btn-disabled" disabled>Registrar Salida</button>
-                    {% elif reserva.fecha_ingreso and not reserva.fecha_salida %}
+                    {% elif reserva.estado == 'En Proceso' %}
                     <!-- Tiene fecha de ingreso pero no de salida -->
                     <button class="btn btn-ingreso btn-disabled" disabled>Registrar Ingreso</button>
                     <a href="{% url 'registrar_salida' reserva.id %}" class="btn btn-salida">Registrar Salida</a>
-                    {% elif reserva.fecha_ingreso and reserva.fecha_salida %}
+                    {% elif reserva.estado == 'Finalizado' %}
                     <!-- Tiene fecha de ingreso y de salida -->
                     <button class="btn btn-ingreso btn-disabled" disabled>Registrar Ingreso</button>
                     <button class="btn btn-salida btn-disabled" disabled>Registrar Salida</button>
