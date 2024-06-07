@@ -54,12 +54,8 @@ Historial de Reservas
         {% for reserva in reservas %}
             <div class="reserva-item">
                 <p><strong>Usuario:</strong> {{ reserva.usuario.mail }}</p>
-                {% if reserva.fecha_ingreso %}
-                    <p><strong>Ingreso el día:</strong> {{ reserva.fecha_ingreso }}</p>
-                {% endif %}   
-                {% if reserva.fecha_salida %}
-                    <p><strong>Salió el día:</strong> {{ reserva.fecha_salida }}</p>
-                {% endif %}
+                <p><strong>Alquilo para la fecha:</strong> {{ reserva.fecha_ingreso }}</p>
+                <p><strong>Cantidad de días alquilados:</strong> {{ reserva.cant_dias }}</p>
             </div>
         {% endfor %}
     </div>

@@ -156,44 +156,13 @@ def reservas(request):
 def registrar_ingreso(request, id):
     reserva = get_object_or_404(Reserva, id=id)
     # Lógica para registrar ingreso
-    reserva.fecha_ingreso = datetime.now()
+    reserva.estado = 'En Proceso'  # Cambia el estado a "En Proceso"
     reserva.save()
     return redirect('reservas')
 
 def registrar_salida(request, id):
     reserva = get_object_or_404(Reserva, id=id)
-    
-    reserva.fecha_salida =  datetime.now().date()
-    
-    # Acceder a la publicación asociada
-    publicacion = reserva.publicacion
-    
-    # Obtengo la fecha de la publicación y aseguro que sea un objeto date
-    publicacion_fecha_creacion = publicacion.fecha_inicio
-    if isinstance(publicacion_fecha_creacion, datetime):
-        publicacion_fecha_creacion = publicacion_fecha_creacion.date()
-    
-    # Obtengo la fecha de ingreso de la reserva y aseguro que sea un objeto date
-    reserva_fecha_ingreso = reserva.fecha_salida
-    if isinstance(reserva_fecha_ingreso, datetime):
-        reserva_fecha_ingreso = reserva_fecha_ingreso.date()
-    
-    # Calcula la diferencia de tiempo entre la fecha de creación y la fecha de ingreso
-    diferencia_tiempo = reserva_fecha_ingreso - publicacion_fecha_creacion
-    
-    # Verificar el tipo de diferencia_tiempo
-    if isinstance(diferencia_tiempo, timedelta):
-        # Obtiene la cantidad de días de la diferencia de tiempo
-        cantidad_dias = diferencia_tiempo.days
-    
-    if (int(publicacion.cant_dias) - cantidad_dias) == 0:
-        publicacion.estado = 'Finalizado'
-    else:
-        publicacion.cant_dias = int(publicacion.cant_dias) - cantidad_dias
-        publicacion.fecha_inicio = datetime.now().date()
-        publicacion.estado = 'Vigente'
-        publicacion.save()
-        
-    reserva.fecha_salida =  datetime.now().date()
+    # Lógica para registrar ingreso
+    reserva.estado = 'Finalizado'  # Cambia el estado a "En Proceso"
     reserva.save()
     return redirect('reservas')
