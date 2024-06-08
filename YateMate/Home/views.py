@@ -46,9 +46,11 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)  # No guardamos todavía para poder modificar el usuario
+            user.tipo = 'Usuario'  # Asignamos el tipo de usuario
+            user.save()  # Ahora guardamos el usuario con el tipo asignado
             messages.success(request, "Usuario registrado correctamente.")
-            return redirect('index')  # Redirige a la página de inicio de sesión después del registro
+            return redirect('index')  # Redirige a la página de inicio después del registro
     else:
         form = CustomUserRegistrationForm()
     return render(request, 'register.html', {'form': form})

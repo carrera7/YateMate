@@ -161,6 +161,14 @@ Registrarse
     }
 </style>
 
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
 
 <div class="container-r">
     <div class="recuadroLogin-r">
