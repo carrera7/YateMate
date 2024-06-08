@@ -142,9 +142,12 @@ def publicar_Alquiler(request):
     if request.method == 'POST':
         form = AmarraForm(usuario,request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Publicacion de alquiler registrada con éxito.')
-            return redirect('list_amarra')
+           if usuario.moroso:
+            messages.success(request, "Publicación fallida por ser moroso")
+           else:
+                form.save()
+                messages.success(request, 'Publicación de alquiler registrada con éxito.')
+                return redirect('list_amarra')
     else:
         form = AmarraForm(usuario)
     return render(request, 'amarra.html', {'form': form})
@@ -165,4 +168,4 @@ def registrar_salida(request, id):
     # Lógica para registrar ingreso
     reserva.estado = 'Finalizado'  # Cambia el estado a "En Proceso"
     reserva.save()
-    return redirect('reservas')
+    return redirect('reservas') 

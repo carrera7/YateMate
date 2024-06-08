@@ -33,6 +33,15 @@ class AmarraForm(forms.ModelForm):
         if commit:
             instance.save()
         return instance
+    def clean(self):
+        cleaned_data = super().clean()
+        fecha_inicio = cleaned_data.get('fecha_inicio')
+        ubicacion = cleaned_data.get('ubicacion')
+
+        if Amarra.objects.filter(fecha_inicio=fecha_inicio, ubicacion=ubicacion).exists():
+            raise ValidationError("Ya existe una publicación con la misma fecha de inicio y ubicación.")
+
+        return cleaned_data
     
 
     
