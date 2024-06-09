@@ -4,8 +4,11 @@ from .forms import AmarraForm
 from django.contrib import messages
 from .models import Publicacion_Amarra , Reserva
 from Register.models import User
+from django.utils import timezone
 from datetime import datetime, timedelta
 from django.db import transaction
+
+
 
 
 def list_amarra(request):
@@ -13,20 +16,25 @@ def list_amarra(request):
         fecha_inicio = request.GET.get('fecha_inicio')
         try:
             fecha_inicio = datetime.strptime(fecha_inicio, '%Y-%m-%d').date()
+            if fecha_inicio < timezone.now().date():
+                messages.error(request, 'La fecha no puede ser en el pasado.')
+                return redirect('list_amarra')
         except ValueError:
             messages.error(request, 'Formato de fecha inválido.')
             return redirect('list_amarra')
         
-        Amarras = Publicacion_Amarra.objects.filter(
-            fecha_inicio__gte=fecha_inicio
-        )
+        Amarras = Publicacion_Amarra.objects.filter(fecha_inicio__lte=fecha_inicio)
+        Amarras = [amarra for amarra in Amarras if amarra.is_available_on(fecha_inicio)]
     else:
         usuario_id = request.session.get('user_id')
         if usuario_id:
             usuario = get_object_or_404(User, id=usuario_id)
             Amarras = Publicacion_Amarra.objects.exclude(dueño=usuario)
         else:
-            Amarras = Publicacion_Amarra.objects.all()    
+            Amarras = Publicacion_Amarra.objects.all()
+
+        # Filtrar las publicaciones que tienen días disponibles
+        Amarras = [amarra for amarra in Amarras if int(amarra.cant_dias_disponibles) > 0]
 
     # Actualizar la cantidad de días disponibles
     for amarra in Amarras:
