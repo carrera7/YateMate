@@ -74,7 +74,7 @@ def son_fechas_consecutivas(fechas):
 def crear_reserva(request, publicacion_id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=publicacion_id)
     fecha_inicio = publicacion.fecha_inicio
-    cant_dias = int(publicacion.cant_dias)
+    cant_dias = int(float(publicacion.cant_dias))
     fecha_fin = fecha_inicio + timedelta(days=cant_dias - 1)
     usuario = get_object_or_404(User, id=request.session['user_id'])
 
