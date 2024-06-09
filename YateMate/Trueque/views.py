@@ -416,6 +416,8 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
 
     if user.moroso:
         return JsonResponse({'moroso': True})
+    if intere.moroso:
+        return JsonResponse({'moroso': True})
 
     subject = 'Trueque finalizado'
     message = f'Hola {intere.nombre}, el trueque de {publi.descripcion} ha finalizado'
