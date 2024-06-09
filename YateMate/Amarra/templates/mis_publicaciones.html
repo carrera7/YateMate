@@ -5,6 +5,7 @@ Mis Publicaciones de Amarras
 {% endblock %}
 
 {% block content %}
+
 <style>
     /* Estilo para cada tarjeta */
     .card {
@@ -87,6 +88,14 @@ Mis Publicaciones de Amarras
 
 </style>
 
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
 <h2>Mis Publicaciones de Amarras</h2>
 
 {% if publicaciones_amarras %}
@@ -112,13 +121,7 @@ Mis Publicaciones de Amarras
         {% endfor %}
     </div>
 
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+
     
 {% else %}
     <p>No tienes publicaciones de amarras aún.</p>
