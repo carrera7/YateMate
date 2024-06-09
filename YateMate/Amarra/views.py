@@ -74,7 +74,7 @@ def son_fechas_consecutivas(fechas):
 def crear_reserva(request, publicacion_id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=publicacion_id)
     fecha_inicio = publicacion.fecha_inicio
-    cant_dias = int(publicacion.cant_dias)
+    cant_dias = int(float(publicacion.cant_dias))
     fecha_fin = fecha_inicio + timedelta(days=cant_dias - 1)
     usuario = get_object_or_404(User, id=request.session['user_id'])
 
@@ -142,9 +142,12 @@ def publicar_Alquiler(request):
     if request.method == 'POST':
         form = AmarraForm(usuario,request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Publicacion de alquiler registrada con éxito.')
-            return redirect('list_amarra')
+           if usuario.moroso:
+            messages.success(request, "Publicación fallida por ser moroso")
+           else:
+                form.save()
+                messages.success(request, 'Publicación de alquiler registrada con éxito.')
+                return redirect('list_amarra')
     else:
         form = AmarraForm(usuario)
     return render(request, 'amarra.html', {'form': form})
@@ -165,4 +168,4 @@ def registrar_salida(request, id):
     # Lógica para registrar ingreso
     reserva.estado = 'Finalizado'  # Cambia el estado a "En Proceso"
     reserva.save()
-    return redirect('reservas')
+    return redirect('reservas') 
