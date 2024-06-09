@@ -15,7 +15,7 @@ class Publicacion_ObjetoValioso(models.Model):
     estado = models.CharField(max_length=50)
     matricula = models.CharField(max_length=50)  # Agregado el campo matricula
     dueño = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    foto = models.ImageField()
+    foto = models.ImageField(upload_to='static/img_o/')
 
     def __str__(self):
         return f"{self.tipo} - {self.marca}"
