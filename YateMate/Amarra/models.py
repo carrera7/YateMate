@@ -34,6 +34,13 @@ class Publicacion_Amarra(models.Model):
 
             # Update available days
             self.cant_dias_disponibles = str(dias_disponibles - total_reserved_days)
+            # Change state if no available days
+            if int(self.cant_dias_disponibles) <= 0:
+                self.cant_dias_disponibles = '0'
+                self.estado = 'En Proceso'
+            else:
+                self.estado = 'Vigente'
+                
             self.save()
 
 class Reserva(models.Model):
