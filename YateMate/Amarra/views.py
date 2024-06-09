@@ -148,18 +148,19 @@ def crear_reserva(request, publicacion_id):
     return render(request, 'crear_reserva.html', context)
 
 def publicar_Alquiler(request):
-    usuario = User.objects.get(id=request.session['user_id'])  # Asegúrate de que el usuario esté autenticado
+    usuario_id = request.session.get('user_id')
+    user = User.objects.get(id=usuario_id)
     if request.method == 'POST':
-        form = AmarraForm(usuario,request.POST, request.FILES)
+        form = AmarraForm(user,request.POST, request.FILES)
         if form.is_valid():
-           if usuario.moroso:
+           if user.moroso:
             messages.success(request, "Publicación fallida por ser moroso")
            else:
                 form.save()
                 messages.success(request, 'Publicación de alquiler registrada con éxito.')
                 return redirect('list_amarra')
     else:
-        form = AmarraForm(usuario)
+        form = AmarraForm(user)
     return render(request, 'amarra.html', {'form': form})
 
 def reservas(request):

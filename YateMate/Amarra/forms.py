@@ -11,17 +11,12 @@ class AmarraForm(forms.ModelForm):
     
     class Meta:
         model = Publicacion_Amarra
-        fields = ['dueño','fecha_inicio','cant_dias','precio','ubicacion']
+        fields = ['fecha_inicio','cant_dias','precio','ubicacion']
 
-    def clean_dueno(self):
-        dueño = self.cleaned_data['dueño']
-        if dueño.tipo != 'Cliente':
-            raise forms.ValidationError("El dueño debe ser un usuario de tipo Cliente.")
-        return dueño
     
-    def __init__(self, usuario, *args, **kwargs):
+    def __init__(self, usuario=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
-       # self.fields['dueño'].queryset = Amarra.objects.filter(dueño=usuario) 
+        self.usuario = usuario
     
     def calcular_fecha_fin(fecha_inicio, duracion_dias):
         fecha_fin = fecha_inicio + timedelta(days=duracion_dias)
@@ -29,6 +24,8 @@ class AmarraForm(forms.ModelForm):
 
     def save(self, commit=True):
         instance = super().save(commit=False)
+        if self.usuario:
+            instance.dueño = self.usuario  # Asigna el usuario activo como el dueño
         if commit:
             instance.save()
         return instance
