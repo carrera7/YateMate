@@ -26,7 +26,7 @@ class Publicacion_Amarra(models.Model):
 
         if diferencia_dias > 0:
             # Calculate initial available days
-            dias_disponibles = int(self.cant_dias) - diferencia_dias
+            dias_disponibles = int(float(self.cant_dias)) - diferencia_dias
 
             # Calculate total reserved days
             reservas = Reserva.objects.filter(publicacion=self)
