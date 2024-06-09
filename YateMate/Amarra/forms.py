@@ -6,13 +6,12 @@ from datetime import date, timedelta
 
 class AmarraForm(forms.ModelForm):
     precio = forms.FloatField (label='Precio', widget=forms.TextInput(), required=True)
-    cant_dias = forms.FloatField (label='Cantidad de dias', widget=forms.TextInput(), required=True)
-    ubicacion = forms.CharField(label='Ubicacion', widget=forms.TextInput())
-    cant_dias_disponibles= forms.IntegerField(label="Cantidad dias disponibles", widget=forms.TextInput())    
+    cant_dias = forms.CharField (label='Cantidad de dias', widget=forms.TextInput(), required=True)
+    ubicacion = forms.CharField(label='Ubicacion', widget=forms.TextInput())   
     
     class Meta:
         model = Publicacion_Amarra
-        fields = ['dueño','fecha_inicio','cant_dias','precio','ubicacion','cant_dias_disponibles']
+        fields = ['dueño','fecha_inicio','cant_dias','precio','ubicacion']
 
     def clean_dueno(self):
         dueño = self.cleaned_data['dueño']
@@ -35,11 +34,15 @@ class AmarraForm(forms.ModelForm):
         return instance
     def clean(self):
         cleaned_data = super().clean()
+        cant_dias = cleaned_data.get('cant_dias')
         fecha_inicio = cleaned_data.get('fecha_inicio')
         ubicacion = cleaned_data.get('ubicacion')
 
         if Amarra.objects.filter(fecha_inicio=fecha_inicio, ubicacion=ubicacion).exists():
             raise ValidationError("Ya existe una publicación con la misma fecha de inicio y ubicación.")
+
+        # Setear cantidad de días disponibles con el valor de cant_dias
+        self.instance.cant_dias_disponibles = cant_dias
 
         return cleaned_data
     

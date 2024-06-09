@@ -31,7 +31,10 @@ class Publicacion_Amarra(models.Model):
             total_reserved_days = sum([int(reserva.cant_dias) for reserva in reservas])
             self.cant_dias_disponibles = str(dias_disponibles - total_reserved_days)
         else:
-            self.cant_dias_disponibles = self.cant_dias
+            dias_disponibles = int(self.cant_dias) 
+            reservas = Reserva.objects.filter(publicacion=self)
+            total_reserved_days = sum([int(reserva.cant_dias) for reserva in reservas])
+            self.cant_dias_disponibles = str(dias_disponibles - total_reserved_days)
 
         if int(self.cant_dias_disponibles) <= 0:
             self.cant_dias_disponibles = '0'

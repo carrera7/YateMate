@@ -138,6 +138,8 @@ def crear_reserva(request, publicacion_id):
                     usuario=usuario
                 )
                 reserva.save()
+        
+        messages.success(request, '¡Reserva realizada con éxito!')
         return redirect('list_amarra')
 
     context = {
