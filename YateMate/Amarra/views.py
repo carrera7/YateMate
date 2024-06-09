@@ -114,6 +114,24 @@ def crear_reserva(request, publicacion_id):
         fechas_seleccionadas = request.POST.getlist('fechas_seleccionadas')
         fechas_seleccionadas = [datetime.strptime(fecha, '%Y-%m-%d').date() for fecha in fechas_seleccionadas]
         fechas_seleccionadas.sort()
+        
+        # Obtener todas las fechas reservadas por el usuario en otras publicaciones
+        reservas_usuario = Reserva.objects.filter(usuario=usuario).exclude(publicacion=publicacion)
+        fechas_reservadas_usuario = set()
+        for reserva in reservas_usuario:
+            fecha_ingreso = reserva.fecha_ingreso
+            cant_dias = int(reserva.cant_dias)
+            if (cant_dias == 1):
+                fechas_reservadas_usuario.add(fecha_ingreso)
+            else:    
+                for i in range(cant_dias):
+                    fechas_reservadas_usuario.add(fecha_ingreso + timedelta(days=i))
+
+        # Verificar si hay solapamiento de fechas con las reservas existentes del usuario
+        for fecha in fechas_seleccionadas:
+            if fecha in fechas_reservadas_usuario:
+                messages.error(request, 'Usted tiene una reserva en la cual se solapan las fechas.')
+                return redirect('list_amarra')
 
         with transaction.atomic():
             if not son_fechas_consecutivas([fecha.strftime('%Y-%m-%d') for fecha in fechas_seleccionadas]):
