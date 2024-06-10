@@ -3,8 +3,38 @@
 {% block title %}Crear Reserva{% endblock %}
 
 {% block content %}
-    <h2>Crear Reserva</h2>
-    <form id="reserva-form" method="POST">
+<style>
+    .container-form-r {
+        width: 100%;
+        min-height: calc(100vh - 150px); /* Ajusta este valor según el tamaño del header y footer */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 100px; /* Espacio inferior para evitar que quede oculto por el footer */
+        margin-top: 50px; /* Espacio superior para separarlo del header */
+    }
+
+    .form-r {
+        width: 50%; /* Tamaño deseado del formulario */
+        margin: auto; /* Centra el formulario horizontalmente */
+        background-color: #f8f9fa; /* Fondo blanco */
+        padding: 20px; /* Espacio interno */
+        border: 1px solid #ced4da; /* Borde */
+        border-radius: 5px; /* Bordes redondeados */
+    }
+
+    .fecha-label {
+        margin-bottom: 10px; /* Espacio entre las opciones */
+    }
+
+    h2 {
+        text-align: center; /* Centrar el título */
+    }
+</style>
+
+<h2>Crear Reserva</h2>
+<div class="container-form-r" id="container-form">
+    <form id="reserva-form" method="POST" class="form-r">
         {% csrf_token %}
         <fieldset>
             <legend>Seleccione las fechas disponibles:</legend>
@@ -17,14 +47,15 @@
         </fieldset>
         <button type="button" id="reservar-btn">Reservar</button>
     </form>
+</div>
 
-    <script>
-        document.getElementById('reservar-btn').addEventListener('click', function() {
-            if (confirm('¿Está seguro de hacer la reserva?')) {
-                document.getElementById('reserva-form').submit();
-            } else {
-                alert('Reserva cancelada.');
-            }
-        });
-    </script>
+<script>
+    document.getElementById('reservar-btn').addEventListener('click', function() {
+        if (confirm('¿Está seguro de hacer la reserva?')) {
+            document.getElementById('reserva-form').submit();
+        } else {
+            alert('Reserva cancelada.');
+        }
+    });
+</script>
 {% endblock %}

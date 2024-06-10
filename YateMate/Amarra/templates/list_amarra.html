@@ -64,28 +64,34 @@ Ver Amarras
         font-size: 0.8rem;
         margin-top: 5px;
     }
+
     .messages {
-    list-style: none;
-    padding: 0;
-}
+        list-style: none;
+        padding: 0;
+    }
 
-.messages li {
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 5px;
-}
+    .messages li {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+    }
 
-.messages li.success {
-    background-color: #d4edda;
-    color: #155724;
-}
+    .messages li.success {
+        background-color: #d4edda;
+        color: #155724;
+    }
 
-.messages li.error {
-    background-color: #f8d7da;
-    color: #721c24;
-}
+    .messages li.error {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
 
+    /* Ajuste del contenedor para que el contenido no quede oculto */
+    .amarras-container {
+        padding-bottom: 70px; /* Espacio inferior para evitar que quede oculto por el footer */
+    }
 </style>
+
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -94,23 +100,21 @@ Ver Amarras
 </ul>
 {% endif %}
 
-    <h2>Publicaciones</h2>
+<h2>Publicaciones</h2>
 
-    <!-- Formulario de filtro -->
-    <form id="filtroForm" method="GET" action="">
-        <div class="filter-form">
-            <label for="fecha_inicio">Fecha de inicio:</label>
-            <input type="date" id="fecha_inicio" name="fecha_inicio" min="{{ fecha_actual }}" max="{{ ultima_fecha }}" />
-            <button type="button" onclick="validarFechas()">Filtrar</button>
-            <button type="button" onclick="limpiarFiltros()">Limpiar filtros</button>
-            <div id="error-msg" class="error-message"></div>
-        </div>
-    </form>
+<!-- Formulario de filtro -->
+<form id="filtroForm" method="GET" action="">
+    <div class="filter-form">
+        <label for="fecha_inicio">Fecha de inicio:</label>
+        <input type="date" id="fecha_inicio" name="fecha_inicio" min="{{ fecha_actual }}" max="{{ ultima_fecha }}" />
+        <button type="button" onclick="validarFechas()">Filtrar</button>
+        <button type="button" onclick="limpiarFiltros()">Limpiar filtros</button>
+        <div id="error-msg" class="error-message"></div>
+    </div>
+</form>
 
-
-
-{% if objetos %}
-    <div id="amarras-container">
+<div class="amarras-container">
+    {% if objetos %}
         {% for amarra in objetos %}
             {% if amarra.estado == 'Vigente' %}
                 <div class="card" data-fecha="{{ amarra.fecha_inicio }}">
@@ -119,44 +123,43 @@ Ver Amarras
                     <p>{{ amarra.fecha_inicio }} - {{ amarra.cant_dias_disponibles}} días</p>
                     {% if request.session.user_type == 'Usuario' or request.session.user_type == 'Cliente' %}
                         {% if request.session.user_id !=  amarra.dueño.id %}
-                        <a href="{% url 'crear_reserva' publicacion_id=amarra.id %}" class="btn-card">Ver disponibilidad</a>
+                            <a href="{% url 'crear_reserva' publicacion_id=amarra.id %}" class="btn-card">Ver disponibilidad</a>
                         {% endif %}
-                    {%else%}
-                    <a type="button" style="opacity: 0.5 ;" class="btn btn-card mt-3" disabled>Ver disponibilidad</a>
+                    {% else %}
+                        <a type="button" style="opacity: 0.5;" class="btn btn-card mt-3" disabled>Ver disponibilidad</a>
                     {% endif %}
                 </div>
             {% endif %}
         {% endfor %}
-    </div>
-    <script>
-        function validarFechas() {
-            let fechaInicio = document.getElementById("fecha_inicio").value;
-            let errorMsg = document.getElementById("error-msg");
-            errorMsg.innerHTML = ""; // Limpiar mensajes de error anteriores
+    {% else %}
+        <p>No hay amarras temporales disponibles</p>
+    {% endif %}
+</div>
 
-            let fechaActual = new Date().toISOString().slice(0, 10);
-            if (fechaInicio === "") {
-                window.alert ("Debe seleccionar una fecha de inicio.");
-                return;
-            }
+<script>
+    function validarFechas() {
+        let fechaInicio = document.getElementById("fecha_inicio").value;
+        let errorMsg = document.getElementById("error-msg");
+        errorMsg.innerHTML = ""; // Limpiar mensajes de error anteriores
 
-            if (fechaInicio < fechaActual) {
-               window.alert ("No se permiten fechas pasadas.");
-               return;
-            }
-
-            // Enviar el formulario si la fecha es válida
-            document.getElementById("filtroForm").submit();
-
+        let fechaActual = new Date().toISOString().slice(0, 10);
+        if (fechaInicio === "") {
+            window.alert("Debe seleccionar una fecha de inicio.");
+            return;
         }
 
-        function limpiarFiltros() {
-            window.location.href = "{% url 'list_amarra' %}"; // Redirigir a la vista sin filtros
+        if (fechaInicio < fechaActual) {
+            window.alert("No se permiten fechas pasadas.");
+            return;
         }
-    </script>
 
-{% else %}
-    <p>No hay amarras temporales disponibles</p>
-{% endif %}
+        // Enviar el formulario si la fecha es válida
+        document.getElementById("filtroForm").submit();
+    }
+
+    function limpiarFiltros() {
+        window.location.href = "{% url 'list_amarra' %}"; // Redirigir a la vista sin filtros
+    }
+</script>
 
 {% endblock %}
