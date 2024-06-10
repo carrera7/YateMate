@@ -55,13 +55,13 @@ def mis_publicaciones(request):
 
 def eliminar_publicacion(request, id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=id)
-    if Reserva.objects.filter(publicacion=publicacion).exists:
+    if Reserva.objects.filter(publicacion=publicacion).exists():
         messages.success(request, "Esta operación no es posible, existe una reserva") 
         return redirect ('mis_publicaciones')
     else:    
         publicacion.delete()
         messages.success(request, 'Publicacion eliminada')
-    return redirect('list_amarra')
+    return redirect('mis_publicaciones')
 
 def modificar_publicacion(request, id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=id)
