@@ -93,7 +93,7 @@ Ver Amarras
     {% endfor %}
 </ul>
 {% endif %}
-{% if objetos %}
+
     <h2>Publicaciones</h2>
 
     <!-- Formulario de filtro -->
@@ -109,7 +109,7 @@ Ver Amarras
 
 
 
-
+{% if objetos %}
     <div id="amarras-container">
         {% for amarra in objetos %}
             {% if amarra.estado == 'Vigente' %}
@@ -136,17 +136,18 @@ Ver Amarras
 
             let fechaActual = new Date().toISOString().slice(0, 10);
             if (fechaInicio === "") {
-                errorMsg.innerHTML = "Debe seleccionar una fecha de inicio.";
+                window.alert ("Debe seleccionar una fecha de inicio.");
                 return;
             }
 
             if (fechaInicio < fechaActual) {
-                errorMsg.innerHTML = "No se permiten fechas pasadas.";
-                return;
+               window.alert ("No se permiten fechas pasadas.");
+               return;
             }
 
             // Enviar el formulario si la fecha es válida
             document.getElementById("filtroForm").submit();
+
         }
 
         function limpiarFiltros() {
