@@ -457,3 +457,42 @@ def denunciar_usuario(request, sender_id):
 
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
+
+def ver_mensajes_emb(request, objeto_id):
+    solicitud_embarcacion = get_object_or_404(Solicitud_Embarcaciones, publicacion__id=objeto_id)
+
+    # Buscamos la conversación entre el dueño de la publicación y el solicitante
+    try:
+        conversacion = Conversacion.objects.get(
+            dueño_publicacion=solicitud_embarcacion.publicacion.embarcacion.dueño,
+            solicitante=solicitud_embarcacion.usuario_interesado
+        )
+    except Conversacion.DoesNotExist:
+        conversacion = None
+
+    if conversacion:
+        mensajes = Mensajes_chat.objects.filter(conversacion=conversacion).order_by('enviado_a')
+    else:
+        mensajes = []
+
+    return render(request, 'ver_mensajes_adm.html', {'mensajes': mensajes})
+
+
+def ver_mensajes_obj(request, objeto_id):
+    solicitud_objeto_valioso = get_object_or_404(Solicitud_ObjetosValiosos, publicacion__id=objeto_id)
+
+    # Buscamos la conversación entre el dueño de la publicación y el solicitante
+    try:
+        conversacion = Conversacion.objects.get(
+            dueño_publicacion=solicitud_objeto_valioso.publicacion.dueño,
+            solicitante=solicitud_objeto_valioso.usuario_interesado
+        )
+    except Conversacion.DoesNotExist:
+        conversacion = None
+
+    if conversacion:
+        mensajes = Mensajes_chat.objects.filter(conversacion=conversacion).order_by('enviado_a')
+    else:
+        mensajes = []
+
+    return render(request, 'ver_mensajes_adm.html', {'mensajes': mensajes})
