@@ -445,14 +445,14 @@ def denunciar_usuario(request, sender_id):
     usuario_denunciado = get_object_or_404(User, id=sender_id)
 
     if Denuncia.objects.filter(denunciado=usuario_denunciado, denunciante=usuario_denunciante).exists():
-        messages.warning(request, 'Ya has realizado una denuncia previa a este usuario.')
+        messages.warning(request, 'Usted ya ha denunciado al usuario. El administrador tomará las decisiones pertinentes')
     else:
         # Crear la nueva denuncia
         nueva_denuncia = Denuncia(denunciado=usuario_denunciado, denunciante=usuario_denunciante)
         nueva_denuncia.save()
         messages.success(request, 'Denuncia realizada correctamente.')
         subject = 'Han denunciado un mensaje que enviaste'
-        message = f'Hola {usuario_denunciado.nombre}, han denunciado un comentario que hiciste en el mensaje, para mas información contactarte con la administración}'
+        message = f'Hola {usuario_denunciado.nombre}, han denunciado un comentario que hiciste en el mensaje, para mas información contactarte con la administración'
         send_mail(subject, message, settings.EMAIL_HOST_USER, [usuario_denunciado.mail])
 
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
