@@ -21,4 +21,6 @@ urlpatterns = [
     path('registrar_Objeto_Valioso/', views.registrar_Objeto_Valioso, name='registrar_Objeto_Valioso'),
     path('registrar_publicacion_boat/', views.registrar_Embarcacion, name='registrar_publicacion_boat'),
     path('finalizar_trueque/<int:publicacion_id>/<str:tipo_obj>/', views.finalizar_trueque, name='finalizar_trueque'),
+    path('eliminar_mensaje/<int:mensaje_id>/', views.eliminar_mensaje, name='eliminar_mensaje'),
+    path('denunciar/<int:sender_id>/', views.denunciar_usuario, name='denunciar_usuario'),
 ]

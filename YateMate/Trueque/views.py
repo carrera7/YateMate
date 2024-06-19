@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render
 from Register.models import User
-from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos, MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones, Conversacion, Mensajes_chat)
+from .models import (Publicacion_ObjetoValioso, Publicacion_Embarcacion, Solicitud_Embarcaciones, Solicitud_ObjetosValiosos, MensajeSolicitudObjetosValiosos , MensajeSolicitudEmbarcaciones, Conversacion, Mensajes_chat, Denuncia)
 from Register.models import Embarcacion
 from itertools import chain
 from django.core.mail import send_mail
@@ -13,7 +13,7 @@ from django.shortcuts import redirect
 from .froms import PublicacionObjetoValiosoForm ,PublicacionEmbarcacionForm
 #from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-
+from django.views.decorators.http import require_POST
 from django.contrib import messages
 
 
@@ -430,3 +430,26 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
     publi.estado = "Finalizado"
     publi.save()
     return JsonResponse({'moroso': False})
+
+
+@require_POST
+def eliminar_mensaje(request, mensaje_id):
+    mensaje = Mensajes_chat.objects.get(id=mensaje_id)
+    mensaje.delete()
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+
+def denunciar_usuario(request, sender_id):
+    usuario_denunciante = get_object_or_404(User, id=request.session.get('user_id'))
+
+    usuario_denunciado = get_object_or_404(User, id=sender_id)
+
+    if Denuncia.objects.filter(denunciado=usuario_denunciado, denunciante=usuario_denunciante).exists():
+        messages.warning(request, 'Ya has realizado una denuncia previa a este usuario.')
+    else:
+        # Crear la nueva denuncia
+        nueva_denuncia = Denuncia(denunciado=usuario_denunciado, denunciante=usuario_denunciante)
+        nueva_denuncia.save()
+        messages.success(request, 'Denuncia realizada correctamente.')
+
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))

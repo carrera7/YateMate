@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,19 +51,12 @@
         }
 
         .mensaje-container ul li {
+            position: relative; /* Asegura que los botones sean posicionados relativos a este elemento */
             padding: 10px;
             border-radius: 20px;
             margin-bottom: 10px;
-        }
-
-        .solicitante-message {
-            background-color: #DCF8C6;
-            text-align: left;
-        }
-
-        .usuario-message {
-            background-color: #C2D0FF;
-            text-align: right;
+            background-color: #f2f2f2; /* Color de fondo del mensaje */
+            padding-right: 40px;
         }
 
         /* Estilo para los cuadros diferenciados */
@@ -70,7 +64,6 @@
             background-color: #ccc;
             border: 1px solid #999;
             border-radius: 5px;
-            margin-bottom: 5px;
             padding: 5px;
             cursor: pointer;
             border-radius: 20px;
@@ -82,7 +75,92 @@
         .solicitante-box:hover {
             background-color: #ddd;
         }
+
+        /* Estilo para los botones de acción */
+        .message-actions {
+            position: absolute;
+            top: 1px; /* Ajusta la posición vertical según sea necesario */
+            right: 10px; /* Ajusta la posición horizontal según sea necesario */
+            display: flex;
+            flex-direction: column; /* Asegura que los botones estén uno sobre otro */
+        }
+
+        .message-actions .delete-button,
+        .message-actions .report-button {
+            margin-right: 10px;
+        }
+
+        .delete-button {
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 0px;
+            transition: background-color 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .delete-button:hover {
+            background-color: darkred;
+        }
+
+        .delete-button:hover::before {
+            content: "Eliminar";
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .delete-button:hover::before {
+            opacity: 1;
+        }
+
+        .report-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-bottom: 0px;
+            transition: background-color 0.3s ease-in-out;
+            position: relative;
+        }
+
+        .report-button img {
+            width: 15px;
+        }
+
+        /* Estilo del tooltip */
+        .report-button:hover::before {
+            content: "Denunciar";
+            background-color: #333;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            position: absolute;
+            top: 20px; /* Ajusta la posición del tooltip según sea necesario */
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            z-index: 1000;
+            opacity: 0; /* Inicialmente oculto */
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .report-button:hover::before {
+            opacity: 1; /* Mostrar el tooltip al pasar el cursor sobre el botón */
+        }
     </style>
+
 </head>
 <body>
     <!-- Barra de mensajes -->
@@ -99,15 +177,29 @@
         <div class="conversacion" data-conversacion-id="{{ conversacion.id }}" style="display: none;">
             <ul>
                 {% for mensaje in conversacion.get_mensajes %}
-                    <li class="{% if mensaje.sender == usuario_actual %}usuario-message{% else %}solicitante-message{% endif %}">{{ mensaje.sender.nombre }}: {{ mensaje.mensaje_texto }}</li>
+                    <li class="{% if mensaje.sender == usuario_actual %}usuario-message{% else %}solicitante-message{% endif %}">
+                        {{ mensaje.sender.nombre }}: {{ mensaje.mensaje_texto }}
+                        <div class="message-actions">
+                            <form method="post" action="{% url 'eliminar_mensaje' mensaje.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-button">X</button>
+                            </form>
+                            <form action="{% url 'denunciar_usuario' mensaje.sender.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="report-button">
+                                    <img src="{% static 'img/megafono.png' %}" alt="Denunciar" >
+                                </button>
+                            </form>
+                        </div>
+                    </li>
                 {% empty %}
                     <li>No hay mensajes.</li>
                 {% endfor %}
             </ul>
             <form class="message-form" method="post" action="{% url 'enviar_mensaje' %}">
                 {% csrf_token %}
-                <input type="hidden" name="conversacion_id" value="{{ conversacion.id }}">
-                <input type="text" name="mensaje_texto" placeholder="Escribe tu mensaje aquí">
+                    <input type="hidden" name="conversacion_id" value="{{ conversacion.id }}">
+                    <input type="text" name="mensaje_texto" placeholder="Escribe tu mensaje aquí">
                 <button type="submit">Enviar</button>
             </form>
         </div>
@@ -158,7 +250,7 @@
             });
         });
     });
-</script>
 
+    </script>
 </body>
 </html>
