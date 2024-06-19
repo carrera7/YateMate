@@ -36,7 +36,7 @@ Saber más
           {% if objeto.embarcacion %}
             {% if objeto.embarcacion.dueno.id != request.session.user_id %}
               <button type="button" class="btn btn-primary mt-3"
-              onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'Embarcaciones')">
+              onclick="solicitarTrueque({{ objeto.id }}, 'Embarcaciones')">
               Solicitar un Trueque
               </button>
             {% else %}
@@ -47,7 +47,7 @@ Saber más
             <script>
               function solicitarTrueque(publicacionId, tipo) {
                   // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
-                  window.location.href = `/solisitar_trueque/{{ objeto.embarcacion.id }}/${tipo}`;
+                  window.location.href = `/solisitar_trueque/{{ objeto.id }}/${tipo}`;
               }
             </script>
           {% else %}
