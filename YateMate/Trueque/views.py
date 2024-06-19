@@ -451,5 +451,9 @@ def denunciar_usuario(request, sender_id):
         nueva_denuncia = Denuncia(denunciado=usuario_denunciado, denunciante=usuario_denunciante)
         nueva_denuncia.save()
         messages.success(request, 'Denuncia realizada correctamente.')
+        subject = 'Han denunciado un mensaje que enviaste'
+        message = f'Hola {usuario_denunciado.nombre}, han denunciado un comentario que hiciste en el mensaje, para mas información contactarte con la administración}'
+        send_mail(subject, message, settings.EMAIL_HOST_USER, [usuario_denunciado.mail])
 
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
