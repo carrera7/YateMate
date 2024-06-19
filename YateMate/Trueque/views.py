@@ -474,7 +474,8 @@ def ver_mensajes_emb(request, objeto_id):
         mensajes = Mensajes_chat.objects.filter(conversacion=conversacion).order_by('enviado_a')
     else:
         mensajes = []
-
+    for mensaje in mensajes:
+        mensaje.enviado_a_formateado = mensaje.enviado_a.strftime('%Y-%m-%d %H:%M')
     return render(request, 'ver_mensajes_adm.html', {'mensajes': mensajes})
 
 
@@ -495,4 +496,6 @@ def ver_mensajes_obj(request, objeto_id):
     else:
         mensajes = []
 
+    for mensaje in mensajes:
+        mensaje.enviado_a_formateado = mensaje.enviado_a.strftime('%Y-%m-%d %H:%M')
     return render(request, 'ver_mensajes_adm.html', {'mensajes': mensajes})
