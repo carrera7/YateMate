@@ -429,6 +429,11 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
 
     publi.estado = "Finalizado"
     publi.save()
+    if tipo_obj != 'Objetos Valiosos':
+        publi.embarcacion.dueno=intere
+        publi.embarcacion.save()
+        intere.tipo = "Cliente"
+        intere.save()
     return JsonResponse({'moroso': False})
 
 
@@ -499,3 +504,5 @@ def ver_mensajes_obj(request, objeto_id):
     for mensaje in mensajes:
         mensaje.enviado_a_formateado = mensaje.enviado_a.strftime('%Y-%m-%d %H:%M')
     return render(request, 'ver_mensajes_adm.html', {'mensajes': mensajes})
+
+

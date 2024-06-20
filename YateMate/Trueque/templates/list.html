@@ -122,6 +122,9 @@ Mi Página de Inicio
                     <a href="{% url 'ver_mensajes_obj' objeto.id %}" class="btn btn-card">Ver mensajes</a>
                 {% endif %}
             {% endif %}
+            {% if request.GET.estado == 'Finalizado'%}
+                <a href="#" class="btn btn-card">Ver información</a>
+            {% endif %}
         </div>
     {% endfor %}
 {% else %}
