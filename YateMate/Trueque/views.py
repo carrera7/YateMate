@@ -464,7 +464,7 @@ def ver_mensajes_emb(request, objeto_id):
     # Buscamos la conversación entre el dueño de la publicación y el solicitante
     try:
         conversacion = Conversacion.objects.get(
-            dueño_publicacion=solicitud_embarcacion.publicacion.embarcacion.dueño,
+            dueño_publicacion=solicitud_embarcacion.publicacion.embarcacion.dueno,
             solicitante=solicitud_embarcacion.usuario_interesado
         )
     except Conversacion.DoesNotExist:

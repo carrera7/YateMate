@@ -117,7 +117,7 @@ Mi Página de Inicio
 
             {% if request.GET.estado == 'Proceso' or request.GET.estado == 'Finalizado' %}
                 {% if objeto.embarcacion.nombre_fantasia %}
-                    <a href="{% url 'ver_mensajes_emb' objeto.embarcacion.id %}" class="btn btn-card">Ver mensajes</a>
+                    <a href="{% url 'ver_mensajes_emb' objeto.id %}" class="btn btn-card">Ver mensajes</a>
                 {% else %}
                     <a href="{% url 'ver_mensajes_obj' objeto.id %}" class="btn btn-card">Ver mensajes</a>
                 {% endif %}
