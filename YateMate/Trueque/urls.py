@@ -24,8 +24,10 @@ urlpatterns = [
     path('registrar_publicacion_boat/', views.registrar_Embarcacion, name='registrar_publicacion_boat'),
     path('finalizar_trueque/<int:publicacion_id>/<str:tipo_obj>/', views.finalizar_trueque, name='finalizar_trueque'),
     path('eliminar_mensaje/<int:mensaje_id>/', views.eliminar_mensaje, name='eliminar_mensaje'),
-    path('denunciar/<int:sender_id>/', views.denunciar_usuario, name='denunciar_usuario'),
+    path('denunciar/<int:sender_id>/<str:msj>/', views.denunciar_usuario, name='denunciar_usuario'),
     path('ver_mensajes_emb/<int:objeto_id>/', views.ver_mensajes_emb, name='ver_mensajes_emb'),
     path('ver_mensajes_obj/<int:objeto_id>/', views.ver_mensajes_obj, name='ver_mensajes_obj'),
     path('ver_informacion_adm/<int:publi_id>/<str:tipo_objeto>/', views.ver_informacion_adm, name='ver_informacion_adm'),
+    path('mensajes_denunciados/', views.mensajes_denunciados, name='mensajes_denunciados'),
+    path('descartar_denuncia/<int:denuncia_id>/', views.descartar_denuncia, name='descartar_denuncia'),
 ]

@@ -94,9 +94,9 @@ class Mensajes_chat(models.Model):
 class Denuncia(models.Model):
     denunciado = models.ForeignKey(User, related_name='denuncias_recibidas', on_delete=models.CASCADE)
     denunciante = models.ForeignKey(User, related_name='denuncias_realizadas', on_delete=models.CASCADE)
-
+    mensaje_texto = models.TextField()
     class Meta:
-        unique_together = ('denunciado', 'denunciante')  # Asegura que no se pueda duplicar la misma denuncia
+        unique_together = ('denunciado', 'denunciante', 'mensaje_texto')  # Asegura que no se pueda duplicar la misma denuncia
 
     def __str__(self):
         return f'Denuncia de {self.denunciante.username} contra {self.denunciado.username}'

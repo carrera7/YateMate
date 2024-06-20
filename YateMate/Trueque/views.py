@@ -488,20 +488,20 @@ def eliminar_mensaje(request, mensaje_id):
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
 
-def denunciar_usuario(request, sender_id):
+def denunciar_usuario(request, sender_id, msj):
     usuario_denunciante = get_object_or_404(User, id=request.session.get('user_id'))
 
     usuario_denunciado = get_object_or_404(User, id=sender_id)
 
-    if Denuncia.objects.filter(denunciado=usuario_denunciado, denunciante=usuario_denunciante).exists():
+    if Denuncia.objects.filter(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj).exists():
         messages.warning(request, 'Usted ya ha denunciado al usuario. El administrador tomará las decisiones pertinentes')
     else:
         # Crear la nueva denuncia
-        nueva_denuncia = Denuncia(denunciado=usuario_denunciado, denunciante=usuario_denunciante)
+        nueva_denuncia = Denuncia(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj)
         nueva_denuncia.save()
         messages.success(request, 'Denuncia realizada correctamente.')
         subject = 'Han denunciado un mensaje que enviaste'
-        message = f'Hola {usuario_denunciado.nombre}, han denunciado un comentario que hiciste en el mensaje, para mas información contactarte con la administración'
+        message = f'Hola {usuario_denunciado.nombre}, han denunciado un comentario que hiciste en el mensaje {msj}, para mas información contactarte con la administración'
         send_mail(subject, message, settings.EMAIL_HOST_USER, [usuario_denunciado.mail])
 
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -562,3 +562,27 @@ def ver_informacion_adm(request, publi_id, tipo_objeto):
         solicitud = get_object_or_404(Solicitud_Embarcaciones, publicacion=publi_id)
         nuevo_dueño = solicitud.usuario_interesado
     return render(request, 'ver_informacion_adm.html', {'dueño': dueño, 'nuevo_dueño': nuevo_dueño})
+
+
+def mensajes_denunciados(request):
+    mensajes = Denuncia.objects.all()
+    return render(request, 'mensajes_denunciados.html', {'mensajes': mensajes})
+
+
+def descartar_denuncia(request, denuncia_id):
+    denuncia = Denuncia.objects.get(id=denuncia_id)
+
+    denunciado=User.objects.get(id=denuncia.denunciado_id)
+    denunciante = User.objects.get(id=denuncia.denunciante_id)
+
+    subject = 'Se ha descartado la denuncia que hiciste'
+    message = f'Hola {denunciante.nombre}, se ha descartado la denuncia al mensaje de {denunciado.nombre}, para mas información contactarte con la administración'
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [denunciante.mail])
+    subject = 'Se ha descartado la denuncia que te hicieron'
+
+    message = f'Hola {denunciado.nombre}, se ha descartado la denuncia de {denunciante.nombre} hacia un mensaje tuyo, para mas información contactarte con la administración'
+    send_mail(subject, message, settings.EMAIL_HOST_USER, [denunciado.mail])
+
+    denuncia.delete()
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+

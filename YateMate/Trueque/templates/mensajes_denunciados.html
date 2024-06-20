@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mi Página de Inicio
+{% endblock %}
+
+{% block content %}
+<style>
+        .message-body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            padding: 20px;
+            margin-bottom: 60px;
+        }
+        .message-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .message-container h1 {
+            text-align: center;
+            color: #333;
+        }
+        .message-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .message-container li {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #3498db;
+        }
+        .message-info {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .message-sender {
+            font-weight: bold;
+        }
+        .message-date {
+            color: #888;
+        }
+        .message-text {
+            margin-left: 20px;
+        }
+        .btn-container {
+            text-align: center; /* Centra horizontalmente los elementos inline */
+        }
+
+        .btn-card {
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            text-decoration: none;
+            border-radius: 3px;
+            display: inline-block;
+        }
+</style>
+
+    <div class="message-body">
+        <div class="message-container">
+            <h1>Mensajes denunciados</h1>
+            <ul>
+                {% for mensaje in mensajes %}
+                <li>
+                    <div class="message-info">
+                        <span class="message-sender">{{ mensaje.denunciado.nombre }}</span>
+                        <span class="message-sender">{{ mensaje.denunciado.apellido }}</span>
+                        <span class="message-sender">{{ mensaje.denunciado.mail }}</span>
+                        <span class="message-sender">{{ mensaje.denunciado.dni }}</span>
+                    </div>
+                    <div class="message-text">
+                        {{ mensaje.mensaje_texto }}
+                    </div>
+                    <div class="btn-container">
+                        <a href="#" class="btn btn-card" onclick="return confirm('¿Estás seguro de dar de baja al usuario?')">Dar baja usuario</a>
+                    <a href="{% url 'descartar_denuncia' mensaje.id %}" class="btn btn-card" onclick="return confirm('¿Estás seguro de descartar la denuncia?')">Descartar denuncia</a>
+                    </div>
+                </li>
+                {% empty %}
+                <li>No hay mensajes para mostrar.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

@@ -82,7 +82,9 @@
             top: 1px; /* Ajusta la posición vertical según sea necesario */
             right: 10px; /* Ajusta la posición horizontal según sea necesario */
             display: flex;
-            flex-direction: column; /* Asegura que los botones estén uno sobre otro */
+            justify-content: center; /* Centra los elementos horizontalmente */
+            align-items: center; /* Centra los elementos verticalmente */
+
         }
 
         .message-actions .delete-button,
@@ -98,7 +100,7 @@
             cursor: pointer;
             margin-bottom: 0px;
             transition: background-color 0.3s ease-in-out;
-            position: relative;
+            position: static;
         }
 
         .delete-button:hover {
@@ -180,16 +182,20 @@
                     <li class="{% if mensaje.sender == usuario_actual %}usuario-message{% else %}solicitante-message{% endif %}">
                         {{ mensaje.sender.nombre }}: {{ mensaje.mensaje_texto }}
                         <div class="message-actions">
-                            <form method="post" action="{% url 'eliminar_mensaje' mensaje.id %}" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="delete-button">X</button>
-                            </form>
-                            <form action="{% url 'denunciar_usuario' mensaje.sender.id %}" method="post">
-                                {% csrf_token %}
-                                <button class="report-button">
-                                    <img src="{% static 'img/megafono.png' %}" alt="Denunciar" >
-                                </button>
-                            </form>
+                            {% if mensaje.sender.id == request.session.user_id %}
+                                <form method="post" action="{% url 'eliminar_mensaje' mensaje.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-button">X</button>
+                                </form>
+                            {% endif %}
+                            {% if mensaje.sender.id != request.session.user_id %}
+                                <form action="{% url 'denunciar_usuario' mensaje.sender.id mensaje.mensaje_texto%}" method="post">
+                                    {% csrf_token %}
+                                    <button class="report-button">
+                                        <img src="{% static 'img/megafono.png' %}" alt="Denunciar" >
+                                    </button>
+                                </form>
+                            {% endif %}
                         </div>
                     </li>
                 {% empty %}
