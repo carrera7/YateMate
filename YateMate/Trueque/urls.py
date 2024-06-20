@@ -25,4 +25,6 @@ urlpatterns = [
     path('finalizar_trueque/<int:publicacion_id>/<str:tipo_obj>/', views.finalizar_trueque, name='finalizar_trueque'),
     path('eliminar_mensaje/<int:mensaje_id>/', views.eliminar_mensaje, name='eliminar_mensaje'),
     path('denunciar/<int:sender_id>/', views.denunciar_usuario, name='denunciar_usuario'),
+    path('ver_mensajes_emb/<int:objeto_id>/', views.ver_mensajes_emb, name='ver_mensajes_emb'),
+    path('ver_mensajes_obj/<int:objeto_id>/', views.ver_mensajes_obj, name='ver_mensajes_obj'),
 ]

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mi Página de Inicio
+{% endblock %}
+
+{% block content %}
+<style>
+        .message-body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .message-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .message-container h1 {
+            text-align: center;
+            color: #333;
+        }
+        .message-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .message-container li {
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #3498db;
+        }
+        .message-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .message-sender {
+            font-weight: bold;
+        }
+        .message-date {
+            color: #888;
+        }
+        .message-text {
+            margin-left: 20px;
+        }
+</style>
+
+    <div class="message-body">
+        <div class="message-container">
+            <h1>Mensajes Recibidos</h1>
+            <ul>
+                {% for mensaje in mensajes %}
+                <li>
+                    <div class="message-info">
+                        <span class="message-sender">{{ mensaje.sender.nombre }}</span>
+                        <span class="message-date">{{ mensaje.enviado_a_formateado}}</span>
+                    </div>
+                    <div class="message-text">
+                        {{ mensaje.mensaje_texto }}
+                    </div>
+                </li>
+                {% empty %}
+                <li>No hay mensajes disponibles.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
