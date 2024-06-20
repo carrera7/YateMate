@@ -32,6 +32,13 @@ Saber más
         <p>Descripción: {{ objeto.descripcion }}</p>
 
         <!-- Verifica si hay una sesión de usuario activa -->
+
+
+        {% if request.session.user_type == 'Administrador' %}
+        <button type="button" class="btn btn-card mt-3" >
+          Dar de baja publicacion
+          </button>
+         {% endif %} 
         {% if request.session.user_id and request.session.user_type != 'Administrador' %}
           {% if objeto.embarcacion %}
             {% if objeto.embarcacion.dueno.id != request.session.user_id %}
