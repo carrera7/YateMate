@@ -550,3 +550,15 @@ def ver_mensajes_obj(request, objeto_id):
     return render(request, 'ver_mensajes_adm.html', {'mensajes': mensajes})
 
 
+def ver_informacion_adm(request, publi_id, tipo_objeto):
+    if tipo_objeto == "Objetos Valiosos":
+        publicacion = get_object_or_404(Publicacion_ObjetoValioso, id=publi_id)
+        dueño = publicacion.dueño
+        solicitud = get_object_or_404(Solicitud_ObjetosValiosos, publicacion=publi_id)
+        nuevo_dueño = solicitud.usuario_interesado
+    else:
+        publicacion = get_object_or_404(Publicacion_Embarcacion, id=publi_id)
+        dueño = publicacion.embarcacion.dueno
+        solicitud = get_object_or_404(Solicitud_Embarcaciones, publicacion=publi_id)
+        nuevo_dueño = solicitud.usuario_interesado
+    return render(request, 'ver_informacion_adm.html', {'dueño': dueño, 'nuevo_dueño': nuevo_dueño})
