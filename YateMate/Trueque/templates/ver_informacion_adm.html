@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mi Página de Inicio
+{% endblock %}
+
+{% block content %}
+<style>
+    .message-body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .message-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .message-container h1 {
+        text-align: center;
+        color: #333;
+    }
+
+    .message-container ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .message-container li {
+        background-color: #f9f9f9;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        border-left: 3px solid #3498db;
+    }
+
+    .message-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    .message-sender {
+        font-weight: bold;
+    }
+
+    .message-date {
+        color: #888;
+    }
+
+    .message-text {
+        margin-left: 20px;
+    }
+</style>
+
+<div class="message-body">
+    <div class="message-container">
+        <h1>Información de Titularidades</h1>
+        <ul>
+            <li>
+                <div class="message-info">
+                    <div class="message-sender">Dueño Anterior</div>
+                </div>
+                <div class="message-text">
+                    <p><strong>Nombre:</strong> {{ dueño.nombre }}</p>
+                    <p><strong>Apellido:</strong> {{ dueño.apellido }}</p>
+                    <p><strong>Email:</strong> {{ dueño.mail }}</p>
+                </div>
+            </li>
+            <li>
+                <div class="message-info">
+                    <div class="message-sender">Nuevo Dueño</div>
+                </div>
+                <div class="message-text">
+                    <p><strong>Nombre:</strong> {{ nuevo_dueño.nombre }}</p>
+                    <p><strong>Apellido:</strong> {{ nuevo_dueño.apellido }}</p>
+                    <p><strong>Email:</strong> {{ nuevo_dueño.mail }}</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

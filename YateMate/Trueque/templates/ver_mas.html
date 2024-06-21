@@ -32,11 +32,18 @@ Saber más
         <p>Descripción: {{ objeto.descripcion }}</p>
 
         <!-- Verifica si hay una sesión de usuario activa -->
+
+
+        {% if request.session.user_type == 'Administrador' %}
+        <button type="button" class="btn btn-card mt-3" >
+          Dar de baja publicacion
+          </button>
+         {% endif %} 
         {% if request.session.user_id and request.session.user_type != 'Administrador' %}
           {% if objeto.embarcacion %}
             {% if objeto.embarcacion.dueno.id != request.session.user_id %}
               <button type="button" class="btn btn-primary mt-3"
-              onclick="solicitarTrueque({{ objeto.embarcacion.id }}, 'Embarcaciones')">
+              onclick="solicitarTrueque({{ objeto.id }}, 'Embarcaciones')">
               Solicitar un Trueque
               </button>
             {% else %}
@@ -47,7 +54,7 @@ Saber más
             <script>
               function solicitarTrueque(publicacionId, tipo) {
                   // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
-                  window.location.href = `/solisitar_trueque/{{ objeto.embarcacion.id }}/${tipo}`;
+                  window.location.href = `/solisitar_trueque/{{ objeto.id }}/${tipo}`;
               }
             </script>
           {% else %}

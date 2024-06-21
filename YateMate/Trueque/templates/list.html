@@ -116,7 +116,14 @@ Mi Página de Inicio
             {% endif %}
 
             {% if request.GET.estado == 'Proceso' or request.GET.estado == 'Finalizado' %}
-                <a href="#" class="btn btn-card">Ver mensajes</a>
+                {% if objeto.embarcacion.nombre_fantasia %}
+                    <a href="{% url 'ver_mensajes_emb' objeto.id %}" class="btn btn-card">Ver mensajes</a>
+                {% else %}
+                    <a href="{% url 'ver_mensajes_obj' objeto.id %}" class="btn btn-card">Ver mensajes</a>
+                {% endif %}
+            {% endif %}
+            {% if request.GET.estado == 'Finalizado' and objeto.embarcacion%}
+                <a href="{% url 'ver_informacion_adm' objeto.id tipo_objetos %}" class="btn btn-card">Ver información</a>
             {% endif %}
         </div>
     {% endfor %}

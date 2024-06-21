@@ -75,11 +75,13 @@ class Conversacion(models.Model):
     def __str__(self):
         return f'Conversación entre {self.dueño_publicacion.nombre} y {self.solicitante.nombre}'
 
+
 class Mensajes_chat(models.Model):
     conversacion = models.ForeignKey(Conversacion, on_delete=models.CASCADE)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, to_field='id')
     mensaje_texto = models.TextField()
     enviado_a = models.DateTimeField(auto_now_add=True)
+
 
     def __str__(self):
         return f'{self.sender.nombre}: {self.mensaje_texto[:30]}... ({self.enviado_a.strftime("%Y-%m-%d %H:%M:%S")})'
@@ -87,3 +89,14 @@ class Mensajes_chat(models.Model):
     @classmethod
     def get_ordered_messages(cls, conversation_id):
         return cls.objects.filter(conversacion_id=conversation_id).order_by('enviado_a')
+
+
+class Denuncia(models.Model):
+    denunciado = models.ForeignKey(User, related_name='denuncias_recibidas', on_delete=models.CASCADE)
+    denunciante = models.ForeignKey(User, related_name='denuncias_realizadas', on_delete=models.CASCADE)
+    mensaje_texto = models.TextField()
+    class Meta:
+        unique_together = ('denunciado', 'denunciante', 'mensaje_texto')  # Asegura que no se pueda duplicar la misma denuncia
+
+    def __str__(self):
+        return f'Denuncia de {self.denunciante.username} contra {self.denunciado.username}'
