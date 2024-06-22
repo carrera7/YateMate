@@ -13,6 +13,8 @@ urlpatterns = [
     path('reservas/registrar_ingreso/<int:id>/', views.registrar_ingreso, name='registrar_ingreso'),
     path('reservas/registrar_salida/<int:id>/', views.registrar_salida, name='registrar_salida'),
     path("PublicarAlquilerTemporal/", views.publicar_Alquiler, name="publicarAlquiler"),
+    path("Ver_mis_reservas/",views.mis_reservas,name="Ver_mis_reservas"),
+    path('eliminar_reserva/<int:reserva_id>/', views.eliminar_reserva, name='eliminar_reserva'),
 ]
 
 

@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.shortcuts import render, redirect
-from .forms import AmarraForm
+from .forms import AmarraForm , ModificarPublicacionForm
 from django.contrib import messages
 from .models import Publicacion_Amarra , Reserva
 from Register.models import User
@@ -65,9 +65,24 @@ def eliminar_publicacion(request, id):
 
 def modificar_publicacion(request, id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=id)
-    # Lógica para modificar la publicación
-    # ...
-    return render(request, 'modificar_publicacion.html', {'publicacion': publicacion})
+    
+    if request.method == 'POST':
+        form = ModificarPublicacionForm(request.POST)
+        if form.is_valid():
+            dias_a_agregar = form.cleaned_data['dias_a_agregar']
+            nuevo_precio = form.cleaned_data['nuevo_precio']
+            
+            publicacion.cant_dias = str(int(publicacion.cant_dias) + dias_a_agregar)
+            publicacion.precio = nuevo_precio
+            publicacion.actualizar_dias_disponibles()
+            publicacion.save()
+            
+            messages.success(request, 'Publicación modificada exitosamente.')
+            return redirect('mis_publicaciones')  # Cambia esto por la URL correcta
+    else:
+        form = ModificarPublicacionForm(initial={'nuevo_precio': publicacion.precio})
+    
+    return render(request, 'modificar_publicacion.html', {'publicacion': publicacion, 'form': form})
 
 def ver_reservas(request, id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=id)
@@ -202,3 +217,21 @@ def registrar_salida(request, id):
     reserva.estado = 'Finalizado'  # Cambia el estado a "En Proceso"
     reserva.save()
     return redirect('reservas') 
+
+def mis_reservas(request):
+    usuario_id = request.session.get('user_id')
+    reservas = Reserva.objects.filter(usuario=usuario_id, estado='Vigente')
+    return render(request, 'mis_reservas.html', {'reservas': reservas})
+
+def eliminar_reserva(request, reserva_id):
+    reserva = get_object_or_404(Reserva, id=reserva_id)
+    # Actualiza la cantidad de días disponibles de la publicación
+    publicacion = reserva.publicacion
+    publicacion.cant_dias_disponibles = str(int(publicacion.cant_dias_disponibles) + int(reserva.cant_dias))
+    
+    # Vuelve a guardar la publicación para reflejar los cambios
+    publicacion.save()
+    
+    # Elimina la reserva
+    reserva.delete()
+    return redirect("Ver_mis_reservas")

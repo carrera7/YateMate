@@ -103,7 +103,8 @@
                   <li><a href="http://127.0.0.1:8000/PublicarAlquilerTemporal/">Publicar Alquiler</a></li>
                 {% elif request.session.user_type == 'Administrador'%}
                   <li><a href="http://127.0.0.1:8000/reservas/">Reservas</a></li>
-                {% endif %}   
+                {% endif %}
+                <li><a href="http://127.0.0.1:8000/Ver_mis_reservas/">Ver mis reservas</a></li>   
               {% endif %}
               
               {% if request.path != '/' %}

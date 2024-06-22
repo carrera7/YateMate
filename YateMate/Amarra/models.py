@@ -19,11 +19,20 @@ class Publicacion_Amarra(models.Model):
     estado = models.CharField(max_length=20, choices=ESTADOS, default='Vigente')
 
     def __str__(self):
-        return f"{self.dueño} - {self.estado}"
+        return f"{self.dueño}"
 
     def actualizar_dias_disponibles(self):
         hoy = timezone.now().date()
         diferencia_dias = (hoy - self.fecha_inicio).days
+        fechas_pasadas = [self.fecha_inicio + timedelta(days=x) for x in range((hoy - self.fecha_inicio).days + 1)]
+        
+        def contar_reservas_en_fechas_pasadas():
+            return sum(
+            1 for reserva in Reserva.objects.filter(publicacion=self) 
+            if any(reserva.fecha_ingreso <= fecha < (reserva.fecha_ingreso + timedelta(days=int(reserva.cant_dias))) for fecha in fechas_pasadas)
+        )
+
+        diferencia_dias = diferencia_dias - contar_reservas_en_fechas_pasadas()
 
         if diferencia_dias > 0:
             dias_disponibles = int(float(self.cant_dias)) - diferencia_dias

@@ -1,0 +1,28 @@
+<!-- templates/modificar_publicacion.html -->
+{% extends "base.html" %}
+
+{% block title %}
+Modificar Publicación
+{% endblock %}
+
+{% block content %}
+<h1>Modificar Publicación</h1>
+
+<h2>Información de la Publicación</h2>
+<ul>
+    <li><strong>Precio:</strong> {{ publicacion.precio }}</li>
+    <li><strong>Fecha de Inicio:</strong> {{ publicacion.fecha_inicio }}</li>
+    <li><strong>Cantidad de Días:</strong> {{ publicacion.cant_dias }}</li>
+    <li><strong>Días Disponibles:</strong> {{ publicacion.cant_dias_disponibles }}</li>
+    <li><strong>Ubicación:</strong> {{ publicacion.ubicacion }}</li>
+</ul>
+
+<h2>Modificar Publicación</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Modificar Publicación</button>
+</form>
+
+<a href="{% url 'mis_publicaciones' %}">Volver</a>
+{% endblock %}

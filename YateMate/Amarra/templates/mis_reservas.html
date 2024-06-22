@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Mis Reservas
+{% endblock %}
+
+{% block content %}
+<style>
+    .reservas-container {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 20px auto;
+        max-width: 800px;
+    }
+
+    .reservas-container h1 {
+        color: #4CAF50;
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .reservas-container ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .reservas-container li {
+        background: #fff;
+        margin: 10px 0;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .reservas-container li strong {
+        display: inline-block;
+        width: 150px;
+    }
+
+    .reservas-container form {
+        display: inline;
+    }
+
+    .reservas-container button {
+        background-color: #ff6666;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .reservas-container button:hover {
+        background-color: #ff4d4d;
+    }
+
+    .reservas-container a {
+        display: block;
+        text-align: center;
+        margin: 20px 0;
+        color: #4CAF50;
+        text-decoration: none;
+        font-size: 16px;
+    }
+
+    .reservas-container a:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<div class="reservas-container">
+    <h1>Reservas</h1>
+    <ul>
+        {% for reserva in reservas %}
+            <li>
+                <strong>Reserva:</strong> {{ reserva }} <br>
+                <strong>Cantidad de Días:</strong> {{ reserva.cant_dias }} <br>
+                <strong>Publicación:</strong> {{ reserva.publicacion }} <br>
+                <strong>Precio:</strong> {{ reserva.publicacion.precio }} <br>
+                <strong>Fecha de Reserva:</strong> {{ reserva.fecha_ingreso }} <br>
+                <strong>Ubicación:</strong> {{ reserva.publicacion.ubicacion }} <br>
+                <form action="{% url 'eliminar_reserva' reserva.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'list_amarra' %}">Volver</a>
+</div>
+{% endblock %}
