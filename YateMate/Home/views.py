@@ -3,9 +3,9 @@ from django.shortcuts import render, redirect,get_object_or_404
 from Register.models import User
 from django.core.mail import send_mail
 from django.core.exceptions import PermissionDenied
-
-
-
+from Trueque.models import Publicacion_Embarcacion, Publicacion_ObjetoValioso
+from Amarra.models import Reserva, Publicacion_Amarra
+from django.shortcuts import get_object_or_404
 from .froms import CustomUserRegistrationForm
 
 def index(request):
@@ -108,3 +108,22 @@ def cancelar_deuda(request, cliente_id):
     cliente.save()
     respuesta = listado_clientes(request)
     return respuesta
+
+def eliminar_cuenta(request,cliente_id):
+    cliente = get_object_or_404(User, id=cliente_id)
+    amarra= Publicacion_Amarra.objects.filter(dueño=cliente)
+    objetos = Publicacion_ObjetoValioso.objects.filter(dueño=cliente_id)
+    embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=cliente_id)
+    reserva=Reserva.objects.filter(usuario=cliente)
+    if not objetos and not embarcaciones and not amarra and not reserva:
+        mensaje= 'Baja Exitosa'
+        #mostrar el popup y confirmar operacion
+        cliente.delete()
+        
+    else:
+        mensaje='Operacion fallida, el usuario tiene operaciones pendientes'
+
+    clientes = User.objects.filter(tipo='Cliente')
+    return render(request, "listado_clientes.html", {'clientes': clientes, 'messages':mensaje})
+        
+
