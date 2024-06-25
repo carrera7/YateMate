@@ -119,7 +119,7 @@ def eliminar_cuenta(request,cliente_id):
         messages.success(request, "Baja Exitosa") 
         cliente.delete()
     else:
-        messages.success(request,'El usuario tiene objetos a su nombre o posee operaciones pendientes , eliminacion fallida')
+        messages.error(request,'El usuario tiene objetos a su nombre o posee operaciones pendientes , eliminacion fallida')
     clientes = User.objects.filter()
     return render(request, "listado_clientes.html",{'clientes':clientes})
         
