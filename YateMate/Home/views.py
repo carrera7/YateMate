@@ -91,7 +91,7 @@ def habilitar_usuario(request, usuario_id):
     return render(request, 'enable_accounts.html', context)
 
 def listado_clientes(request):
-    clientes = User.objects.filter(tipo='Cliente')  # Cambiar 'Clientes' por 'Cliente'
+    clientes = User.objects.filter()  # Cambiar 'Clientes' por 'Cliente'
     return render(request, "listado_clientes.html", {'clientes': clientes})
 
 
@@ -116,14 +116,10 @@ def eliminar_cuenta(request,cliente_id):
     embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=cliente_id)
     reserva=Reserva.objects.filter(usuario=cliente)
     if not objetos and not embarcaciones and not amarra and not reserva:
-        mensaje= 'Baja Exitosa'
-        #mostrar el popup y confirmar operacion
+        messages.success(request, "Baja Exitosa") 
         cliente.delete()
-        
     else:
-        mensaje='Operacion fallida, el usuario tiene operaciones pendientes'
-
-    clientes = User.objects.filter(tipo='Cliente')
-    return render(request, "listado_clientes.html", {'clientes': clientes, 'messages':mensaje})
+        messages.success(request,'El usuario tiene objetos a su nombre o posee operaciones pendientes , eliminacion fallida')
+    clientes = User.objects.filter()
+    return render(request, "listado_clientes.html",{'clientes':clientes})
         
-

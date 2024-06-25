@@ -50,27 +50,28 @@ Mi Página de Inicio
         color: #fff;
     }
     .messages {
-        list-style: none;
-        padding: 0;
-    }
+    list-style: none;
+    padding: 0;
+}
 
-    .messages li {
-        margin: 10px 0;
-        padding: 10px;
-        border-radius: 5px;
-    }
+.messages li {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
 
-    .messages li.success {
-        background-color: #d4edda;
-        color: #155724;
-    }
+.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+}
 
-    .messages li.error {
-        background-color: #f8d7da;
-        color: #721c24;
-    }
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
 
 </style>
+
 
 {% if messages %}
 <ul class="messages">
@@ -79,7 +80,6 @@ Mi Página de Inicio
     {% endfor %}
 </ul>
 {% endif %}
-
 
 {% if clientes %}
     <h2>Clientes</h2>
@@ -112,6 +112,10 @@ Mi Página de Inicio
         }
     });
 </script>
+
+
+
+
 
 
 
