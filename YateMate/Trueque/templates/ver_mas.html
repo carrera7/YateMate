@@ -6,7 +6,105 @@ Saber más
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<style>
+  /* Estilo para cada tarjeta */
+  .card {
+      display: block; /* Mostrar todas las tarjetas inicialmente */
+      background-color: #f8f9fa;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      padding: 15px;
+  }
+
+  /* Estilo para el título de la tarjeta */
+  .card-title {
+      color: #007bff;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+  }
+
+  /* Estilo para el botón de la tarjeta */
+  .btn-card {
+      padding: 5px 10px;
+      text-decoration: none;
+      border-radius: 3px;
+      margin-right: 5px;
+  }
+
+  .btn-card-delete {
+      background-color: #000;
+      color: #fff; /* Texto en color blanco */
+  }
+
+  .btn-card-modify {
+      background-color: #ffc107;
+      color: #000;
+  }
+
+  .btn-card-reservas {
+      border: 1px solid;
+      margin-top: 5px;
+      color: #fff; /* Texto en color blanco */
+  }
+
+  .btn-verde {
+      background-color: #28a745;
+      border-color: #28a745;
+  }
+
+  .btn-rojo {
+      background-color: #dc3545;
+      border-color: #dc3545;
+      color: #fff;
+  }
+
+
+  .error-message {
+      color: red;
+      font-size: 0.8rem;
+      margin-top: 5px;
+  }
+  .messages {
+  list-style: none;
+  padding: 0;
+}
+
+.messages li {
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.messages li.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.messages li.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.publicaciones-container{
+      padding-bottom: 70px; /* Espacio inferior para evitar que quede oculto por el footer */
+  }
+
+</style>
+
+  {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+              <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+      </ul>
+  {% endif %}
+
+
+
+
+
+<div class="container" id="conta">
   <!-- Verifica si el objeto tiene los campos Tipo, Marca, Descripción y Foto -->
   {% if objeto %}
     <div class="row">
@@ -35,10 +133,21 @@ Saber más
 
 
         {% if request.session.user_type == 'Administrador' %}
-        <button type="button" class="btn btn-card mt-3" >
+          
+          {% if objeto.embarcacion %}
+          <button type="button"    id="dar-de-baja" class="btn btn-primary mt-3"
+          onclick="darDeBajaPublicacion({{ objeto.id }}, 'Embarcacion')">
           Dar de baja publicacion
           </button>
+          {%else%}
+          <button type="button"  id="dar-de-baja" class="btn btn-primary mt-3"
+          onclick="darDeBajaPublicacion({{ objeto.id }}, 'Objeto Valiosos')">
+          Dar de baja publicacion
+          </button>
+          {%endif%}
          {% endif %} 
+         
+         
         {% if request.session.user_id and request.session.user_type != 'Administrador' %}
           {% if objeto.embarcacion %}
             {% if objeto.embarcacion.dueno.id != request.session.user_id %}
@@ -86,7 +195,18 @@ Saber más
       </div>
     </div>
   {% else %}
-    <p>El objeto no tiene la información completa.</p>
+    <p>El objeto no tiene la información completa  o fue removido.</p>
   {% endif %}
 </div>
+<script>
+  function darDeBajaPublicacion(publicacionId, tipo) {
+      // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
+      if( tipo==='Embarcacion'){
+      window.location.href = `/darDeBajaEmbarcacion/{{ objeto.id }}/`;
+       } else {
+      window.location.href = `/darDeBajaObjeto/{{ objeto.id }}/`;
+       }
+  }
+</script>
+
 {% endblock %}

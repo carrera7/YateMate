@@ -49,11 +49,41 @@ Mi Página de Inicio
         background-color: #454c53;
         color: #fff;
     }
+    .messages {
+    list-style: none;
+    padding: 0;
+}
+
+.messages li {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
 </style>
+
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 
 {% if clientes %}
     <h2>Clientes</h2>
-    <div class="clientes-container">
+    <div class="clientes-container" id="clientes-form">
         {% for cliente in clientes %}
             <div class="card">
                 <h3 class="card-title">{{ cliente.nombre }}</h3>
@@ -61,9 +91,11 @@ Mi Página de Inicio
                 {% if cliente.moroso %}
                     <a href="#" class="btn btn-cardDesactivado">Moroso</a>
                     <a href="{% url 'cancelar_deuda' cliente.id %}" class="btn btn-card">Cancelar deuda</a>
+                    <a href="{% url 'eliminar_usuario' cliente.id %}" id="dar-de-baja" class="btn btn-card">Dar de Baja Usuario</a>
                 {% else %}
                     <a href="{% url 'moroso_clientes' cliente.id %}" class="btn btn-card">Moroso</a>
                     <a href="#" class="btn btn-cardDesactivado">Cancelar deuda</a>
+                    <a href="{% url 'eliminar_usuario' cliente.id %}" id="dar-de-baja" class="btn btn-card">Dar de Baja Usuario</a>
                 {% endif %}
             </div>
         {% endfor %}
@@ -71,5 +103,20 @@ Mi Página de Inicio
 {% else %}
     <p>No hay clientes para mostrar</p>
 {% endif %}
+<script>
+    document.getElementById('dar-de-baja').addEventListener('click', function() {
+        if (confirm('¿Está seguro de Dar de baja al usuario?')) {
+            document.getElementById('clientes-form').submit();
+        } else {
+            alert('Operacion cancelada.');
+        }
+    });
+</script>
+
+
+
+
+
+
 
 {% endblock %}
