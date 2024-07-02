@@ -81,7 +81,7 @@ Mi Página de Inicio
                         {{ mensaje.mensaje_texto }}
                     </div>
                     <div class="btn-container">
-                        <a href="#" class="btn btn-card" onclick="return confirm('¿Estás seguro que quiere censurar el mensaje?')">Censurar</a>
+                        <a href="{% url 'censurar_mensaje' mensaje.id %}" class="btn btn-card" onclick="return confirm('¿Estás seguro que quiere censurar el mensaje?')">Censurar</a>
                         <a href="{% url 'descartar_denuncia' mensaje.id %}" class="btn btn-card" onclick="return confirm('¿Estás seguro de descartar la denuncia?')">Descartar denuncia</a>
                     </div>
                 </li>
