@@ -506,16 +506,16 @@ def eliminar_mensaje(request, mensaje_id):
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
 
-def denunciar_usuario(request, sender_id, msj):
+def denunciar_usuario(request, sender_id, msj, mensaje_id):
     usuario_denunciante = get_object_or_404(User, id=request.session.get('user_id'))
-
+    mensaje = Mensajes_chat.objects.get(id=mensaje_id)
     usuario_denunciado = get_object_or_404(User, id=sender_id)
 
-    if Denuncia.objects.filter(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj).exists():
+    if Denuncia.objects.filter(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj, mensaje=mensaje).exists():
         messages.warning(request, 'Usted ya ha denunciado al usuario. El administrador tomará las decisiones pertinentes')
     else:
         # Crear la nueva denuncia
-        nueva_denuncia = Denuncia(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj)
+        nueva_denuncia = Denuncia(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj, mensaje=mensaje)
         nueva_denuncia.save()
         messages.success(request, 'Denuncia realizada correctamente.')
         subject = 'Han denunciado un mensaje que enviaste'
@@ -601,6 +601,15 @@ def descartar_denuncia(request, denuncia_id):
     message = f'Hola {denunciado.nombre}, se ha descartado la denuncia de {denunciante.nombre} hacia un mensaje tuyo, para mas información contactarte con la administración'
     send_mail(subject, message, settings.EMAIL_HOST_USER, [denunciado.mail])
 
+    denuncia.delete()
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+
+def censurar_mensaje(request, denuncia_id):
+    denuncia = Denuncia.objects.get(id=denuncia_id)
+    mensaje = denuncia.mensaje
+    mensaje.mensaje_texto = "***Mensaje censurado***"
+    mensaje.save()
     denuncia.delete()
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 

@@ -189,12 +189,18 @@
                                 </form>
                             {% endif %}
                             {% if mensaje.sender.id != request.session.user_id %}
-                                <form action="{% url 'denunciar_usuario' mensaje.sender.id mensaje.mensaje_texto%}" method="post">
+                                {% if mensaje.mensaje_texto|slice:":3" != "***" %}
+                                <form action="{% url 'denunciar_usuario' mensaje.sender.id mensaje.mensaje_texto mensaje.id%}" method="post">
                                     {% csrf_token %}
                                     <button class="report-button">
                                         <img src="{% static 'img/megafono.png' %}" alt="Denunciar" >
                                     </button>
                                 </form>
+                                {% else %}
+                                    <button class="report-button" onclick="alert('Los mensajes censurados no pueden denunciarse'); return false;">
+                                        <img src="{% static 'img/megafono.png' %}" alt="Denunciar" >
+                                    </button>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </li>
