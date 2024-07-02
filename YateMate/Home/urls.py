@@ -11,7 +11,5 @@ urlpatterns = [
     path('listado_clientes/',views.listado_clientes, name='listado_clientes'),
     path('moroso_clientes/<int:cliente_id>/',views.moroso_clientes, name='moroso_clientes'),
     path('cancelar_deuda/<int:cliente_id>/',views.cancelar_deuda, name='cancelar_deuda'),
-    path('eliminar_usuario/<int:cliente_id>/', views.eliminar_cuenta , name='eliminar_usuario'),
-    path('mi_perfil/<int:cliente_id>/',views.mi_perfil, name="perfil"),
-    path('eliminar_cuenta/<int:cliente_id>/',views.eliminar_micuenta, name="eliminar_micuenta")
+    path('eliminar_usuario/<int:cliente_id>/', views.eliminar_cuenta , name='eliminar_usuario')
 ]
