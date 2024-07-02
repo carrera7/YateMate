@@ -92,13 +92,13 @@ Mi Página de Inicio
                     <a href="#" class="btn btn-cardDesactivado">Moroso</a>
                     <a href="{% url 'cancelar_deuda' cliente.id %}" class="btn btn-card">Cancelar deuda</a>
                   
-                    <a href="#"  type="button" class="btn btn-primary mt-3" id="dar-de-baja" onclick="confirmarBaja({{ cliente.id }})">Dar baja usuario</a>
+                    <a href="#"  type="button" class="btn btn-card" id="dar-de-baja" onclick="confirmarBaja({{ cliente.id }})">Dar baja usuario</a>
 
                 {% else %}
                     <a href="{% url 'moroso_clientes' cliente.id %}" class="btn btn-card">Moroso</a>
                     <a href="#" class="btn btn-cardDesactivado">Cancelar deuda</a>
                     
-                    <a href="#"  type="button" class="btn btn-primary mt-3" id="dar-de-baja" onclick="confirmarBaja({{ cliente.id }})" >Dar baja usuario</a>
+                    <a href="#"  type="button" class="btn btn-card" id="dar-de-baja" onclick="confirmarBaja({{ cliente.id }})" >Dar baja usuario</a>
                 {% endif %}
             </div>
         {% endfor %}
