@@ -51,7 +51,10 @@
 
 <script>
     document.getElementById('reservar-btn').addEventListener('click', function() {
-        if (confirm('¿Está seguro de hacer la reserva?')) {
+        const checkboxes = document.querySelectorAll('input[name="fechas_seleccionadas"]:checked');
+        if (checkboxes.length === 0) {
+            alert('Primero tiene que seleccionar las fechas o la fecha para la reserva.');
+        } else if (confirm('¿Está seguro de hacer la reserva?')) {
             document.getElementById('reserva-form').submit();
         } else {
             alert('Reserva cancelada.');

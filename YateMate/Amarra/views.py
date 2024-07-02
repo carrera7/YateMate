@@ -55,7 +55,7 @@ def mis_publicaciones(request):
 
 def eliminar_publicacion(request, id):
     publicacion = get_object_or_404(Publicacion_Amarra, id=id)
-    if Reserva.objects.filter(publicacion=publicacion).exists():
+    if Reserva.objects.filter(publicacion=publicacion, estado__in=['Vigente', 'En Proceso']).exists():
         messages.success(request, "Esta operación no es posible, existe una reserva") 
         return redirect ('mis_publicaciones')
     else:    
