@@ -112,8 +112,9 @@ def habilitar_usuario(request, usuario_id):
     }
     return render(request, 'enable_accounts.html', context)
 
+
 def listado_clientes(request):
-    clientes = User.objects.filter()  # Cambiar 'Clientes' por 'Cliente'
+    clientes = User.objects.filter(tipo='Cliente')
     return render(request, "listado_clientes.html", {'clientes': clientes})
 
 
@@ -124,12 +125,14 @@ def moroso_clientes(request, cliente_id):
     respuesta = listado_clientes(request)
     return respuesta
 
+
 def cancelar_deuda(request, cliente_id):
     cliente = User.objects.get(id=cliente_id)
     cliente.moroso = False
     cliente.save()
     respuesta = listado_clientes(request)
     return respuesta
+
 
 def eliminar_cuenta(request,cliente_id):
     cliente = get_object_or_404(User, id=cliente_id)
@@ -150,6 +153,7 @@ def eliminar_cuenta(request,cliente_id):
 def mi_perfil(request, cliente_id):
     usuario = get_object_or_404(User, id=cliente_id)
     return render(request,'mi_perfil.html', {'user':usuario})
+
 
 def eliminar_micuenta(request,cliente_id):
     cliente = get_object_or_404(User, id=cliente_id)
