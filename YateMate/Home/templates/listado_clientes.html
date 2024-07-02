@@ -85,9 +85,14 @@ Mi Página de Inicio
     <h2>Clientes</h2>
     <div class="clientes-container" id="clientes-form">
         {% for cliente in clientes %}
+    
+        {% if cliente.tipo != 'Administrador'%}
             <div class="card">
                 <h3 class="card-title">{{ cliente.nombre }}</h3>
                 <p>{{ cliente.dni }}</p>
+                {% if cliente.tipo == "Usuario"%}
+                <a href="#"  type="button" class="btn btn-card" id="dar-de-baja" onclick="confirmarBaja({{ cliente.id }})">Dar baja usuario</a>
+                {%else%}
                 {% if cliente.moroso %}
                     <a href="#" class="btn btn-cardDesactivado">Moroso</a>
                     <a href="{% url 'cancelar_deuda' cliente.id %}" class="btn btn-card">Cancelar deuda</a>
@@ -100,7 +105,11 @@ Mi Página de Inicio
                     
                     <a href="#"  type="button" class="btn btn-card" id="dar-de-baja" onclick="confirmarBaja({{ cliente.id }})" >Dar baja usuario</a>
                 {% endif %}
+                {% endif %}
+                
+
             </div>
+            {%endif%}
         {% endfor %}
     </div>
 {% else %}

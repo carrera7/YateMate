@@ -114,7 +114,7 @@ def habilitar_usuario(request, usuario_id):
 
 
 def listado_clientes(request):
-    clientes = User.objects.filter(tipo='Cliente')
+    clientes = User.objects.filter()
     return render(request, "listado_clientes.html", {'clientes': clientes})
 
 
