@@ -91,11 +91,14 @@ Mi Página de Inicio
                 {% if cliente.moroso %}
                     <a href="#" class="btn btn-cardDesactivado">Moroso</a>
                     <a href="{% url 'cancelar_deuda' cliente.id %}" class="btn btn-card">Cancelar deuda</a>
-                    <a href="{% url 'eliminar_usuario' cliente.id %}" id="dar-de-baja" class="btn btn-card">Dar de Baja Usuario</a>
+                  
+                    <a href="#"  type="button" class="btn btn-primary mt-3" id="dar-de-baja" onclick="confirmarBaja({{ cliente.id }})">Dar baja usuario</a>
+
                 {% else %}
                     <a href="{% url 'moroso_clientes' cliente.id %}" class="btn btn-card">Moroso</a>
                     <a href="#" class="btn btn-cardDesactivado">Cancelar deuda</a>
-                    <a href="{% url 'eliminar_usuario' cliente.id %}" id="dar-de-baja" class="btn btn-card">Dar de Baja Usuario</a>
+                    
+                    <a href="#"  type="button" class="btn btn-primary mt-3" id="dar-de-baja" onclick="confirmarBaja({{ cliente.id }})" >Dar baja usuario</a>
                 {% endif %}
             </div>
         {% endfor %}
@@ -104,13 +107,14 @@ Mi Página de Inicio
     <p>No hay clientes para mostrar</p>
 {% endif %}
 <script>
-    document.getElementById('dar-de-baja').addEventListener('click', function() {
-        if (confirm('¿Está seguro de Dar de baja al usuario?')) {
-            document.getElementById('clientes-form').submit();
-        } else {
-            alert('Operacion cancelada.');
-        }
-    });
+
+function confirmarBaja(id) {
+    if (confirm('¿Estás seguro de dar de baja al usuario?')) {
+        window.location.href = `/eliminar_usuario/${id}/`;
+    }
+}
+
+
 </script>
 
 
