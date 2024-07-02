@@ -39,6 +39,7 @@ def list_publication_boat(request):
     return render(request, "list_publication_boat.html", {'embarcaciones_vigentes': embarcaciones_vigentes,'tipo_objetos': 'Embarcaciones',})
 
 
+
 def list(request):
     # Consultar todas las publicaciones de objetos valiosos y embarcaciones
     objetos_valiosos = Publicacion_ObjetoValioso.objects.all()
@@ -75,6 +76,7 @@ def list(request):
         'objetos': objetos,
         'tipo_objetos': tipo_objetos,
     })
+
 
 
 def mis_publicaciones(request):
@@ -252,48 +254,57 @@ def saber_mas(request, id, tipo_objetos):
     return render(request, 'ver_mas.html', {'objeto': objeto, 'tipo_objetos': tipo_objetos})
 
 def darDeBajaObjeto(request, publicacion_id):
-    publicacion = Publicacion_ObjetoValioso.objects.get(id=publicacion_id)
+
+    publicacion = get_object_or_404(Publicacion_ObjetoValioso, id=publicacion_id)
     # Obtener todas las solicitudes relacionadas con esta publicación
     solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion)
     # Obtener la lista de usuarios que hicieron solicitudes al objeto valioso
-    usuarios_interesados = User.objects.filter(solicitudes_objetos_valiosos__in=solicitudes).distinct()
+
+    usuarios_interesados_ids = solicitudes.values_list('id', flat=True)
+    usuarios_interesados = User.objects.filter(id__in=usuarios_interesados_ids).distinct()
+
      # Enviar correo electrónico a los usuarios que hicieron solicitudes al objeto valioso
     if usuarios_interesados:
         for usuario in usuarios_interesados:
             subject = f'Eliminación de publicación {publicacion.tipo}'
             message = f'Se ha dado de baja la publicación/trueque'
-            send_mail(subject, message, EMAIL_HOST_USER, [usuario]) 
+            send_mail(subject, message, EMAIL_HOST_USER, [usuario.mail]) 
     else:
         subject = f'Eliminación de publicación {publicacion.tipo}'
         message = f'Se ha dado de baja la publicación/trueque'
-        send_mail(subject, message, EMAIL_HOST_USER, [publicacion.embarcacion.dueno.mail]) 
+        send_mail(subject, message, EMAIL_HOST_USER, [publicacion.dueño.mail]) 
      # Eliminar todas las solicitudes relacionadas a la embarcacion
     solicitudes.delete()
     publicacion.delete()
-    mensaje= 'Eliminacion exitosa'
-    return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos': 'Objetos Valiosos', 'mensaje': mensaje})
+    messages.success(request,'Publicacion eliminada')
+    return render(request, 'ver_mas.html')
     
 def darDeBajaEmbarcacion(request,  publicacion_id):
     publicacion= Publicacion_Embarcacion.objects.get(id=publicacion_id)
-    # Obtener todas las solicitudes relacionadas con esta publicación
-    solicitudes = Solicitud_Embarcaciones.objects.filter(publicacion=publicacion)
-    # Obtener la lista de usuarios que hicieron solicitudes a la embarcacion
-    usuarios_interesados = User.objects.filter(solicitudes_objetos_valiosos__in=solicitudes).distinct()
+     #Obtener todas las solicitudes relacionadas con esta publicación
+    publicacion=get_object_or_404(Publicacion_Embarcacion, id=publicacion_id)
+    solicitudes=Solicitud_Embarcaciones.objects.filter(publicacion=publicacion)
+
+    usuarios_interesados_ids = solicitudes.values_list('id', flat=True)
+
+    usuarios_interesados = User.objects.filter(id__in=usuarios_interesados_ids).distinct()
+
     if usuarios_interesados:
         for usuario in usuarios_interesados:
-            subject = f'Eliminación de publicación {publicacion.tipo}'
+            subject = f'Eliminación de publicación {publicacion.descripcion}'
             message = f'Se ha dado de baja la publicación/trueque'
-            send_mail(subject, message, EMAIL_HOST_USER, [usuario]) 
+            send_mail(subject, message, EMAIL_HOST_USER, [usuario.mail]) 
     else:
-        subject = f'Eliminación de publicación {publicacion.tipo}'
+        subject = f'Eliminación de publicación {publicacion.descripcion}'
         message = f'Se ha dado de baja la publicación/trueque'
         send_mail(subject, message, EMAIL_HOST_USER, [publicacion.embarcacion.dueno.mail]) 
 
     # Eliminar todas las solicitudes relacionadas a la embarcacion
     solicitudes.delete()
     publicacion.delete()
-    mensaje= 'Eliminacion exitosa'
-    return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos': 'Embarcacion', 'mensaje': mensaje})
+    messages.success(request,'Publicacion eliminada')
+    #return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos': 'Embarcacion'})
+    return render(request, 'ver_mas.html')
 
 def eliminarObjeto(request, id):
     # Eliminar el objeto valioso
@@ -306,10 +317,17 @@ def eliminarObjeto(request, id):
     usuarios_interesados = User.objects.filter(solicitudes_objetos_valiosos__in=solicitudes_objetos_valiosos).distinct()
         
     # Enviar correo electrónico a los usuarios que hicieron solicitudes al objeto valioso
-    for usuario in usuarios_interesados:
+    if usuarios_interesados:
+
+        for usuario in usuarios_interesados:
+            subject = f'Eliminación de publicación {objeto.tipo}'
+            message = f'Hola {usuario},\n\nLa publicación {objeto.tipo} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
+            send_mail(subject, message, EMAIL_HOST_USER, [usuario])
+    else:
         subject = f'Eliminación de publicación {objeto.tipo}'
-        message = f'Hola {usuario},\n\nLa publicación {objeto.tipo} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
-        send_mail(subject, message, EMAIL_HOST_USER, [usuario])
+        message = f'Se ha dado de baja la publicación/trueque'
+        send_mail(subject, message, EMAIL_HOST_USER, [objeto.dueño.mail]) 
+                
         
     
     # Eliminar todas las solicitudes relacionadas con el objeto valioso
