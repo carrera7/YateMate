@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from Trueque.models import Publicacion_Embarcacion, Publicacion_ObjetoValioso
 from Amarra.models import Reserva, Publicacion_Amarra
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import logout
 from .froms import CustomUserRegistrationForm
 
 def obtener_reservas_vigentes_hoy():
@@ -139,6 +140,7 @@ def eliminar_cuenta(request,cliente_id):
     if not objetos and not embarcaciones and not amarra and not reserva:
         messages.success(request, "Baja Exitosa") 
         cliente.delete()
+
     else:
         messages.error(request,'El usuario tiene objetos a su nombre o posee operaciones pendientes , eliminacion fallida')
     clientes = User.objects.filter()
@@ -158,6 +160,7 @@ def eliminar_micuenta(request,cliente_id):
     if not objetos and not embarcaciones and not amarra and not reserva:
         messages.success(request, "Eliminacion de cuenta exitosa") 
         cliente.delete()
+        logout(request)
         return render(request, "index.html")
     else:
         messages.error(request,'Usted tiene objetos a su nombre o posee operaciones pendientes , eliminacion fallida')
