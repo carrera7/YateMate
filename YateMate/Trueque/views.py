@@ -260,10 +260,13 @@ def darDeBajaObjeto(request, publicacion_id):
     solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion)
     # Obtener la lista de usuarios que hicieron solicitudes al objeto valioso
 
-    usuarios_interesados_ids = solicitudes.values_list('id', flat=True)
+    
+    usuarios_interesados_ids = solicitudes.values_list('usuario_interesado_id', flat=True)  # Ajusta el campo 'usuario_id' según tu modelo
     usuarios_interesados = User.objects.filter(id__in=usuarios_interesados_ids).distinct()
+    print("la data de usuarios interesados",usuarios_interesados.all)
 
      # Enviar correo electrónico a los usuarios que hicieron solicitudes al objeto valioso
+
     if usuarios_interesados:
         for usuario in usuarios_interesados:
             subject = f'Eliminación de publicación {publicacion.tipo}'
@@ -280,12 +283,13 @@ def darDeBajaObjeto(request, publicacion_id):
     return render(request, 'ver_mas.html')
     
 def darDeBajaEmbarcacion(request,  publicacion_id):
-    publicacion= Publicacion_Embarcacion.objects.get(id=publicacion_id)
-     #Obtener todas las solicitudes relacionadas con esta publicación
+    
     publicacion=get_object_or_404(Publicacion_Embarcacion, id=publicacion_id)
+     #Obtener todas las solicitudes relacionadas con esta publicación
+
     solicitudes=Solicitud_Embarcaciones.objects.filter(publicacion=publicacion)
 
-    usuarios_interesados_ids = solicitudes.values_list('id', flat=True)
+    usuarios_interesados_ids = solicitudes.values_list('usuario_interesado_id', flat=True)
 
     usuarios_interesados = User.objects.filter(id__in=usuarios_interesados_ids).distinct()
 
