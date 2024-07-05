@@ -118,7 +118,15 @@
           </li>
           {% if request.session.user_id %}
             <li><a href="http://127.0.0.1:8000/login/logout">Cerrar sesión</a></li>
-            <li><a href="{% url 'perfil' request.session.user_id  %}">Mi Perfil</a></li> 
+            <li><a href="{% url 'perfil' request.session.user_id  %}">Mi Perfil</a></li>
+            <li class="dropdown">
+              <a href="#">Valoraciones</a>
+              <ul class="dropdown-content">
+                <li><a href="http://127.0.0.1:8000/valoraciones_list_pendientes/">Pendientes</a></li>
+                <li><a href="http://127.0.0.1:8000/valoraciones_list_realizadas/">Realizadas</a></li>
+                <li><a href="http://127.0.0.1:8000/valoraciones_list_contestadas/">Contestadas</a></li>
+              </ul>
+            </li>
           {% else %}
             <li><a href="http://127.0.0.1:8000/login/">Iniciar sesión</a></li>
             <li><a href="http://127.0.0.1:8000/register/">Registrarse</a></li>

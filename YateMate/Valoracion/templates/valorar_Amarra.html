@@ -1,0 +1,16 @@
+<!-- valorar_amarra.html -->
+{% extends "base.html" %}
+
+{% block title %}
+Valorar Amarra
+{% endblock %}
+
+{% block content %}
+<h1>Valorar Amarra</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="guardar">Guardar</button>
+    <button type="submit" name="salir">Salir</button>
+</form>
+{% endblock %}

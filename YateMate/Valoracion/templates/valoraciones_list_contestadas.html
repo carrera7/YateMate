@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}
+Valoraciones Contestadas
+{% endblock %}
+
+{% block content %}
+<h1>Valoraciones Contestadas</h1>
+
+<!-- Filtro de valoraciones -->
+<form method="GET">
+    <label for="filtro">Filtrar por:</label>
+    <select id="filtro" name="filtro">
+        <option value="trueque" {% if filtro == "trueque" %}selected{% endif %}>Trueques</option>
+        <option value="amarra" {% if filtro == "amarra" %}selected{% endif %}>Amarras</option>
+    </select>
+    <button type="submit">Filtrar</button>
+</form>
+
+<!-- Lista de valoraciones de Trueques -->
+{% if filtro == "trueque" %}
+    <h2>Valoraciones de Trueques</h2>
+    <ul>
+        {% for valoracion in valoraciones_trueque %}
+            <li>{{ valoracion }}</li>
+        {% empty %}
+            <li>No hay valoraciones de trueques hechas.</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!-- Lista de valoraciones de Amarras -->
+{% if filtro == "amarra" %}
+    <h2>Valoraciones de Amarras</h2>
+    <ul>
+        {% for valoracion in valoraciones_amarra %}
+            <li>{{ valoracion }}</li>
+        {% empty %}
+            <li>No hay valoraciones de amarras hechas.</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

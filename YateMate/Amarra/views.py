@@ -228,6 +228,8 @@ def registrar_salida(request, id):
     )
     valoracion.save()
     
+    #agregar notificacion 
+    
     return redirect('reservas') 
 
 def mis_reservas(request):
