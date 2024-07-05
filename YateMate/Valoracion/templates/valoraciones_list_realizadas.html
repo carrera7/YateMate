@@ -18,11 +18,16 @@ Valoraciones Hechas
 </form>
 
 <!-- Lista de valoraciones de Trueques -->
-{% if filtro == "amarra" %}
+{% if filtro == "trueque" %}
     <h2>Valoraciones de Trueques</h2>
     <ul>
         {% for valoracion in valoraciones_trueque %}
-            <li>{{ valoracion }}</li>
+            <li>
+                {{ valoracion }}
+                <form method="GET" action="{% url 'valorar_trueque' valoracion.id %}">
+                    <button type="submit">Modificar</button>
+                </form>
+            </li>
         {% empty %}
             <li>No hay valoraciones de trueques hechas.</li>
         {% endfor %}
@@ -30,11 +35,16 @@ Valoraciones Hechas
 {% endif %}
 
 <!-- Lista de valoraciones de Amarras -->
-{% if filtro == "trueque" %}
+{% if filtro == "amarra" %}
     <h2>Valoraciones de Amarras</h2>
     <ul>
         {% for valoracion in valoraciones_amarra %}
-            <li>{{ valoracion }}</li>
+            <li>
+                {{ valoracion }}
+                <form method="GET" action="{% url 'valorar_amarra' valoracion.id %}">
+                    <button type="submit">Modificar</button>
+                </form>
+            </li>
         {% empty %}
             <li>No hay valoraciones de amarras hechas.</li>
         {% endfor %}

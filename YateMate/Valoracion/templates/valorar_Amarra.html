@@ -11,6 +11,7 @@ Valorar Amarra
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" name="guardar">Guardar</button>
-    <button type="submit" name="salir">Salir</button>
+    <button type="button" onclick="window.history.back();" name="salir">Salir</button>
 </form>
 {% endblock %}
+

@@ -106,6 +106,8 @@ def valorar_trueque(request, id):
             form = ValoracionTruequeForm(request.POST, instance=valoracion)
             if form.is_valid():
                 form.save()
+                valoracion.estado = 'Proceso'
+                valoracion.save()
                 return redirect('valoraciones_list_pendientes')
         else:
                 form = ValoracionTruequeForm(instance=valoracion)
@@ -113,7 +115,6 @@ def valorar_trueque(request, id):
     else:
         form = ValoracionTruequeForm(instance=valoracion)
     return render(request, 'valorar_trueque.html', {'form': form})
-
 
 def eliminar_valoracion_amarra(request, valoracion_id):
     if request.method == 'POST':
@@ -131,6 +132,8 @@ def valorar_amarra(request, id):
             form = ValoracionAmarraForm(request.POST, instance=valoracion)
             if form.is_valid():
                 form.save()
+                valoracion.estado = 'Proceso'
+                valoracion.save()
                 return redirect('valoraciones_list_pendientes')
         else:
             form = ValoracionAmarraForm(instance=valoracion)

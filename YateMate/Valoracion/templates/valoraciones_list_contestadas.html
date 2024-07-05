@@ -22,7 +22,12 @@ Valoraciones Contestadas
     <h2>Valoraciones de Trueques</h2>
     <ul>
         {% for valoracion in valoraciones_trueque %}
-            <li>{{ valoracion }}</li>
+            <li>
+                <strong>Valoración:</strong> {{ valoracion }}
+                {% if valoracion.respuesta %}
+                    <br><strong>Respuesta:</strong> {{ valoracion.respuesta }}
+                {% endif %}
+            </li>
         {% empty %}
             <li>No hay valoraciones de trueques hechas.</li>
         {% endfor %}
@@ -34,7 +39,12 @@ Valoraciones Contestadas
     <h2>Valoraciones de Amarras</h2>
     <ul>
         {% for valoracion in valoraciones_amarra %}
-            <li>{{ valoracion }}</li>
+            <li>
+                <strong>Valoración:</strong> {{ valoracion }}
+                {% if valoracion.respuesta %}
+                    <br><strong>Respuesta:</strong> {{ valoracion.respuesta }}
+                {% endif %}
+            </li>
         {% empty %}
             <li>No hay valoraciones de amarras hechas.</li>
         {% endfor %}

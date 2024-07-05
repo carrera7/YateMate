@@ -15,6 +15,7 @@ from .froms import PublicacionObjetoValiosoForm ,PublicacionEmbarcacionForm
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+from Valoracion.models import *
 
 
 def list_publication(request):
@@ -494,10 +495,36 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
     send_mail(subject, message, settings.EMAIL_HOST_USER, [user.mail])
 
     publi.estado = "Finalizado"
+    #objeto valisos
+    if tipo_obj == 'Objetos Valiosos':
+        # Crear valoración de trueque para objeto valioso
+        valoracion = Valoracion_Trueque.objects.create(
+            tipo_publicacion='ObjetoValioso',
+            publicacion_objeto_valioso=publi,
+            usuario=intere,
+            estrellas=0,  # Aquí deberías definir cómo determinar las estrellas
+            comentario='',  # Puedes dejarlo vacío inicialmente o definir un comentario por defecto
+            estado='Inicio',
+            dueño=publi.dueño,
+            respuesta=''
+        )
+    else:
+        # Crear valoración de trueque para embarcación
+        valoracion = Valoracion_Trueque.objects.create(
+            tipo_publicacion='Embarcacion',
+            publicacion_embarcacion=publi,
+            usuario=intere,
+            estrellas=0,  # Define cómo determinar las estrellas
+            comentario='',  # Puedes dejarlo vacío inicialmente o definir un comentario por defecto
+            estado='Inicio',
+            dueño=publi.embarcacion.dueno,
+            respuesta=''
+        )    
     publi.save()
     if tipo_obj != 'Objetos Valiosos':
         publi.embarcacion.dueno=intere
         publi.embarcacion.save()
+        #embarcacion
         intere.tipo = "Cliente"
         intere.save()
     return JsonResponse({'moroso': False})
