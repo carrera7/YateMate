@@ -140,11 +140,21 @@ def eliminar_cuenta(request,cliente_id):
     objetos = Publicacion_ObjetoValioso.objects.filter(dueño=cliente_id)
     embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=cliente_id)
     reserva=Reserva.objects.filter(usuario=cliente)
+    error_msg=[]
     if not objetos and not embarcaciones and not amarra and not reserva:
         messages.success(request, "Baja Exitosa") 
         cliente.delete()
-    else:
-        messages.error(request,'El usuario tiene objetos a su nombre o posee operaciones pendientes , eliminacion fallida')
+    elif amarra:
+        error_msg.append('El usuario tiene amarras a su nombre, baja fallida')
+        #messages.error(request,'El usuario tiene amarras a su nombre, baja fallida')
+    elif objetos or embarcaciones:
+        error_msg.append('El usuario tiene una o mas publicaciones realizadas , baja  fallida')
+        #messages.error(request,'El usuario tiene una o mas publicaciones realizadas , baja  fallida')
+    elif reserva:
+        error_msg.append('El usuario tiene reservas realizadas, baja  fallida')
+        #messages.error(request,'El usuario tiene reservas realizadas, baja  fallida')
+    for error in error_msg:
+        messages.error(request, error)    
     clientes = User.objects.filter()
     return render(request, "listado_clientes.html",{'clientes':clientes})
         
