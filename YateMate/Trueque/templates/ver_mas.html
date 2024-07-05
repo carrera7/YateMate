@@ -135,15 +135,9 @@ Saber más
         {% if request.session.user_type == 'Administrador' %}
           
           {% if objeto.embarcacion %}
-          <button type="button"    id="dar-de-baja" class="btn btn-primary mt-3"
-          onclick="darDeBajaPublicacion({{ objeto.id }}, 'Embarcacion')">
-          Dar de baja publicacion
-          </button>
+          <a href="#"  type="button" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" class="btn btn-primary mt-3" id="dar-de-baja" onclick="confirmarBaja({{ objeto.id }}, 'Embarcacion')">Dar baja publicacion</a>
           {%else%}
-          <button type="button"  id="dar-de-baja" class="btn btn-primary mt-3"
-          onclick="darDeBajaPublicacion({{ objeto.id }}, 'Objeto Valiosos')">
-          Dar de baja publicacion
-          </button>
+          <a href="#" type="button" style="display: inline-block; padding: 10px 20px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" class="btn btn-primary mt-3" id="dar-de-baja" onclick="confirmarBaja({{ objeto.id }}, 'Objetos Valiosos')">Dar baja publicacion</a>
           {%endif%}
          {% endif %} 
          
@@ -199,6 +193,14 @@ Saber más
   {% endif %}
 </div>
 <script>
+
+function confirmarBaja(id, tipo) {
+    if (confirm('¿Estás seguro de dar de baja al usuario?')) {
+        darDeBajaPublicacion(id, tipo);
+    }
+}
+
+
   function darDeBajaPublicacion(publicacionId, tipo) {
       // Aquí puedes realizar cualquier lógica adicional antes de redirigir, si es necesario
       if( tipo==='Embarcacion'){

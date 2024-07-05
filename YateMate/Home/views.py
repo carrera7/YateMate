@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from Trueque.models import Publicacion_Embarcacion, Publicacion_ObjetoValioso
 from Amarra.models import Reserva, Publicacion_Amarra
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import logout
 from .froms import CustomUserRegistrationForm
 
 def obtener_reservas_vigentes_hoy():
@@ -111,8 +112,9 @@ def habilitar_usuario(request, usuario_id):
     }
     return render(request, 'enable_accounts.html', context)
 
+
 def listado_clientes(request):
-    clientes = User.objects.filter()  # Cambiar 'Clientes' por 'Cliente'
+    clientes = User.objects.filter()
     return render(request, "listado_clientes.html", {'clientes': clientes})
 
 
@@ -123,12 +125,14 @@ def moroso_clientes(request, cliente_id):
     respuesta = listado_clientes(request)
     return respuesta
 
+
 def cancelar_deuda(request, cliente_id):
     cliente = User.objects.get(id=cliente_id)
     cliente.moroso = False
     cliente.save()
     respuesta = listado_clientes(request)
     return respuesta
+
 
 def eliminar_cuenta(request,cliente_id):
     cliente = get_object_or_404(User, id=cliente_id)
@@ -144,3 +148,25 @@ def eliminar_cuenta(request,cliente_id):
     clientes = User.objects.filter()
     return render(request, "listado_clientes.html",{'clientes':clientes})
         
+
+def mi_perfil(request, cliente_id):
+    usuario = get_object_or_404(User, id=cliente_id)
+    return render(request,'mi_perfil.html', {'user':usuario})
+
+
+def eliminar_micuenta(request,cliente_id):
+    cliente = get_object_or_404(User, id=cliente_id)
+    amarra= Publicacion_Amarra.objects.filter(dueño=cliente)
+    objetos = Publicacion_ObjetoValioso.objects.filter(dueño=cliente_id)
+    embarcaciones = Publicacion_Embarcacion.objects.filter(embarcacion__dueno_id=cliente_id)
+    reserva=Reserva.objects.filter(usuario=cliente)
+    if not objetos and not embarcaciones and not amarra and not reserva:
+        messages.success(request, "Eliminacion de cuenta exitosa") 
+        cliente.delete()
+        logout(request)
+        return render(request, "index.html")
+    else:
+        messages.error(request,'Usted tiene objetos a su nombre o posee operaciones pendientes , eliminacion fallida')
+    
+    return render(request, "mi_perfil.html",{'user':cliente})
+    

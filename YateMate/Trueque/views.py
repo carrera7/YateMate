@@ -254,18 +254,24 @@ def saber_mas(request, id, tipo_objetos):
     return render(request, 'ver_mas.html', {'objeto': objeto, 'tipo_objetos': tipo_objetos})
 
 def darDeBajaObjeto(request, publicacion_id):
-    publicacion = Publicacion_ObjetoValioso.objects.get(id=publicacion_id)
+
+    publicacion = get_object_or_404(Publicacion_ObjetoValioso, id=publicacion_id)
     # Obtener todas las solicitudes relacionadas con esta publicación
     solicitudes = Solicitud_ObjetosValiosos.objects.filter(publicacion=publicacion)
     # Obtener la lista de usuarios que hicieron solicitudes al objeto valioso
-    usuarios_interesados = User.objects.filter(solicitudes_objetos_valiosos__in=solicitudes).distinct()
+
+    
+    usuarios_interesados_ids = solicitudes.values_list('usuario_interesado_id', flat=True)  # Ajusta el campo 'usuario_id' según tu modelo
+    usuarios_interesados = User.objects.filter(id__in=usuarios_interesados_ids).distinct()
+    print("la data de usuarios interesados",usuarios_interesados.all)
 
      # Enviar correo electrónico a los usuarios que hicieron solicitudes al objeto valioso
+
     if usuarios_interesados:
         for usuario in usuarios_interesados:
             subject = f'Eliminación de publicación {publicacion.tipo}'
             message = f'Se ha dado de baja la publicación/trueque'
-            send_mail(subject, message, EMAIL_HOST_USER, [usuario]) 
+            send_mail(subject, message, EMAIL_HOST_USER, [usuario.mail]) 
     else:
         subject = f'Eliminación de publicación {publicacion.tipo}'
         message = f'Se ha dado de baja la publicación/trueque'
@@ -277,19 +283,23 @@ def darDeBajaObjeto(request, publicacion_id):
     return render(request, 'ver_mas.html')
     
 def darDeBajaEmbarcacion(request,  publicacion_id):
-    publicacion= Publicacion_Embarcacion.objects.get(id=publicacion_id)
-    # Obtener todas las solicitudes relacionadas con esta publicación
     
-    solicitudes = Solicitud_Embarcaciones.objects.filter(publicacion=publicacion).values_list('id',flat=True)
-    # Obtener la lista de usuarios que hicieron solicitudes a la embarcacion
-    usuarios_interesados = User.objects.filter(solicitudes_embarcaciones=solicitudes).distinct()
+    publicacion=get_object_or_404(Publicacion_Embarcacion, id=publicacion_id)
+     #Obtener todas las solicitudes relacionadas con esta publicación
+
+    solicitudes=Solicitud_Embarcaciones.objects.filter(publicacion=publicacion)
+
+    usuarios_interesados_ids = solicitudes.values_list('usuario_interesado_id', flat=True)
+
+    usuarios_interesados = User.objects.filter(id__in=usuarios_interesados_ids).distinct()
+
     if usuarios_interesados:
         for usuario in usuarios_interesados:
-            subject = f'Eliminación de publicación {publicacion.tipo}'
+            subject = f'Eliminación de publicación {publicacion.descripcion}'
             message = f'Se ha dado de baja la publicación/trueque'
             send_mail(subject, message, EMAIL_HOST_USER, [usuario.mail]) 
     else:
-        subject = f'Eliminación de publicación {publicacion.tipo}'
+        subject = f'Eliminación de publicación {publicacion.descripcion}'
         message = f'Se ha dado de baja la publicación/trueque'
         send_mail(subject, message, EMAIL_HOST_USER, [publicacion.embarcacion.dueno.mail]) 
 
@@ -297,7 +307,8 @@ def darDeBajaEmbarcacion(request,  publicacion_id):
     solicitudes.delete()
     publicacion.delete()
     messages.success(request,'Publicacion eliminada')
-    return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos': 'Embarcacion'})
+    #return render(request, 'ver_mas.html', {'objeto': publicacion, 'tipo_objetos': 'Embarcacion'})
+    return render(request, 'ver_mas.html')
 
 def eliminarObjeto(request, id):
     # Eliminar el objeto valioso
@@ -310,10 +321,17 @@ def eliminarObjeto(request, id):
     usuarios_interesados = User.objects.filter(solicitudes_objetos_valiosos__in=solicitudes_objetos_valiosos).distinct()
         
     # Enviar correo electrónico a los usuarios que hicieron solicitudes al objeto valioso
-    for usuario in usuarios_interesados:
+    if usuarios_interesados:
+
+        for usuario in usuarios_interesados:
+            subject = f'Eliminación de publicación {objeto.tipo}'
+            message = f'Hola {usuario},\n\nLa publicación {objeto.tipo} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
+            send_mail(subject, message, EMAIL_HOST_USER, [usuario])
+    else:
         subject = f'Eliminación de publicación {objeto.tipo}'
-        message = f'Hola {usuario},\n\nLa publicación {objeto.tipo} ha sido eliminada.\n\nAtentamente,\nEquipo de YateMate'
-        send_mail(subject, message, EMAIL_HOST_USER, [usuario])
+        message = f'Se ha dado de baja la publicación/trueque'
+        send_mail(subject, message, EMAIL_HOST_USER, [objeto.dueño.mail]) 
+                
         
     
     # Eliminar todas las solicitudes relacionadas con el objeto valioso
@@ -492,16 +510,16 @@ def eliminar_mensaje(request, mensaje_id):
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
 
-def denunciar_usuario(request, sender_id, msj):
+def denunciar_usuario(request, sender_id, msj, mensaje_id):
     usuario_denunciante = get_object_or_404(User, id=request.session.get('user_id'))
-
+    mensaje = Mensajes_chat.objects.get(id=mensaje_id)
     usuario_denunciado = get_object_or_404(User, id=sender_id)
 
-    if Denuncia.objects.filter(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj).exists():
+    if Denuncia.objects.filter(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj, mensaje=mensaje).exists():
         messages.warning(request, 'Usted ya ha denunciado al usuario. El administrador tomará las decisiones pertinentes')
     else:
         # Crear la nueva denuncia
-        nueva_denuncia = Denuncia(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj)
+        nueva_denuncia = Denuncia(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj, mensaje=mensaje)
         nueva_denuncia.save()
         messages.success(request, 'Denuncia realizada correctamente.')
         subject = 'Han denunciado un mensaje que enviaste'
@@ -587,6 +605,15 @@ def descartar_denuncia(request, denuncia_id):
     message = f'Hola {denunciado.nombre}, se ha descartado la denuncia de {denunciante.nombre} hacia un mensaje tuyo, para mas información contactarte con la administración'
     send_mail(subject, message, settings.EMAIL_HOST_USER, [denunciado.mail])
 
+    denuncia.delete()
+    return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+
+def censurar_mensaje(request, denuncia_id):
+    denuncia = Denuncia.objects.get(id=denuncia_id)
+    mensaje = denuncia.mensaje
+    mensaje.mensaje_texto = "***Mensaje censurado***"
+    mensaje.save()
     denuncia.delete()
     return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
