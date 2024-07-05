@@ -7,6 +7,7 @@ from Register.models import User
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.db import transaction
+from Valoracion.models import Valoracion_Amarra
 
 
 
@@ -216,6 +217,17 @@ def registrar_salida(request, id):
     # Lógica para registrar ingreso
     reserva.estado = 'Finalizado'  # Cambia el estado a "En Proceso"
     reserva.save()
+    
+    # Crear una valoración de amarra
+    valoracion = Valoracion_Amarra(
+        publicacion_amarra=reserva.publicacion,
+        usuario=reserva.usuario,
+        estrellas=0,  # Se puede ajustar según sea necesario
+        comentario='',  # Se puede ajustar según sea necesario
+        estado='Inicio'
+    )
+    valoracion.save()
+    
     return redirect('reservas') 
 
 def mis_reservas(request):

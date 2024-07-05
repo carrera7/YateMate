@@ -34,6 +34,7 @@ CONVERSACIONES_USUARIO = []
 # Application definition
 
 INSTALLED_APPS = [
+    'Valoracion',
     'Register.apps.RegisterConfig',
     'Trueque.apps.TruequeConfig',
     'Amarra.apps.AmarraConfig',
