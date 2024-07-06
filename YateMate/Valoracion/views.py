@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ValoracionTruequeForm, ValoracionAmarraForm, RespuestaValoracionForm, RespuestaValoracionAmarraForm
 from .models import Valoracion_Trueque, Valoracion_Amarra
 from django.contrib import messages
+from Register.models import User
 from django.urls import reverse
 
 def valoraciones_list_pendientes(request):
@@ -232,3 +233,45 @@ def modificar_valoracion_amarra(request, valoracion_id):
         'valoracion': valoracion,
     }
     return render(request, 'modificar_valoracion_amarra.html', contexto)
+
+def listar_valoraciones_de_usuarios(request):
+    # Obtener parámetros de filtrado
+    tipo_valoracion = request.GET.get('tipo_valoracion', '')  # Puede ser 'trueque', 'amarra' o vacío (todos)
+    usuario_nombre = request.GET.get('usuario_nombre', '')  # Nombre del usuario para buscar
+
+    # Obtener todos los usuarios que tienen al menos una valoración
+    usuarios_con_valoraciones = User.objects.filter(
+        id__in=Valoracion_Trueque.objects.values_list('usuario_id', flat=True).distinct()) | \
+        User.objects.filter(id__in=Valoracion_Amarra.objects.values_list('usuario_id', flat=True).distinct())
+
+    # Filtrar por tipo de valoración si se especifica
+    if tipo_valoracion:
+        if tipo_valoracion == 'trueque':
+            usuarios_con_valoraciones = usuarios_con_valoraciones.filter(id__in=Valoracion_Trueque.objects.values_list('usuario_id', flat=True).distinct())
+        elif tipo_valoracion == 'amarra':
+            usuarios_con_valoraciones = usuarios_con_valoraciones.filter(id__in=Valoracion_Amarra.objects.values_list('usuario_id', flat=True).distinct())
+
+    # Filtrar por nombre de usuario si se especifica
+    if usuario_nombre:
+        usuarios_con_valoraciones = usuarios_con_valoraciones.filter(username__icontains=usuario_nombre)
+
+    contexto = {
+        'usuarios': usuarios_con_valoraciones,
+        'tipo_valoracion': tipo_valoracion,
+        'usuario_nombre': usuario_nombre,
+    }
+    return render(request, 'valoraciones_de_usuarios.html', contexto)
+
+def detalle_valoraciones_usuario(request, usuario_id):
+    usuario = get_object_or_404(User, id=usuario_id)
+    
+    # Obtener todas las valoraciones del usuario
+    valoraciones_trueque = Valoracion_Trueque.objects.filter(usuario=usuario)
+    valoraciones_amarra = Valoracion_Amarra.objects.filter(usuario=usuario)
+    
+    contexto = {
+        'usuario': usuario,
+        'valoraciones_trueque': valoraciones_trueque,
+        'valoraciones_amarra': valoraciones_amarra,
+    }
+    return render(request, 'detalle_valoraciones_usuario.html', contexto)

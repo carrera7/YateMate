@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+Usuarios con Valoraciones
+{% endblock %}
+
+{% block content %}
+<h1>Usuarios con Valoraciones</h1>
+
+<!-- Formulario de filtros -->
+<form method="GET">
+    <label for="tipo_valoracion">Filtrar por tipo de valoración:</label>
+    <select id="tipo_valoracion" name="tipo_valoracion">
+        <option value="">Todos</option>
+        <option value="trueque" {% if tipo_valoracion == "trueque" %}selected{% endif %}>Trueques</option>
+        <option value="amarra" {% if tipo_valoracion == "amarra" %}selected{% endif %}>Amarras</option>
+    </select>
+
+    <label for="usuario_nombre">Buscar por nombre de usuario:</label>
+    <input type="text" id="usuario_nombre" name="usuario_nombre" value="{{ usuario_nombre }}">
+
+    <button type="submit">Filtrar</button>
+</form>
+
+<!-- Lista de usuarios con valoraciones -->
+<ul>
+    {% for usuario in usuarios %}
+        <li>
+            {{ usuario.username }}
+            <a href="{% url 'detalle_valoraciones_usuario' usuario.id %}">Ver Valoraciones</a>
+        </li>
+    {% empty %}
+        <li>No hay usuarios con las valoraciones seleccionadas.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
