@@ -192,7 +192,8 @@ def publicar_Alquiler(request):
         form = AmarraForm(user,request.POST, request.FILES)
         if form.is_valid():
            if user.moroso:
-            messages.success(request, "Publicación fallida por ser moroso")
+            messages.error(request, "Publicación fallida por ser moroso")
+            return redirect('list_amarra')
            else:
                 form.save()
                 messages.success(request, 'Publicación de alquiler registrada con éxito.')
