@@ -9,6 +9,7 @@ from Amarra.models import Reserva, Publicacion_Amarra
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import logout
 from .froms import CustomUserRegistrationForm
+from Valoracion.models import *
 
 def obtener_reservas_vigentes_hoy():
     hoy = date.today()
@@ -46,7 +47,14 @@ def login_view(request):
                 # Iniciar sesión en la sesión actual
                 request.session['user_id'] = user.id
                 request.session['user_type'] = user.tipo
-                return redirect('index')  # Redirige a la página principal después del inicio de sesión exitoso
+                # Obtener mensajes pendientes o respondidos para el usuario
+                mensajes_pendientes = Mensaje.objects.filter(usuario=user, estado__in=['Pendiente', 'Respondido'], mostrar=True)
+                
+                # Crear una lista de mensajes para mostrar en la alerta
+                alert_messages = [f'Mensaje: {mensaje.mensaje_texto}' for mensaje in mensajes_pendientes]
+
+                # Renderizar la página principal con los mensajes en el contexto
+                return render(request, 'index.html', {'alert_messages': alert_messages})
             else:
                 # Mostrar un mensaje de error
                 return render(request, 'login.html', {'error_message': 'Nombre de usuario o contraseña incorrectos'})
@@ -55,6 +63,30 @@ def login_view(request):
             return render(request, 'login.html', {'error_message': 'Nombre de usuario o contraseña incorrectos'})
     else:
         return render(request, 'login.html',)
+    
+def eliminar_mensaje(request):
+    if request.method == 'POST':
+        # Aquí obtienes el id del mensaje que se desea eliminar desde el frontend
+        mensaje_id = request.POST.get('mensaje_id')
+
+        # Lógica para eliminar el mensaje (ejemplo)
+        try:
+            # Suponiendo que tienes un modelo Mensaje y quieres eliminarlo
+            mensaje = Mensaje.objects.get(id=mensaje_id)
+            mensaje.delete()
+
+            # Mensaje de éxito
+            messages.success(request, 'El mensaje ha sido eliminado correctamente.')
+
+        except Mensaje.DoesNotExist:
+            # Manejo de errores si el mensaje no existe
+            messages.error(request, 'El mensaje que intentas eliminar no existe.')
+
+        # Redirige al index u otra página después de eliminar el mensaje
+        return redirect('index')
+
+    # Manejo para otros métodos HTTP si es necesario
+    return redirect('index')
     
 def logout_view(request):
     if 'user_id' in request.session:
