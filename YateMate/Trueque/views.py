@@ -517,6 +517,14 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
                 dueño=publi.dueño,
                 respuesta=''
             )
+            # Crear mensaje de valoración pendiente
+            mensaje = Mensaje.objects.create(
+                usuario=intere,
+                valoracion_trueque=valoracion,
+                estado='Pendiente',
+                mensaje_texto="Usted tiene una valoración pendiente de un trueque de Objeto Valioso",
+                mostrar=True
+            )
     else:
         valoracion_existente = Valoracion_Trueque.objects.filter(
             tipo_publicacion='Embarcacion',
@@ -536,6 +544,14 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
                 estado='Inicio',
                 dueño=publi.embarcacion.dueno,
                 respuesta=''
+            )
+            # Crear mensaje de valoración pendiente
+            mensaje = Mensaje.objects.create(
+                usuario=intere,
+                valoracion_trueque=valoracion,
+                estado='Pendiente',
+                mensaje_texto="Usted tiene una valoración pendiente de un trueque de Embarcación",
+                mostrar=True
             )
     publi.save()
     if tipo_obj != 'Objetos Valiosos':

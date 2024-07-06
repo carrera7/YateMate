@@ -44,7 +44,6 @@ class Valoracion_Trueque(models.Model):
             self.dueño = self.publicacion_embarcacion.embarcacion.dueno
         super().save(*args, **kwargs)
 
-
 # Modelo de Valoración Amarra 
 class Valoracion_Amarra(models.Model):
     ESTADO_VALORACION_CHOICES = (
@@ -68,3 +67,42 @@ class Valoracion_Amarra(models.Model):
         if self.publicacion_amarra:
             self.dueño = self.publicacion_amarra.dueño
         super().save(*args, **kwargs)
+
+class ValoracionTruequeOwner(models.Model):
+    dueño = models.OneToOneField(User, on_delete=models.CASCADE, related_name='valoraciones_trueque_owner')
+    promedio_estrellas = models.IntegerField(default=0, help_text="Promedio de valoración recibida de trueques (0-5)")
+
+    def __str__(self):
+        return f"Valoraciones de trueques para {self.dueño.username}"
+
+class ValoracionAmarraOwner(models.Model):
+    dueño = models.OneToOneField(User, on_delete=models.CASCADE, related_name='valoraciones_amarra_owner')
+    promedio_estrellas = models.IntegerField(default=0, help_text="Promedio de valoración recibida de amarras (0-5)")
+
+    def __str__(self):
+        return f"Valoraciones de amarras para {self.dueño.username}"
+
+class ValoracionObjetoValiosoOwner(models.Model):
+    dueño = models.OneToOneField(User, on_delete=models.CASCADE, related_name='valoraciones_objeto_valioso_owner')
+    promedio_estrellas = models.IntegerField(default=0, help_text="Promedio de valoración recibida de objetos valiosos (0-5)")
+
+    def __str__(self):
+        return f"Valoraciones de objetos valiosos para {self.dueño.username}"
+
+class Mensaje(models.Model):
+    
+    ESTADO_MENSAJE_CHOICES = (
+        ('Pendiente', 'Pendiente'),
+        ('Espera','Espera'),
+        ('Respondido', 'Respondido'),
+    )
+    
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    valoracion_trueque = models.ForeignKey(Valoracion_Trueque, on_delete=models.CASCADE, null=True, blank=True, related_name='mensajes')
+    valoracion_amarra = models.ForeignKey(Valoracion_Amarra, on_delete=models.CASCADE, null=True, blank=True, related_name='mensajes')
+    estado = models.CharField(max_length=20, choices=ESTADO_MENSAJE_CHOICES, default='Pendiente')
+    mensaje_texto = models.TextField()
+    mostrar = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'Mensaje de {self.usuario.mail} sobre valoración'

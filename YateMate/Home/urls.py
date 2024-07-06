@@ -13,5 +13,6 @@ urlpatterns = [
     path('cancelar_deuda/<int:cliente_id>/',views.cancelar_deuda, name='cancelar_deuda'),
     path('eliminar_usuario/<int:cliente_id>/', views.eliminar_cuenta , name='eliminar_usuario'),
     path('mi_perfil/<int:cliente_id>/',views.mi_perfil, name="perfil"),
-    path('eliminar_cuenta/<int:cliente_id>/',views.eliminar_micuenta, name="eliminar_micuenta")
+    path('eliminar_cuenta/<int:cliente_id>/',views.eliminar_micuenta, name="eliminar_micuenta"),
+    path('eliminar-mensaje/', views.eliminar_mensaje, name='eliminar_mensaje'),
 ]

@@ -12,9 +12,7 @@ Valoraciones Contestadas
     <label for="filtro">Filtrar por:</label>
     <select id="filtro" name="filtro">
         <option value="trueque" {% if filtro == "trueque" %}selected{% endif %}>Trueques</option>
-        {% if usuario_tipo != 'Usuario' %}
-            <option value="amarra" {% if filtro == "amarra" %}selected{% endif %}>Amarras</option>
-        {% endif %}
+        <option value="amarra" {% if filtro == "amarra" %}selected{% endif %}>Amarras</option>
     </select>
     <button type="submit">Filtrar</button>
 </form>

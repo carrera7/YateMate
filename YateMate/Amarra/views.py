@@ -7,7 +7,7 @@ from Register.models import User
 from django.utils import timezone
 from datetime import datetime, timedelta
 from django.db import transaction
-from Valoracion.models import Valoracion_Amarra
+from Valoracion.models import Valoracion_Amarra, Mensaje
 
 
 
@@ -234,6 +234,15 @@ def registrar_salida(request, id):
             estado='Inicio'
         )
         valoracion.save()
+        
+        mensaje = Mensaje(
+            usuario=reserva.usuario,
+            valoracion_amarra=valoracion,
+            estado='Pendiente',
+            mensaje_texto="Usted tiene una valoración pendiente de una amarra",
+            mostrar=True
+        )
+        mensaje.save()
     
     #agregar notificacion 
     
