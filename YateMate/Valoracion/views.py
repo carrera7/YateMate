@@ -5,9 +5,12 @@ from django.contrib import messages
 from django.urls import reverse
 
 def valoraciones_list_pendientes(request):
-    # Obtener todas las valoraciones en estado "Inicio"
-    valoraciones_trueque = Valoracion_Trueque.objects.filter(estado='Inicio')
-    valoraciones_amarra = Valoracion_Amarra.objects.filter(estado='Inicio')
+    # Obtener el usuario activo
+    usuario_id = request.session.get('user_id')
+    
+    # Obtener todas las valoraciones en estado "Inicio" del usuario activo
+    valoraciones_trueque = Valoracion_Trueque.objects.filter(estado='Inicio', usuario_id=usuario_id)
+    valoraciones_amarra = Valoracion_Amarra.objects.filter(estado='Inicio', usuario_id=usuario_id)
 
     # Obtener el filtro seleccionado (por defecto 'trueque' si no hay filtro seleccionado)
     filtro = request.GET.get('filtro', 'trueque')
@@ -26,30 +29,13 @@ def valoraciones_list_pendientes(request):
     }
     return render(request, 'valoraciones_list_pendientes.html', contexto)
 
-    # Obtener todas las valoraciones en estado "Inicio"
-    valoraciones_trueque = Valoracion_Trueque.objects.filter(estado='Inicio')
-    valoraciones_amarra = Valoracion_Amarra.objects.filter(estado='Inicio')
-
-    # Filtrar valoraciones según el tipo seleccionado
-    filtro = request.GET.get('filtro')
-    if filtro == 'trueque':
-        valoraciones_trueque = valoraciones_trueque
-        valoraciones_amarra = Valoracion_Amarra.objects.none()
-    elif filtro == 'amarra':
-        valoraciones_trueque = Valoracion_Trueque.objects.none()
-        valoraciones_amarra = valoraciones_amarra
-
-    contexto = {
-        'valoraciones_trueque': valoraciones_trueque,
-        'valoraciones_amarra': valoraciones_amarra,
-        'filtro': filtro,
-    }
-    return render(request, 'valoraciones_list_pendientes.html', contexto)
-
 def valoraciones_list_realizadas(request):
-    # Obtener todas las valoraciones en estado "Proceso"
-    valoraciones_trueque = Valoracion_Trueque.objects.filter(estado='Proceso')
-    valoraciones_amarra = Valoracion_Amarra.objects.filter(estado='Proceso')
+    usuario_id = request.session.get('user_id')
+    
+    # Obtener todas las valoraciones en estado "Proceso" del usuario activo
+    valoraciones_trueque = Valoracion_Trueque.objects.filter(estado='Proceso', usuario_id=usuario_id)
+    valoraciones_amarra = Valoracion_Amarra.objects.filter(estado='Proceso', usuario_id=usuario_id)
+
 
     # Obtener el filtro seleccionado (por defecto 'trueque' si no hay filtro seleccionado)
     filtro = request.GET.get('filtro', 'trueque')
@@ -69,9 +55,11 @@ def valoraciones_list_realizadas(request):
     return render(request, 'valoraciones_list_realizadas.html', contexto)
 
 def valoraciones_list_contestadas(request):
-    # Obtener todas las valoraciones en estado "Finalizado"
-    valoraciones_trueque = Valoracion_Trueque.objects.filter(estado='Finalizado')
-    valoraciones_amarra = Valoracion_Amarra.objects.filter(estado='Finalizado')
+    usuario_id = request.session.get('user_id')
+    
+    # Obtener todas las valoraciones en estado "Finalizado" del usuario activo
+    valoraciones_trueque = Valoracion_Trueque.objects.filter(estado='Finalizado', usuario_id=usuario_id)
+    valoraciones_amarra = Valoracion_Amarra.objects.filter(estado='Finalizado', usuario_id=usuario_id)
 
     # Obtener el filtro seleccionado (por defecto 'trueque' si no hay filtro seleccionado)
     filtro = request.GET.get('filtro', 'trueque')

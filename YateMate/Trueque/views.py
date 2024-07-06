@@ -496,30 +496,47 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
 
     publi.estado = "Finalizado"
     #objeto valisos
+    # Verificar si ya existe una valoración de trueque para esta publicación y usuario
     if tipo_obj == 'Objetos Valiosos':
-        # Crear valoración de trueque para objeto valioso
-        valoracion = Valoracion_Trueque.objects.create(
+        valoracion_existente = Valoracion_Trueque.objects.filter(
             tipo_publicacion='ObjetoValioso',
             publicacion_objeto_valioso=publi,
-            usuario=intere,
-            estrellas=0,  # Aquí deberías definir cómo determinar las estrellas
-            comentario='',  # Puedes dejarlo vacío inicialmente o definir un comentario por defecto
-            estado='Inicio',
             dueño=publi.dueño,
-            respuesta=''
-        )
+            usuario=intere
+        ).exists()
+
+        if not valoracion_existente:
+            # Crear valoración de trueque para objeto valioso
+            valoracion = Valoracion_Trueque.objects.create(
+                tipo_publicacion='ObjetoValioso',
+                publicacion_objeto_valioso=publi,
+                usuario=intere,
+                estrellas=0,  # Aquí deberías definir cómo determinar las estrellas
+                comentario='',  # Puedes dejarlo vacío inicialmente o definir un comentario por defecto
+                estado='Inicio',
+                dueño=publi.dueño,
+                respuesta=''
+            )
     else:
-        # Crear valoración de trueque para embarcación
-        valoracion = Valoracion_Trueque.objects.create(
+        valoracion_existente = Valoracion_Trueque.objects.filter(
             tipo_publicacion='Embarcacion',
             publicacion_embarcacion=publi,
-            usuario=intere,
-            estrellas=0,  # Define cómo determinar las estrellas
-            comentario='',  # Puedes dejarlo vacío inicialmente o definir un comentario por defecto
-            estado='Inicio',
             dueño=publi.embarcacion.dueno,
-            respuesta=''
-        )    
+            usuario=intere
+        ).exists()
+
+        if not valoracion_existente:
+            # Crear valoración de trueque para embarcación
+            valoracion = Valoracion_Trueque.objects.create(
+                tipo_publicacion='Embarcacion',
+                publicacion_embarcacion=publi,
+                usuario=intere,
+                estrellas=0,  # Define cómo determinar las estrellas
+                comentario='',  # Puedes dejarlo vacío inicialmente o definir un comentario por defecto
+                estado='Inicio',
+                dueño=publi.embarcacion.dueno,
+                respuesta=''
+            )
     publi.save()
     if tipo_obj != 'Objetos Valiosos':
         publi.embarcacion.dueno=intere

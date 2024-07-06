@@ -218,15 +218,22 @@ def registrar_salida(request, id):
     reserva.estado = 'Finalizado'  # Cambia el estado a "En Proceso"
     reserva.save()
     
-    # Crear una valoración de amarra
-    valoracion = Valoracion_Amarra(
+    # Verificar si ya existe una valoración de amarra para esta reserva y usuario
+    valoracion_existente = Valoracion_Amarra.objects.filter(
         publicacion_amarra=reserva.publicacion,
-        usuario=reserva.usuario,
-        estrellas=0,  # Se puede ajustar según sea necesario
-        comentario='',  # Se puede ajustar según sea necesario
-        estado='Inicio'
-    )
-    valoracion.save()
+        usuario=reserva.usuario
+    ).exists()
+    
+    if not valoracion_existente:
+        # Crear una valoración de amarra
+        valoracion = Valoracion_Amarra(
+            publicacion_amarra=reserva.publicacion,
+            usuario=reserva.usuario,
+            estrellas=0,  # Se puede ajustar según sea necesario
+            comentario='',  # Se puede ajustar según sea necesario
+            estado='Inicio'
+        )
+        valoracion.save()
     
     #agregar notificacion 
     
