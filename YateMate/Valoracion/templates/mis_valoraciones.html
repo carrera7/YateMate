@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}
+Mis Valoraciones
+{% endblock %}
+
+{% block content %}
+<h1>Mis Valoraciones</h1>
+
+<!-- Filtro de valoraciones -->
+<form method="GET">
+    <label for="filtro">Filtrar por:</label>
+    <select id="filtro" name="filtro">
+        <option value="trueque" {% if filtro == "trueque" %}selected{% endif %}>Trueques</option>
+        {% if usuario_tipo != "Usuario" %}
+            <option value="amarra" {% if filtro == "amarra" %}selected{% endif %}>Amarras</option>
+        {% endif %}
+    </select>
+
+    <label for="estado">Estado:</label>
+    <select id="estado" name="estado">
+        <option value="proceso" {% if estado_filtro == "proceso" %}selected{% endif %}>En Proceso</option>
+        <option value="finalizado" {% if estado_filtro == "finalizado" %}selected{% endif %}>Finalizadas</option>
+    </select>
+
+    <button type="submit">Filtrar</button>
+</form>
+
+<!-- Lista de valoraciones de Trueques -->
+{% if filtro == "trueque" %}
+    {% if estado_filtro == "proceso" %}
+        <h2>Valoraciones de Trueques en Proceso</h2>
+        <ul>
+            {% for valoracion in valoraciones_trueque %}
+                <li>
+                    {{ valoracion }}
+                    <form method="GET" action="{% url 'responder_valoracion_trueque' valoracion.id %}">
+                        <button type="submit">Responder</button>
+                    </form>
+                </li>
+            {% empty %}
+                <li>No hay valoraciones de trueques en proceso.</li>
+            {% endfor %}
+        </ul>
+    {% elif estado_filtro == "finalizado" %}
+        <h2>Valoraciones de Trueques Finalizadas</h2>
+        <ul>
+            {% for valoracion in valoraciones_trueque %}
+                <li>
+                    {{ valoracion }}
+                    <form method="GET" action="{% url 'modificar_valoracion_trueque' valoracion.id %}">
+                        <button type="submit">Modificar</button>
+                    </form>
+                </li>
+            {% empty %}
+                <li>No hay valoraciones de trueques finalizadas.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endif %}
+
+<!-- Lista de valoraciones de Amarras -->
+{% if filtro == "amarra" and usuario_tipo != "Usuario" %}
+    {% if estado_filtro == "proceso" %}
+        <h2>Valoraciones de Amarras en Proceso</h2>
+        <ul>
+            {% for valoracion in valoraciones_amarra %}
+                <li>
+                    {{ valoracion }}
+                    <form method="GET" action="{% url 'responder_valoracion_amarra' valoracion.id %}">
+                        <button type="submit">Responder</button>
+                    </form>
+                </li>
+            {% empty %}
+                <li>No hay valoraciones de amarras en proceso.</li>
+            {% endfor %}
+        </ul>
+    {% elif estado_filtro == "finalizado" %}
+        <h2>Valoraciones de Amarras Finalizadas</h2>
+        <ul>
+            {% for valoracion in valoraciones_amarra %}
+                <li>
+                    {{ valoracion }}
+                    <form method="GET" action="{% url 'modificar_valoracion_amarra' valoracion.id %}">
+                        <button type="submit">Modificar</button>
+                    </form>
+                </li>
+            {% empty %}
+                <li>No hay valoraciones de amarras finalizadas.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endif %}
+{% endblock %}

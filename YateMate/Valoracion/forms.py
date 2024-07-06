@@ -17,3 +17,16 @@ class ValoracionAmarraForm(forms.ModelForm):
     class Meta:
         model = Valoracion_Amarra
         fields = ['estrellas', 'comentario']
+        
+
+class RespuestaValoracionForm(forms.ModelForm):
+    class Meta:
+        model = Valoracion_Trueque
+        fields = ['respuesta']
+        labels = {'respuesta': 'Agregar Respuesta'}
+
+class RespuestaValoracionAmarraForm(forms.ModelForm):
+    class Meta:
+        model = Valoracion_Amarra
+        fields = ['respuesta']
+        labels = {'respuesta': 'Agregar Respuesta'}

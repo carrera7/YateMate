@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+Modificar Valoración de Trueque
+{% endblock %}
+
+{% block content %}
+<h1>Modificar Valoración de Trueque</h1>
+
+<form method="POST">
+    {% csrf_token %}
+    <p>{{ valoracion }}</p>
+    
+    <label for="respuesta">Respuesta:</label><br>
+    <textarea id="respuesta" name="respuesta" rows="4" cols="50">{{ valoracion.respuesta }}</textarea><br>
+
+    <button type="submit">Guardar Cambios</button>
+</form>
+{% endblock %}

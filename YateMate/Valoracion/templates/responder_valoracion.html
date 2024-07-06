@@ -1,0 +1,16 @@
+<!-- responder_valoracion.html -->
+{% extends "base.html" %}
+
+{% block title %}
+Responder Valoración
+{% endblock %}
+
+{% block content %}
+<h1>Responder Valoración</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enviar Respuesta</button>
+</form>
+<a href="{% url 'mis_valoraciones' %}">Cancelar</a>
+{% endblock %}
