@@ -18,7 +18,6 @@ urlpatterns = [
     path('modificar_valoracion_amarra/<int:valoracion_id>/', views.modificar_valoracion_amarra, name='modificar_valoracion_amarra'),
 
     path('valoraciones_de_usuarios/', views.listar_valoraciones_de_usuarios, name='valoraciones_de_usuarios'),
-    
-    path('valoraciones_de_usuario/<int:usuario_id>/', views.detalle_valoraciones_usuario, name='detalle_valoraciones_usuario'),
+    path('ver_valoraciones_usuario/<int:usuario_id>/', views.ver_valoraciones_usuario, name='ver_valoraciones_usuario'),
     # Otras rutas
 ]

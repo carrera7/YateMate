@@ -26,13 +26,14 @@ class Valoracion_Trueque(models.Model):
     respuesta = models.TextField()
 
     def __str__(self):
-        return f"Valoración de {self.get_publicacion_display()} por {self.usuario}"
+        publicacion_str = self.get_publicacion_display()
+        return f"Valoración de {publicacion_str} por {self.usuario}"
 
     def get_publicacion_display(self):
-        if self.tipo_publicacion == 'ObjetoValioso':
-            return self.publicacion_objeto_valioso
-        elif self.tipo_publicacion == 'Embarcacion':
-            return self.publicacion_embarcacion
+        if self.tipo_publicacion == 'ObjetoValioso' and self.publicacion_objeto_valioso:
+            return f"Objeto Valioso: {self.publicacion_objeto_valioso}"
+        elif self.tipo_publicacion == 'Embarcacion' and self.publicacion_embarcacion:
+            return f"Embarcación: {self.publicacion_embarcacion}"
         else:
             return 'Publicación desconocida'
 
@@ -42,7 +43,6 @@ class Valoracion_Trueque(models.Model):
         elif self.tipo_publicacion == 'Embarcacion' and self.publicacion_embarcacion:
             self.dueño = self.publicacion_embarcacion.embarcacion.dueno
         super().save(*args, **kwargs)
-
 
 
 # Modelo de Valoración Amarra 
@@ -62,7 +62,7 @@ class Valoracion_Amarra(models.Model):
     respuesta = models.TextField()
     
     def __str__(self):
-        return f"Valoración de {self.publicacion_amarra} por {self.usuario}"
+        return f"Valoración de la Amarra Ubicacion:{self.publicacion_amarra.ubicacion} , del {self.publicacion_amarra} por {self.usuario}"
 
     def save(self, *args, **kwargs):
         if self.publicacion_amarra:

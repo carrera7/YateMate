@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}
+Valoraciones de {{ usuario.email }}
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .filter-form {
+        margin-bottom: 20px;
+    }
+
+    .valoraciones-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .valoracion-item {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-color: #f9f9f9;
+    }
+
+    .valoracion-content {
+        margin: 10px 0;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        background-color: #007bff;
+        color: white;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<!-- Filtro de valoraciones -->
+<form method="GET" class="filter-form">
+    <label for="tipo_valoracion">Filtrar por tipo de valoración:</label>
+    <select id="tipo_valoracion" name="tipo_valoracion">
+        <option value="trueque" {% if tipo_valoracion == "trueque" %}selected{% endif %}>Trueques</option>
+        {% if usuario_tipo != "Usuario" %}
+            <option value="amarra" {% if tipo_valoracion == "amarra" %}selected{% endif %}>Amarras</option>
+        {% endif %}
+    </select>
+    <button type="submit">Filtrar</button>
+</form>
+
+<!-- Lista de valoraciones de Trueques -->
+{% if tipo_valoracion == "trueque" %}
+    <h2>Valoraciones de Trueques</h2>
+    <ul class="valoraciones-list">
+        {% for valoracion in valoraciones_trueque %}
+            <li class="valoracion-item">
+                <div class="valoracion-content">
+                    <strong>Estrellas:</strong> {{ valoracion.estrellas }}<br>
+                    <strong>Comentario:</strong> {{ valoracion.comentario }}<br>
+                    {% if valoracion.respuesta %}
+                        <strong>Respuesta:</strong> {{ valoracion.respuesta }}<br>
+                    {% endif %}
+                </div>
+            </li>
+        {% empty %}
+            <li>No hay valoraciones de trueques para este usuario.</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<!-- Lista de valoraciones de Amarras -->
+{% if tipo_valoracion == "amarra" %}
+    <h2>Valoraciones de Amarras</h2>
+    <ul class="valoraciones-list">
+        {% for valoracion in valoraciones_amarra %}
+            <li class="valoracion-item">
+                <div class="valoracion-content">
+                    <p>{{ valoracion }}</p>
+                    <strong>Estrellas:</strong> {{ valoracion.estrellas }}<br>
+                    <strong>Comentario:</strong> {{ valoracion.comentario }}<br>
+                    {% if valoracion.respuesta %}
+                        <strong>Respuesta:</strong> {{ valoracion.respuesta }}<br>
+                    {% endif %}
+                </div>
+            </li>
+        {% empty %}
+            <li>No hay valoraciones de amarras para este usuario.</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<a href="{% url 'valoraciones_de_usuarios' %}" class="btn btn-primary">Volver a la lista de usuarios</a>
+
+{% endblock %}

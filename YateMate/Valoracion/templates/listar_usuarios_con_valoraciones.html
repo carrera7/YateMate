@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+Usuarios con Valoraciones
+{% endblock %}
+
+{% block content %}
+<h1>Usuarios con Valoraciones</h1>
+
+<!-- Formulario de búsqueda de usuarios por email -->
+<form method="GET">
+    <label for="usuario_mail">Buscar por email:</label>
+    <input type="text" id="usuario_mail" name="usuario_mail" value="{{ usuario_mail }}">
+    <button type="submit">Buscar</button>
+</form>
+
+<!-- Lista de usuarios con valoraciones -->
+<ul>
+    {% for usuario in usuarios %}
+        <li>
+            {{ usuario.mail }}
+            <form method="GET" action="{% url 'ver_valoraciones_usuario' usuario.id %}">
+                <button type="submit">Ver Valoraciones</button>
+            </form>
+        </li>
+    {% empty %}
+        <li>No se encontraron usuarios con valoraciones.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
