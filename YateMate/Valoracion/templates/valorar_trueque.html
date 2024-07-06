@@ -10,7 +10,7 @@ Valorar Trueque
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" name="guardar">Guardar</button>
-    <button type="submit" name="salir">Salir</button>
+    <button type="submit" name="guardar" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >Guardar</button>
+    <button type="submit" name="salir" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >Salir</button>
 </form>
 {% endblock %}
