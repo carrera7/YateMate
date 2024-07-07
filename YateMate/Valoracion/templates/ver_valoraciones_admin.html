@@ -87,14 +87,12 @@ Usuarios con Valoraciones
 
     <form method="GET">
         <label for="usuario_mail">Buscar por email:</label>
-        <input type="text" id="usuario_mail" name="usuario_mail" value="{{ usuario_mail }}">
+        <input type="text" id="usuario_mail" name="email" value="{{ email_filtrar }}">
         <button type="submit">Buscar</button>
-        <button type="submit" name="limpiar" value="true" ">Limpiar Filtros</button>
+        <button type="submit" name="limpiar" value="true" >Limpiar Filtros</button>
     </form>
-    {% if not usuarios_con_valoraciones and usuario_mail %}
-        <p class="error-message">Mail no encontrado para {{ usuario_mail }}.</p>
-    {% elif not usuarios_con_valoraciones %}
-        <p class="error-message">No se encontraron usuarios con valoraciones.</p>
+    {% if mensaje %}
+        <p class="error-message">{{ mensaje }}</p>
     {% endif %}
 </div>
 
@@ -108,8 +106,6 @@ Usuarios con Valoraciones
                 <button type="submit" class="btn-card">Ver Valoraciones</button>
             </form>
         </div>
-    {% empty %}
-        <!-- Este bloque se maneja arriba dentro del formulario -->
     {% endfor %}
 </div>
 {% endblock %}

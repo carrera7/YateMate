@@ -289,23 +289,31 @@ def ver_valoraciones_usuario(request, usuario_id):
 
 
 def ver_valoraciones_admin(request):
-    email_filtrar = request.GET.get('email', '')
+    email_filtrar = request.GET.get('email')
     limpiar_filtros = request.GET.get('limpiar', '')
-
     usuarios_con_valoraciones = []
-    mensaje = None
 
     if limpiar_filtros:
-        usuarios = User.objects.filter(tipo__in=['Usuario', 'Cliente'])
-    else:
-        usuarios = User.objects.filter(tipo__in=['Usuario', 'Cliente'])
-        if email_filtrar:
-            usuarios = usuarios.filter(mail=email_filtrar)
+        email_filtrar = None
+
+    # Obtener usuarios tipo Usuario o Cliente con valoraciones y su promedio
+    usuarios = User.objects.filter(tipo__in=['Usuario', 'Cliente'])
+
+    if email_filtrar:
+        usuarios = usuarios.filter(mail=email_filtrar)
+        if not usuarios.exists():
+            mensaje = "Usuario no encontrado."
+        else:
+            mensaje = None
 
     for usuario in usuarios:
+        # Obtener promedio de valoraciones de Trueques
         promedio_trueques = Valoracion_Trueque.objects.filter(usuario=usuario).aggregate(Avg('estrellas'))['estrellas__avg'] or 0
+
+        # Obtener promedio de valoraciones de Amarras
         promedio_amarras = Valoracion_Amarra.objects.filter(usuario=usuario).aggregate(Avg('estrellas'))['estrellas__avg'] or 0
 
+        # Solo agregar usuarios con valoraciones
         if promedio_trueques > 0 or promedio_amarras > 0:
             usuarios_con_valoraciones.append({
                 'usuario': usuario,
@@ -314,9 +322,9 @@ def ver_valoraciones_admin(request):
             })
 
     if not usuarios_con_valoraciones and email_filtrar:
-        mensaje = f"No se encontraron usuarios con valoraciones para el correo '{email_filtrar}'."
-    elif not usuarios.exists() and email_filtrar:
-        mensaje = "Usuario no encontrado."
+        mensaje = f"No se encontraron usuarios con valoraciones para el correo {email_filtrar}."
+    else:
+        mensaje = None
 
     context = {
         'usuarios_con_valoraciones': usuarios_con_valoraciones,
