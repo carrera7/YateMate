@@ -332,3 +332,17 @@ def ver_valoraciones_admin(request):
         'mensaje': mensaje,
     }
     return render(request, 'ver_valoraciones_admin.html', context)
+
+
+def ver_valoraciones_usuario_admin(request, usuario_id):
+    usuario = get_object_or_404(User, id=usuario_id)
+    valoraciones_trueque = Valoracion_Trueque.objects.filter(usuario=usuario)
+    valoraciones_amarra = Valoracion_Amarra.objects.filter(usuario=usuario)
+
+    context = {
+        'usuario': usuario,
+        'valoraciones_trueque': valoraciones_trueque,
+        'valoraciones_amarra': valoraciones_amarra,
+    }
+    return render(request, 'valoraciones_usuario_admin.html', context)
+
