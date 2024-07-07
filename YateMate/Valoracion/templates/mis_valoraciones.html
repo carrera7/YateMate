@@ -34,6 +34,12 @@ Mis Valoraciones
             {% for valoracion in valoraciones_trueque %}
                 <li>
                     {{ valoracion }}
+                    <li class="valoracion-item">
+                        <div class="valoracion-content">
+                            <strong>Estrellas:</strong> {{ valoracion.estrellas }}<br>
+                            <strong>Comentario:</strong> {{ valoracion.comentario }}<br>
+                        </div>
+                    </li>
                     <form method="GET" action="{% url 'responder_valoracion_trueque' valoracion.id %}">
                         <button type="submit" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >Responder</button>
                     </form>
@@ -48,6 +54,12 @@ Mis Valoraciones
             {% for valoracion in valoraciones_trueque %}
                 <li>
                     {{ valoracion }}
+                    <li class="valoracion-item">
+                        <div class="valoracion-content">
+                            <strong>Estrellas:</strong> {{ valoracion.estrellas }}<br>
+                            <strong>Comentario:</strong> {{ valoracion.comentario }}<br>
+                        </div>
+                    </li>
                     <form method="GET" action="{% url 'modificar_valoracion_trueque' valoracion.id %}">
                         <button type="submit" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >Modificar</button>
                     </form>
@@ -67,6 +79,12 @@ Mis Valoraciones
             {% for valoracion in valoraciones_amarra %}
                 <li>
                     {{ valoracion }}
+                    <li class="valoracion-item">
+                        <div class="valoracion-content">
+                            <strong>Estrellas:</strong> {{ valoracion.estrellas }}<br>
+                            <strong>Comentario:</strong> {{ valoracion.comentario }}<br>
+                        </div>
+                    </li>
                     <form method="GET" action="{% url 'responder_valoracion_amarra' valoracion.id %}">
                         <button type="submit">Responder</button>
                     </form>
@@ -81,6 +99,12 @@ Mis Valoraciones
             {% for valoracion in valoraciones_amarra %}
                 <li>
                     {{ valoracion }}
+                    <li class="valoracion-item">
+                        <div class="valoracion-content">
+                            <strong>Estrellas:</strong> {{ valoracion.estrellas }}<br>
+                            <strong>Comentario:</strong> {{ valoracion.comentario }}<br>
+                        </div>
+                    </li>
                     <form method="GET" action="{% url 'modificar_valoracion_amarra' valoracion.id %}">
                         <button type="submit">Modificar</button>
                     </form>
