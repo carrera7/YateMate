@@ -108,7 +108,9 @@
                 {% elif request.session.user_type == 'Administrador'%}
                   <li><a href="http://127.0.0.1:8000/reservas/">Reservas</a></li>
                 {% endif %}
-                <li><a href="http://127.0.0.1:8000/Ver_mis_reservas/">Ver mis reservas</a></li>   
+                {% if request.session.user_id %}
+                  <li><a href="http://127.0.0.1:8000/Ver_mis_reservas/">Ver mis reservas</a></li>
+                {% endif %}
               {% endif %}
               
               {% if request.path != '/' %}
