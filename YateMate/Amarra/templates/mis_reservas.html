@@ -90,13 +90,47 @@ Mis Reservas
                 <strong>Precio:</strong> {{ reserva.publicacion.precio }} <br>
                 <strong>Fecha de Reserva:</strong> {{ reserva.fecha_ingreso }} <br>
                 <strong>Ubicación:</strong> {{ reserva.publicacion.ubicacion }} <br>
-                <form action="{% url 'eliminar_reserva' reserva.id %}" method="post" style="display:inline;">
+                <form id="delete-form-{{ reserva.id }}" action="{% url 'eliminar_reserva' reserva.id %}" method="post" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit" {% if reserva.fecha_ingreso|date:"Y-m-d" == "now"|date:"Y-m-d" %}disabled{% endif %}>Eliminar</button>
+                    <button type="button" onclick="confirmDelete('{{ reserva.id }}')" {% if reserva.fecha_ingreso|date:"Y-m-d" == "now"|date:"Y-m-d" %}disabled{% endif %}>Eliminar</button>
                 </form>
             </li>
         {% endfor %}
     </ul>
     <a href="{% url 'list_amarra' %}">Volver</a>
 </div>
+
+<script>
+    function confirmDelete(reservaId) {
+        // Crea un div que actuará como el diálogo de confirmación
+        var confirmDialog = document.createElement('div');
+        confirmDialog.setAttribute('style', 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); z-index: 1000;');
+
+        // Crea el mensaje del diálogo
+        var message = document.createElement('p');
+        message.innerText = '¿Está seguro que desea eliminar esta reserva?';
+        confirmDialog.appendChild(message);
+
+        // Crea el botón "Sí"
+        var yesButton = document.createElement('button');
+        yesButton.innerText = 'Sí';
+        yesButton.setAttribute('style', 'margin-right: 10px;');
+        yesButton.onclick = function() {
+            document.getElementById('delete-form-' + reservaId).submit();
+        };
+        confirmDialog.appendChild(yesButton);
+
+        // Crea el botón "No"
+        var noButton = document.createElement('button');
+        noButton.innerText = 'No';
+        noButton.onclick = function() {
+            document.body.removeChild(confirmDialog);
+        };
+        confirmDialog.appendChild(noButton);
+
+        // Añade el diálogo al body del documento
+        document.body.appendChild(confirmDialog);
+    }
+</script>
 {% endblock %}
+
