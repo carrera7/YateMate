@@ -308,10 +308,10 @@ def ver_valoraciones_admin(request):
 
     for usuario in usuarios:
         # Obtener promedio de valoraciones de Trueques
-        promedio_trueques = Valoracion_Trueque.objects.filter(usuario=usuario).aggregate(Avg('estrellas'))['estrellas__avg'] or 0
+        promedio_trueques = Valoracion_Trueque.objects.filter(dueño=usuario).aggregate(Avg('estrellas'))['estrellas__avg'] or '#'
 
         # Obtener promedio de valoraciones de Amarras
-        promedio_amarras = Valoracion_Amarra.objects.filter(usuario=usuario).aggregate(Avg('estrellas'))['estrellas__avg'] or 0
+        promedio_amarras = Valoracion_Amarra.objects.filter(dueño=usuario).aggregate(Avg('estrellas'))['estrellas__avg'] or '#'
 
         # Solo agregar usuarios con valoraciones
         if promedio_trueques > 0 or promedio_amarras > 0:
@@ -336,8 +336,8 @@ def ver_valoraciones_admin(request):
 
 def ver_valoraciones_usuario_admin(request, usuario_id):
     usuario = get_object_or_404(User, id=usuario_id)
-    valoraciones_trueque = Valoracion_Trueque.objects.filter(usuario=usuario)
-    valoraciones_amarra = Valoracion_Amarra.objects.filter(usuario=usuario)
+    valoraciones_trueque = Valoracion_Trueque.objects.filter(dueño=usuario)
+    valoraciones_amarra = Valoracion_Amarra.objects.filter(dueño=usuario)
 
     context = {
         'usuario': usuario,
