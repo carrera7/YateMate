@@ -110,8 +110,8 @@ def valorar_trueque(request, id):
                 return redirect('valoraciones_list_pendientes')
         else:
                 form = ValoracionTruequeForm(instance=valoracion)
-                #return render(request, 'valorar_trueque.html', {'form': form})
-                return redirect ('valoraciones_list_realizadas')
+                return render(request, 'valorar_trueque.html', {'form': form})
+                #return redirect ('valoraciones_list_realizadas')
     else:
         form = ValoracionTruequeForm(instance=valoracion)
     return render(request, 'valorar_trueque.html', {'form': form})
