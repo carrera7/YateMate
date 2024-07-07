@@ -96,6 +96,7 @@ def eliminar_valoracion_trueque(request, valoracion_id):
         #messages.success(request, 'Valoración de trueque eliminada.')
         #return redirect('valoraciones_list_pendientes')  # Redirige a la lista de valoraciones pendientes
   #  messages.error(request, 'Método no permitido.')
+
     return redirect('valoraciones_list_pendientes')
 
 def valorar_trueque(request, id):
@@ -120,9 +121,9 @@ def eliminar_valoracion_amarra(request, valoracion_id):
     if request.method == 'POST':
         valoracion = get_object_or_404(Valoracion_Amarra, id=valoracion_id)
         valoracion.delete()
-        messages.success(request, 'Valoración de amarra eliminada.')
-        return redirect('valoraciones_list_pendientes')  # Redirige a la lista de valoraciones pendientes
-    messages.error(request, 'Método no permitido.')
+        #messages.success(request, 'Valoración de amarra eliminada.')
+        #return redirect('valoraciones_list_pendientes')  # Redirige a la lista de valoraciones pendientes
+    #messages.error(request, 'Método no permitido.')
     return redirect('valoraciones_list_pendientes')
 
 def valorar_amarra(request, id):
