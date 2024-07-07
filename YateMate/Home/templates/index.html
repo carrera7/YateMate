@@ -7,31 +7,7 @@ Mi Página de Inicio
 
 {% block content %}
 {% if alert_messages %}
-    <script>
-        // Función para mostrar los mensajes como alertas al cargar la página
-        window.onload = function() {
-            {% for message in alert_messages %}
-                var confirmation = confirm("{{ message }}\n\n¿Deseas eliminar este mensaje?");
-                if (confirmation) {
-                    // Enviar el id del mensaje a la vista eliminar_mensaje mediante AJAX o formulario POST
-                    var form = document.createElement('form');
-                    form.action = "{% url 'eliminar_mensaje' %}";
-                    form.method = 'POST';
-                    form.style.display = 'none';
 
-                    var input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = 'mensaje_id';
-                    input.value = "{{ message.id }}"; // Aquí debes obtener el ID del mensaje adecuadamente
-
-                    form.appendChild(input);
-                    document.body.appendChild(form);
-
-                    form.submit();
-                }
-            {% endfor %}
-        }
-    </script>
 {% endif %}
 
 <h1>Quienes Somos</h1>
