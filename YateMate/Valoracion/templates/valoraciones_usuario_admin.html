@@ -33,10 +33,29 @@ Valoraciones de {{ usuario.nombre }}
     .valoracion-detail {
         margin-bottom: 5px;
     }
+
+        .btn-card {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        background-color: black;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        margin-left: 10px;
+    }
 </style>
+
+
+    <form method="GET" action="{% url 'ver_valoraciones_admin' %}">
+        <button type="submit" class="btn-card">Volver</button>
+    </form>
 
 <div class="valoraciones-container">
     <h1>Valoraciones de {{ usuario.nombre }}</h1>
+
     
     <h2>Valoraciones de Trueques</h2>
     {% for valoracion in valoraciones_trueque %}
