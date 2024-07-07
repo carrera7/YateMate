@@ -108,7 +108,8 @@ def valorar_trueque(request, id):
                 return redirect('valoraciones_list_pendientes')
         else:
                 form = ValoracionTruequeForm(instance=valoracion)
-                return render(request, 'valorar_trueque.html', {'form': form})
+                #return render(request, 'valorar_trueque.html', {'form': form})
+                return redirect ('valoraciones_list_realizadas')
     else:
         form = ValoracionTruequeForm(instance=valoracion)
     return render(request, 'valorar_trueque.html', {'form': form})
@@ -134,7 +135,8 @@ def valorar_amarra(request, id):
                 return redirect('valoraciones_list_pendientes')
         else:
             form = ValoracionAmarraForm(instance=valoracion)
-            return render(request, 'valorar_Amarra.html', {'form': form})
+            return redirect ('valoraciones_list_realizadas')
+            #return render(request, 'valorar_Amarra.html', {'form': form})
     else:
         form = ValoracionAmarraForm(instance=valoracion)
     return render(request, 'valorar_Amarra.html', {'form': form})

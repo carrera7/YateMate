@@ -7,6 +7,7 @@ Usuarios con Valoraciones
 {% block content %}
 <h1>Usuarios con Valoraciones</h1>
 
+
 <!-- Formulario de filtros -->
 <form method="GET">
     <label for="tipo_valoracion">Filtrar por tipo de valoración:</label>
@@ -27,7 +28,8 @@ Usuarios con Valoraciones
     {% for usuario in usuarios %}
         <li>
             {{ usuario.username }}
-            <a href="{% url 'detalle_valoraciones_usuario' usuario.id %}">Ver Valoraciones</a>
+            <a href="{% url 'detalle_valoraciones_usuario' usuario.id %}" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;"  >Ver Valoraciones</a>
+
         </li>
     {% empty %}
         <li>No hay usuarios con las valoraciones seleccionadas.</li>

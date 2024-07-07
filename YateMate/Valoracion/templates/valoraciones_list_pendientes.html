@@ -32,11 +32,11 @@ Valoraciones Pendientes
                 {{ valoracion }}
                 <form method="POST" action="{% url 'eliminar_valoracion_trueque' valoracion.id %}">
                     {% csrf_token %}
-                    <button type="submit">Eliminar</button>
+                    <button type="submit"   style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >DESCARTAR</button>
                 </form>
                 <form method="POST" action="{% url 'valorar_trueque' valoracion.id %}">
                     {% csrf_token %}
-                    <button type="submit">Valorar</button>
+                    <button type="submit" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >VALORAR</button>
                 </form>
             </li>
         {% empty %}
@@ -54,11 +54,11 @@ Valoraciones Pendientes
                 {{ valoracion }}
                 <form method="POST" action="{% url 'eliminar_valoracion_amarra' valoracion.id %}">
                     {% csrf_token %}
-                    <button type="submit">Eliminar</button>
+                    <button type="submit" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >DESCARTAR</button>
                 </form>
                 <form method="POST" action="{% url 'valorar_amarra' valoracion.id %}">
                     {% csrf_token %}
-                    <button type="submit">Valorar</button>
+                    <button type="submit" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >VALORAR</button>
                 </form>
             </li>
         {% empty %}
