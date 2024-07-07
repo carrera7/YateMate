@@ -5,26 +5,70 @@ Usuarios con Valoraciones
 {% endblock %}
 
 {% block content %}
-<h1>Usuarios con Valoraciones</h1>
+<style>
+    .usuarios-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+        margin-left: 20px;
+    }
 
-<!-- Formulario de búsqueda de usuarios por email -->
-<form method="GET">
-    <label for="usuario_mail">Buscar por email:</label>
-    <input type="text" id="usuario_mail" name="usuario_mail" value="{{ usuario_mail }}">
-    <button type="submit">Buscar</button>
-</form>
+    .card {
+        background-color: #f8f9fa;
+        border: 1px solid #000000;
+        border-radius: 10px;
+        padding: 20px;
+        width: 200px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        text-align: center;
+    }
 
-<!-- Lista de usuarios con valoraciones -->
-<ul>
+    .card-title {
+        color: #000000;
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+    }
+
+
+    .btn-card {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #fff;
+    }
+    .titulo-y-formulario {
+        margin-left: 20px;
+    }
+</style>
+
+<div class="titulo-y-formulario">
+    <h1>Usuarios con Valoraciones</h1>
+
+
+    <form method="GET">
+        <label for="usuario_mail">Buscar por email:</label>
+        <input type="text" id="usuario_mail" name="usuario_mail" value="{{ usuario_mail }}">
+        <button type="submit">Buscar</button>
+    </form>
+</div>
+
+
+<div class="usuarios-container">
     {% for usuario in usuarios %}
-        <li>
-            {{ usuario.mail }}
+        <div class="card">
+            <h3 class="card-title">{{ usuario.mail }}</h3>
             <form method="GET" action="{% url 'ver_valoraciones_usuario' usuario.id %}">
-                <button type="submit" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >Ver Valoraciones</button>
+                <button type="submit" class="btn-card">Ver Valoraciones</button>
             </form>
-        </li>
+        </div>
     {% empty %}
-        <li>No se encontraron usuarios con valoraciones.</li>
+        <div class="card">
+            <h3 class="card-title">No se encontraron usuarios con valoraciones.</h3>
+        </div>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}

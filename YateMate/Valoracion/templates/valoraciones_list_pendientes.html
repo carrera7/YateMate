@@ -5,64 +5,127 @@ Valoraciones Pendientes
 {% endblock %}
 
 {% block content %}
-<h1>Valoraciones Pendientes</h1>
-{% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-<!-- Filtro de valoraciones -->
-<form method="GET">
-    <label for="filtro">Filtrar por:</label>
-    <select id="filtro" name="filtro">
-        <option value="trueque" {% if filtro == "trueque" %}selected{% endif %}>Trueques</option>
-        <option value="amarra" {% if filtro == "amarra" %}selected{% endif %}>Amarras</option>
-    </select>
-    <button type="submit">Filtrar</button>
-</form>
+<style>
+
+    .valoraciones-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+
+    }
+
+
+    .card {
+        background-color: #f8f9fa;
+        border: 1px solid #000000;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        min-height: 150px;
+        min-width: 250px;
+        max-width: 300px;
+        max-height: 150px;
+    }
+
+
+
+    .btn-card {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .titulo-y-formulario {
+        margin-left: 20px;
+    }
+
+    .messages {
+        list-style: none;
+        padding: 0;
+        margin-left: 20px;
+    }
+
+    .messages li {
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+</style>
+
+<div class="titulo-y-formulario">
+    <h1>Valoraciones Pendientes</h1>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <!-- Filtro de valoraciones -->
+    <form method="GET">
+        <label for="filtro">Filtrar por:</label>
+        <select id="filtro" name="filtro">
+            <option value="trueque" {% if filtro == "trueque" %}selected{% endif %}>Trueques</option>
+            <option value="amarra" {% if filtro == "amarra" %}selected{% endif %}>Amarras</option>
+        </select>
+        <button type="submit">Filtrar</button>
+    </form>
+</div>
 
 <!-- Lista de valoraciones de Trueques -->
 {% if filtro == "trueque" %}
-    <h2>Valoraciones de Trueques Pendientes</h2>
-    <ul>
+    <h2 class="titulo-y-formulario">Valoraciones de Trueques Pendientes</h2>
+    <ul class="valoraciones-container">
         {% for valoracion in valoraciones_trueque %}
-            <li>
+            <li class="card">
                 {{ valoracion }}
                 <form method="POST" action="{% url 'eliminar_valoracion_trueque' valoracion.id %}">
                     {% csrf_token %}
-                    <button type="submit"   style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >DESCARTAR</button>
+                    <button type="submit" class="btn-card">DESCARTAR</button>
                 </form>
                 <form method="POST" action="{% url 'valorar_trueque' valoracion.id %}">
                     {% csrf_token %}
-                    <button type="submit" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >VALORAR</button>
+                    <button type="submit" class="btn-card">VALORAR</button>
                 </form>
             </li>
         {% empty %}
-            <li>No hay valoraciones de trueques pendientes.</li>
+            <li>
+                No hay valoraciones de trueques pendientes.
+            </li>
         {% endfor %}
     </ul>
 {% endif %}
 
 <!-- Lista de valoraciones de Amarras -->
 {% if filtro == "amarra" %}
-    <h2>Valoraciones de Amarras Pendientes</h2>
-    <ul>
+    <h2 class="titulo-y-formulario">Valoraciones de Amarras Pendientes</h2>
+    <ul class="valoraciones-container">
         {% for valoracion in valoraciones_amarra %}
-            <li>
+            <li class="card">
                 {{ valoracion }}
                 <form method="POST" action="{% url 'eliminar_valoracion_amarra' valoracion.id %}">
                     {% csrf_token %}
-                    <button type="submit" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >DESCARTAR</button>
+                    <button type="submit" class="btn-card">DESCARTAR</button>
                 </form>
                 <form method="POST" action="{% url 'valorar_amarra' valoracion.id %}">
                     {% csrf_token %}
-                    <button type="submit" style="display: inline-block; padding: 5px 10px;margin-top: 10px; font-size: 16px; color: white; background-color: #007bff; text-align: center; text-decoration: none; border-radius: 4px; border: none; cursor: pointer;" >VALORAR</button>
+                    <button type="submit" class="btn-card">VALORAR</button>
                 </form>
             </li>
         {% empty %}
-            <li>No hay valoraciones de amarras pendientes.</li>
+            <li>
+                No hay valoraciones de amarras pendientes.
+            </li>
         {% endfor %}
     </ul>
 {% endif %}
