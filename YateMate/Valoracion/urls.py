@@ -19,5 +19,5 @@ urlpatterns = [
 
     path('valoraciones_de_usuarios/', views.listar_valoraciones_de_usuarios, name='valoraciones_de_usuarios'),
     path('ver_valoraciones_usuario/<int:usuario_id>/', views.ver_valoraciones_usuario, name='ver_valoraciones_usuario'),
-    # Otras rutas
+    path('ver_valoraciones_admin/', views.ver_valoraciones_admin, name="ver_valoraciones_admin"),
 ]

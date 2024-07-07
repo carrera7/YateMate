@@ -91,6 +91,7 @@
                   <li><a href="http://127.0.0.1:8000/crear_embarcacion/">Cargar Embarcacion</a></li>
                   <li><a href="http://127.0.0.1:8000/listado_clientes/">Listado de clientes</a></li>
                   <li><a href="http://127.0.0.1:8000/mensajes_denunciados/">Denuncias</a></li>
+                  <li><a href="http://127.0.0.1:8000/ver_valoraciones_admin/">Valoraciones</a></li>
                 {% endif %}
                 {% if not request.session.user_id %}
                   <li><a href="http://127.0.0.1:8000/list_publication_boat/">Trueque</a></li>     
@@ -121,6 +122,7 @@
           {% if request.session.user_id %}
             <li><a href="http://127.0.0.1:8000/login/logout">Cerrar sesión</a></li>
             <li><a href="{% url 'perfil' request.session.user_id  %}">Mi Perfil</a></li>
+            {% if request.session.user_type != 'Administrador'%}
             <li class="dropdown">
               <a href="#">Valoraciones</a>
               <ul class="dropdown-content">
@@ -131,6 +133,7 @@
                 <li><a href="http://127.0.0.1:8000/valoraciones_de_usuarios/">A Usuarios</a></li>
               </ul>
             </li>
+            {% endif %}
           {% else %}
             <li><a href="http://127.0.0.1:8000/login/">Iniciar sesión</a></li>
             <li><a href="http://127.0.0.1:8000/register/">Registrarse</a></li>

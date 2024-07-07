@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ValoracionTruequeForm, ValoracionAmarraForm, RespuestaValoracionForm, RespuestaValoracionAmarraForm
-from .models import Valoracion_Trueque, Valoracion_Amarra
+from .models import Valoracion_Trueque, Valoracion_Amarra, ValoracionTruequeOwner, ValoracionAmarraOwner
 from django.contrib import messages
 from Register.models import User
 from django.urls import reverse
+from django.shortcuts import render
+from django.db.models import Avg, Count
 
 def valoraciones_list_pendientes(request):
     # Obtener el usuario activo
@@ -284,3 +286,41 @@ def ver_valoraciones_usuario(request, usuario_id):
         'usuario_tipo': usuario_tipo,
     }
     return render(request, 'ver_valoraciones_usuario.html', contexto)
+
+
+def ver_valoraciones_admin(request):
+    email_filtrar = request.GET.get('email', '')
+    limpiar_filtros = request.GET.get('limpiar', '')
+
+    usuarios_con_valoraciones = []
+    mensaje = None
+
+    if limpiar_filtros:
+        usuarios = User.objects.filter(tipo__in=['Usuario', 'Cliente'])
+    else:
+        usuarios = User.objects.filter(tipo__in=['Usuario', 'Cliente'])
+        if email_filtrar:
+            usuarios = usuarios.filter(mail=email_filtrar)
+
+    for usuario in usuarios:
+        promedio_trueques = Valoracion_Trueque.objects.filter(usuario=usuario).aggregate(Avg('estrellas'))['estrellas__avg'] or 0
+        promedio_amarras = Valoracion_Amarra.objects.filter(usuario=usuario).aggregate(Avg('estrellas'))['estrellas__avg'] or 0
+
+        if promedio_trueques > 0 or promedio_amarras > 0:
+            usuarios_con_valoraciones.append({
+                'usuario': usuario,
+                'promedio_trueques': promedio_trueques,
+                'promedio_amarras': promedio_amarras,
+            })
+
+    if not usuarios_con_valoraciones and email_filtrar:
+        mensaje = f"No se encontraron usuarios con valoraciones para el correo '{email_filtrar}'."
+    elif not usuarios.exists() and email_filtrar:
+        mensaje = "Usuario no encontrado."
+
+    context = {
+        'usuarios_con_valoraciones': usuarios_con_valoraciones,
+        'email_filtrar': email_filtrar,
+        'mensaje': mensaje,
+    }
+    return render(request, 'ver_valoraciones_admin.html', context)
