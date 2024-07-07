@@ -77,7 +77,7 @@ Usuarios con Valoraciones
             <h3 class="card-title">{{ item.usuario.mail }}</h3>
             <p>Promedio de Valoraciones de Trueques: {{ item.promedio_trueques }}</p>
             <p>Promedio de Valoraciones de Amarras: {{ item.promedio_amarras }}</p>
-            <form method="GET" action="{% url 'ver_valoraciones_usuario' item.usuario.id %}">
+            <form method="GET" action="{% url 'ver_valoraciones_usuario_admin' item.usuario.id %}">
                 <button type="submit" class="btn-card">Ver Valoraciones</button>
             </form>
         </div>
