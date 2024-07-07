@@ -15,7 +15,7 @@ Valoraciones Hechas
     }
 
 
-    .card {
+   .card {
         background-color: #f8f9fa;
         border: 1px solid #000000;
         border-radius: 10px;
@@ -24,9 +24,10 @@ Valoraciones Hechas
         text-align: center;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        min-width: 250px;
         min-height: 150px;
+        min-width: 250px;
+        max-width: 300px;
+        max-height: 150px;
     }
 
 
@@ -60,6 +61,16 @@ Valoraciones Hechas
 
 </style>
 
+        {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
 <div class="titulo-y-formulario">
     <h1>Valoraciones Hechas</h1>
 
@@ -82,7 +93,7 @@ Valoraciones Hechas
             {% for valoracion in valoraciones_trueque %}
                 <div class="card">
                     <div>
-                        <h3 class="card-title">{{ valoracion }}</h3>
+                        <h2 class="card-title">{{ valoracion }}</h2>
                     </div>
                     <div>
                         <form method="GET" action="{% url 'valorar_trueque' valoracion.id %}">
@@ -105,7 +116,7 @@ Valoraciones Hechas
             {% for valoracion in valoraciones_amarra %}
                 <div class="card">
                     <div>
-                        <h3 class="card-title">{{ valoracion }}</h3>
+                        <h2 class="card-title">{{ valoracion }}</h2>
                     </div>
                     <div>
                         <form method="GET" action="{% url 'valorar_amarra' valoracion.id %}">
