@@ -495,7 +495,64 @@ def finalizar_trueque(request, publicacion_id, tipo_obj):
     send_mail(subject, message, settings.EMAIL_HOST_USER, [user.mail])
 
     publi.estado = "Finalizado"
+    # objeto valisos
+    # Verificar si ya existe una valoración de trueque para esta publicación y usuario
+    if tipo_obj == 'Objetos Valiosos':
+        valoracion_existente = Valoracion_Trueque.objects.filter(
+            tipo_publicacion='ObjetoValioso',
+            publicacion_objeto_valioso=publi,
+            dueño=publi.dueño,
+            usuario=intere
+        ).exists()
 
+        if not valoracion_existente:
+            # Crear valoración de trueque para objeto valioso
+            valoracion = Valoracion_Trueque.objects.create(
+                tipo_publicacion='ObjetoValioso',
+                publicacion_objeto_valioso=publi,
+                usuario=intere,
+                estrellas=0,  # Aquí deberías definir cómo determinar las estrellas
+                comentario='',  # Puedes dejarlo vacío inicialmente o definir un comentario por defecto
+                estado='Inicio',
+                dueño=publi.dueño,
+                respuesta=''
+            )
+            # Crear mensaje de valoración pendiente
+            mensaje = Mensaje.objects.create(
+                usuario=intere,
+                valoracion_trueque=valoracion,
+                estado='Pendiente',
+                mensaje_texto="Usted tiene una valoración pendiente de un trueque de Objeto Valioso",
+                mostrar=True
+            )
+    else:
+        valoracion_existente = Valoracion_Trueque.objects.filter(
+            tipo_publicacion='Embarcacion',
+            publicacion_embarcacion=publi,
+            dueño=publi.embarcacion.dueno,
+            usuario=intere
+        ).exists()
+
+        if not valoracion_existente:
+            # Crear valoración de trueque para embarcación
+            valoracion = Valoracion_Trueque.objects.create(
+                tipo_publicacion='Embarcacion',
+                publicacion_embarcacion=publi,
+                usuario=intere,
+                estrellas=0,  # Define cómo determinar las estrellas
+                comentario='',  # Puedes dejarlo vacío inicialmente o definir un comentario por defecto
+                estado='Inicio',
+                dueño=publi.embarcacion.dueno,
+                respuesta=''
+            )
+            # Crear mensaje de valoración pendiente
+            mensaje = Mensaje.objects.create(
+                usuario=intere,
+                valoracion_trueque=valoracion,
+                estado='Pendiente',
+                mensaje_texto="Usted tiene una valoración pendiente de un trueque de Embarcación",
+                mostrar=True
+            )
     publi.save()
     if tipo_obj != 'Objetos Valiosos':
         publi.embarcacion.dueno=intere
