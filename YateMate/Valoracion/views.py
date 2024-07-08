@@ -150,20 +150,12 @@ def mis_valoraciones(request):
 
     # Obtener el filtro seleccionado (por defecto 'trueque' si no hay filtro seleccionado)
     filtro = request.GET.get('filtro', 'trueque')
-    estado_filtro = request.GET.get('estado', 'proceso')
 
-    # Filtrar las valoraciones según el estado y el tipo de usuario
-    if estado_filtro == 'proceso':
-        valoraciones_trueque = Valoracion_Trueque.objects.filter(estado='Proceso', dueño_id=usuario_id)
-        valoraciones_amarra = Valoracion_Amarra.objects.filter(estado='Proceso', dueño_id=usuario_id)
-    elif estado_filtro == 'finalizado':
-        valoraciones_trueque = Valoracion_Trueque.objects.filter(estado='Finalizado', dueño_id=usuario_id)
-        valoraciones_amarra = Valoracion_Amarra.objects.filter(estado='Finalizado', dueño_id=usuario_id)
-    else:
-        valoraciones_trueque = Valoracion_Trueque.objects.none()
-        valoraciones_amarra = Valoracion_Amarra.objects.none()
+    # Obtener todas las valoraciones según el tipo de usuario
+    valoraciones_trueque = Valoracion_Trueque.objects.filter(dueño_id=usuario_id)
+    valoraciones_amarra = Valoracion_Amarra.objects.filter(dueño_id=usuario_id)
 
-    # Si el usuario es de tipo "Usuario", no mostrar valoraciones de amarras en proceso
+    # Si el usuario es de tipo "Usuario", no mostrar valoraciones de amarras
     if usuario_tipo == 'Usuario' and filtro == 'amarra':
         valoraciones_amarra = Valoracion_Amarra.objects.none()
 
@@ -172,7 +164,6 @@ def mis_valoraciones(request):
         'valoraciones_amarra': valoraciones_amarra,
         'usuario_tipo': usuario_tipo,
         'filtro': filtro,
-        'estado_filtro': estado_filtro,
     }
     return render(request, 'mis_valoraciones.html', contexto)
 
