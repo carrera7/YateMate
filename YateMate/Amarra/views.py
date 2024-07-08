@@ -8,6 +8,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from django.db import transaction
 from Valoracion.models import Valoracion_Amarra, Mensaje
+from decimal import Decimal
 
 
 
@@ -74,7 +75,7 @@ def modificar_publicacion(request, id):
             nuevo_precio = form.cleaned_data['nuevo_precio']
             
             publicacion.cant_dias = str(int(publicacion.cant_dias) + dias_a_agregar)
-            publicacion.precio = nuevo_precio
+            publicacion.precio = str(Decimal(publicacion.precio) + Decimal(nuevo_precio))
             publicacion.actualizar_dias_disponibles()
             publicacion.save()
             

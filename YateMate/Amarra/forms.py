@@ -44,6 +44,6 @@ class AmarraForm(forms.ModelForm):
         return cleaned_data
     
 class ModificarPublicacionForm(forms.Form):
-    dias_a_agregar = forms.IntegerField(label="Días a agregar", min_value=1)
+    dias_a_agregar = forms.IntegerField(label="Días a agregar", min_value=0)
     nuevo_precio = forms.DecimalField(label="Nuevo precio", min_value=0, decimal_places=2)
     
