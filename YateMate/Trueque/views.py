@@ -518,7 +518,7 @@ def denunciar_usuario(request, sender_id, msj, mensaje_id):
     mensaje = Mensajes_chat.objects.get(id=mensaje_id)
     usuario_denunciado = get_object_or_404(User, id=sender_id)
 
-    if Denuncia.objects.filter(denunciado=usuario_denunciado, denunciante=usuario_denunciante, mensaje_texto=msj, mensaje=mensaje).exists():
+    if Denuncia.objects.filter(denunciado=usuario_denunciado, denunciante=usuario_denunciante).exists():
         messages.warning(request, 'Usted ya ha denunciado al usuario. El administrador tomará las decisiones pertinentes')
     else:
         # Crear la nueva denuncia
