@@ -138,8 +138,7 @@ def valorar_amarra(request, id):
                 return redirect('valoraciones_list_pendientes')
         else:
             form = ValoracionAmarraForm(instance=valoracion)
-            return redirect ('valoraciones_list_realizadas')
-            #return render(request, 'valorar_Amarra.html', {'form': form})
+            return render(request, 'valorar_Amarra.html', {'form': form})
     else:
         form = ValoracionAmarraForm(instance=valoracion)
     return render(request, 'valorar_Amarra.html', {'form': form})
