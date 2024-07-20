@@ -60,6 +60,11 @@ Mis Reservas
         background-color: #ff4d4d;
     }
 
+    .reservas-container button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
     .reservas-container a {
         display: block;
         text-align: center;
@@ -87,7 +92,7 @@ Mis Reservas
                 <strong>Ubicación:</strong> {{ reserva.publicacion.ubicacion }} <br>
                 <form action="{% url 'eliminar_reserva' reserva.id %}" method="post" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit">Eliminar</button>
+                    <button type="submit" {% if reserva.fecha_ingreso|date:"Y-m-d" == "now"|date:"Y-m-d" %}disabled{% endif %}>Eliminar</button>
                 </form>
             </li>
         {% endfor %}
